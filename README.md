@@ -13,7 +13,9 @@ Download and install PyUSB from here:
 
 http://sourceforge.net/projects/pyusb/files/latest/download
 
+```sh
 [sudo] python setup.py install
+```
 
 Description
 -----------
