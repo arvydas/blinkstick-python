@@ -1,4 +1,4 @@
-blinkstick Python
+BlinkStick Python
 =================
 
 BlinkStick Python interface to control devices connected to the computer.
@@ -19,11 +19,15 @@ Description
 -----------
 
 Description of files:
-  blinkstick.py - main BlinkStick class definition
-  example-info.py - displays information of each BlinkStick
-  example-infoblock.py - read/write info block sample 
-  example-off.py - turn all blinksticks off
-  example-random.py - set random color to all blinksticks
+
+* blinkstick.py - main BlinkStick class definition
+* example-info.py - displays information of each BlinkStick
+* example-infoblock.py - read/write info block sample 
+* example-off.py - turn all blinksticks off
+* example-random.py - set random color to all blinksticks
 
 Running examples:
-  python example-info.py
+
+```sh
+python example-info.py
+```
