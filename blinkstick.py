@@ -41,6 +41,17 @@ class BlinkStick(object):
 
         return bstick
 
+    @classmethod
+    def find_by_serial(cls, serial):
+        """A class method to find BlinkStick device based on serial number."""
+        for d in usb.core.find(find_all=True, idVendor=cls.VENDOR_ID, idProduct=cls.PRODUCT_ID):
+            if serial == usb.util.get_string(d, 256, 3):
+                bstick = BlinkStick()
+                bstick.open_device(d)
+                return bstick
+
+        return None
+
     def get_serial(self):
         """Returns the serial number of device.
 
