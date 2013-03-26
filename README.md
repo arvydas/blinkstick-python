@@ -34,6 +34,14 @@ Alternatively you can use pip to install all required packages:
 [sudo] pip install websocket-client
 ```
 
+If websocket-client fails to install, please make sure you run the following command:
+
+```sh
+sudo apt-get install python-dev
+```
+
+Replace _python-dev_ with _python2.7-dev_ if you are installing on Raspberry Pi.
+
 Description
 -----------
 
