@@ -5,21 +5,18 @@ import json
 import sys
 from blinkstick import *
 
-# Specify device access code here. You can find it in the device information page on BlinkStick.com
-# in one of your registered devices
-
-access_code = ''
-
-## -------------------------------------------------------------------------------------
-##                         No need to edit anything below this line
-## -------------------------------------------------------------------------------------
-
 print "Connect to BlinkStick.com and control BlinkStick remotely"
 print "(c) Agile Innovative Ltd"
 print ""
 
-if (access_code == ''):
-    sys.exit("Please specify access_code variable in the example script.")
+if (len(sys.argv) > 1):
+    access_code = sys.argv[1]
+else:
+    print "Usage:"
+    print "   [sudo] python example-connect.py \"AccessCode\""
+    print ""
+    print "You can obtain the AccessCode parameter from the device information page on BlinkStick.com" 
+    sys.exit()
 
 bstick = BlinkStick.find_first()
 
@@ -78,7 +75,7 @@ def on_message(ws, message):
         if (m[0]['successful']):
             print "Subscribed to device. Waiting for color message..."
         else:
-            raise Exception("Subscription to the device failed. Please check the access_code value in the file.")
+            print "Subscription to the device failed. Please check the access_code value in the file."
 
     #Reconnect again and wait for futher messages
     ws.send(json.dumps(
