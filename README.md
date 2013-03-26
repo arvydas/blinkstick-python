@@ -13,6 +13,7 @@ Requirements
 * Python
 * PyUSB
 * psutil - only for example-cpu.py
+* websocket-client - only for example-connect.py to connect to BlinkStick.com
 
 Installation
 ------------
@@ -25,13 +26,13 @@ http://sourceforge.net/projects/pyusb/files/latest/download
 [sudo] python setup.py install
 ```
 
-Alternatively you can use pip:
+Alternatively you can use pip to install all required packages:
 
 ```sh
 [sudo] pip install pyusb
 [sudo] pip install psutil
+[sudo] pip install websocket-client
 ```
-
 
 Description
 -----------
@@ -44,6 +45,7 @@ Description of files:
 * example-off.py - turn all blinksticks off
 * example-random.py - set random color to all BlinkSticks
 * example-cpu.py - displays CPU usage with a BlinkStick (transitions from green as 0% to red as 100%)
+* example-connect.py - sample code to connect to BlinkStick.com and control it remotely
 
 Running examples:
 
