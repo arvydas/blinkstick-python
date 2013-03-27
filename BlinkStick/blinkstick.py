@@ -1,56 +1,23 @@
-#!/usr/bin/python
+from grapefruit import Color
 
 import usb.core
 import usb.util
-from time import time, sleep
-from collections import namedtuple
 from random import randint
 
-Color = namedtuple("Color", "R G B")
+VENDOR_ID = 0x20a0
+PRODUCT_ID = 0x41e5
+
+
+class BlinkStickException(Exception):
+    pass
+
 
 class BlinkStick(object):
-    VENDOR_ID = 0x20a0
-    PRODUCT_ID = 0x41e5
+    def __init__(self, device=None):
 
-    def __init__(self):
-        return None
-
-    @classmethod
-    def find_all(cls):
-        """A class method to find all BlinkStick devices.
-
-        Returns a list of BlinkStick objects.
-        """
-        for d in usb.core.find(find_all=True, idVendor=cls.VENDOR_ID, idProduct=cls.PRODUCT_ID):
-            bstick = BlinkStick()
-            bstick.open_device(d)
-            yield bstick
-
-    @classmethod
-    def find_first(cls):
-        """A class method to find first BlinkStick.
-
-        Returns first device found as BlinkStick object.
-        """
-        d = usb.core.find(idVendor=cls.VENDOR_ID, idProduct=cls.PRODUCT_ID)
-        if d is None:
-            return None
-        else:
-            bstick = BlinkStick()
-        bstick.open_device(d)
-
-        return bstick
-
-    @classmethod
-    def find_by_serial(cls, serial):
-        """A class method to find BlinkStick device based on serial number."""
-        for d in usb.core.find(find_all=True, idVendor=cls.VENDOR_ID, idProduct=cls.PRODUCT_ID):
-            if serial == usb.util.get_string(d, 256, 3):
-                bstick = BlinkStick()
-                bstick.open_device(d)
-                return bstick
-
-        return None
+        if device:
+            self.device = device
+            self.open_device(device)
 
     def get_serial(self):
         """Returns the serial number of device.
@@ -73,7 +40,7 @@ class BlinkStick(object):
         """Get the description of the device"""
         return usb.util.get_string(self.device, 256, 2)
 
-    def set_color(self, r, g, b):
+    def set_color(self, red=0, green=0, blue=0):
         """Set the color to the device as RGB
 
         Args:
@@ -81,9 +48,24 @@ class BlinkStick(object):
             g (byte): Green color intensity 0 is off, 255 is full green intensity
             b (byte): Blue color intensity 0 is off, 255 is full blue intensity
         """
-        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(r) + chr(g) + chr(b))
 
-    def get_color(self):
+        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(red) + chr(green) + chr(blue))
+
+    def _get_color(self):
+
+        """
+        Get the current color settings as a grapefruit Color object
+
+        :param get_color_obj:
+        :return:
+        """
+        device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
+        # Color object requires RGB values in range 0-1, not 0-255
+        color = Color.NewFromRgb(float(device_bytes[1]) / 255, float(device_bytes[2]) / 255, float(device_bytes[3]) / 255)
+
+        return color
+
+    def get_color(self, format=None):
         """Get the color to the device as Color namedtuple
 
         Returns:
@@ -91,13 +73,13 @@ class BlinkStick(object):
 
         Example:
             b = BlinkStick.find_first()
-            color = b.get_color()
-            print color.R
-            print color.G
-            print color.B
+            (r,g,b) = b.get_color()
+            print r
+            print g
+            print b
         """
-        bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
-        return Color(bytes[1], bytes[2], bytes[3])
+
+        return self._get_color().rgb
 
     def get_color_string(self):
         """Get the color to the device as Color namedtuple
@@ -111,8 +93,7 @@ class BlinkStick(object):
             #0000FF - blue
             #008000 - 50% intensity green
         """
-        c = self.get_color()
-        return '#{0}{1}{2}'.format('%02X'%c.R, '%02X'%c.G, '%02X'%c.B)
+        return self._get_color().html
 
     def get_info_block1(self):
         """Get the infoblock1 of the device.
@@ -121,12 +102,12 @@ class BlinkStick(object):
         hold the "Name" of the device making it easier to identify rather than
         a serial number.
         """
-        bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0002, 0, 33)
+        device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0002, 0, 33)
         result = ""
-        for i in bytes[1:]:
+        for i in device_bytes[1:]:
             if i == 0:
                 break
-            result = result + chr(i)
+            result += chr(i)
         return result
 
     def get_info_block2(self):
@@ -134,12 +115,12 @@ class BlinkStick(object):
 
         This is a 32 byte array that can contain any data.
         """
-        bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0003, 0, 33)
+        device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0003, 0, 33)
         result = ""
-        for i in bytes[1:]:
+        for i in device_bytes[1:]:
             if i == 0:
                 break
-            result = result + chr(i)
+            result += chr(i)
         return result
 
     def data_to_message(self, data):
@@ -178,61 +159,92 @@ class BlinkStick(object):
 
     def set_random_color(self):
         """Sets random color to the device."""
-        self.set_color(randint(0, 255), randint(0, 255), randint(0, 255))
+        self.set_color(red=randint(0, 255), green=randint(0, 255), blue=randint(0, 255))
 
     def turn_off(self):
-        self.set_color(0, 0, 0)
+        self.set_color()
 
-    def pulse_color(self, r, g, b):
+    def pulse_color(self, red=0, green=0, blue=0):
         """Pulses specified RGB color."""
         cr = 0
         cg = 0
         cb = 0
 
-        for i in range(max(r, g, b)):
-            if cr < r:
-                 cr = cr + 1
-            if cg < g:
-                 cg = cg + 1
-            if cb < b:
-                 cb = cb + 1
+        for i in range(max(red, green, blue)):
+            if cr < red:
+                cr += 1
+            if cg < green:
+                cg += 1
+            if cb < blue:
+                cb += 1
 
-            set_color(cr, cg, cb)
+            self.set_color(red=cr, green=cg, blue=cb)
 
-        cr = r
-        cg = g
-        cb = b
+        cr = red
+        cg = green
+        cb = blue
 
-        while (cr > 0 or cg > 0 or cb > 0):
+        while cr > 0 or cg > 0 or cb > 0:
             if cr > 0:
-                cr = cr - 1
+                cr -= 1
             if cb > 0:
-                cb = cb - 1
+                cb -= 1
             if cg > 0:
-                cg = cg - 1
+                cg -= 1
 
-            set_color(cr, cg, cb)
+            self.set_color(red=cr, green=cg, blue=cb)
 
     def open_device(self, d):
-        """Open device."""
-        self.device = d
-        return self.open()
-
-    def open(self):
-        """Open currently assigned device."""
+        """Open device.
+        :param d:
+        """
         if self.device is None:
-            sys.exit("Could not find BlinkStick...")
+            raise BlinkStickException("Could not find BlinkStick...")
 
         if self.device.is_kernel_driver_active(0):
             try:
                 self.device.detach_kernel_driver(0)
             except usb.core.USBError as e:
-                sys.exit("Could not detatch kernel driver: %s" % str(e))
+                raise BlinkStickException("Could not detach kernel driver: %s" % str(e))
 
         try:
             self.device.set_configuration()
             self.device.reset()
         except usb.core.USBError as e:
-            sys.exit("Could not set configuration: %s" % str(e))
+            raise BlinkStickException("Could not set configuration: %s" % str(e))
 
         return True
+
+
+def _find_blicksticks(find_all=True):
+    return usb.core.find(find_all=find_all, idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
+
+
+def find_all():
+    """Find all attached BlinkStick devices.
+
+    Returns a list of BlinkStick objects or None if no devices found
+    """
+    return [BlinkStick(device=d) for d in _find_blicksticks()]
+
+
+def find_first():
+    """Find first attached BlinkStick.
+
+    Returns BlinkStick object or None if no devices are found
+    """
+    d = _find_blicksticks(find_all=False)
+
+    if d:
+        return BlinkStick(device=d)
+
+
+def find_by_serial(serial=None):
+    """Find BlinkStick device based on serial number.
+
+    Returns BlinkStick object or None if no devices found"""
+    devices = [d for d in _find_blicksticks()
+               if usb.util.get_string(d, 256, 3) == serial]
+
+    if devices:
+        return BlinkStick(device=devices[0])
