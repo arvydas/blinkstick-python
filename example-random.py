@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from BlinkStick import blinkstick
+from blinkstick import blinkstick
 
 print "Set random BlinkStick color"
 print "(c) Agile Innovative Ltd"

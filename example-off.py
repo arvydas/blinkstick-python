@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from BlinkStick import blinkstick
+from blinkstick import blinkstick
 
 print "Turn BlinkSticks off"
 print "(c) Agile Innovative Ltd"
