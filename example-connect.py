@@ -3,7 +3,7 @@ import thread
 import time
 import json
 import sys
-from blinkstick import *
+from BlinkStick import blinkstick
 
 print "Connect to BlinkStick.com and control BlinkStick remotely"
 print "(c) Agile Innovative Ltd"
@@ -18,7 +18,7 @@ else:
     print "You can obtain the AccessCode parameter from the device information page on BlinkStick.com" 
     sys.exit()
 
-bstick = BlinkStick.find_first()
+bstick = blinkstick.find_first()
 
 if (bstick is None):
     sys.exit("BlinkStick not found...")

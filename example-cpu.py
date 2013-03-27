@@ -1,13 +1,13 @@
 #!/usr/bin/python
 
-from blinkstick import *
+from BlinkStick import blinkstick
 import psutil
 
 print "Display CPU usage with BlinkStick"
 print "(c) Agile Innovative Ltd"
 print ""
 
-bstick = BlinkStick.find_first()
+bstick = blinkstick.find_first()
 
 if (bstick == None):
     print "No BlinkSticks found..."
