@@ -75,3 +75,10 @@ echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"20a0\", ATTR{idProduct}==\"41e5\", M
 ```
 
 Reboot computer after you have added the command and all users will have permissions to access the device without the need of root permissions.
+
+Maintainers
+------------
+
+* Arvydas Juskevicius - http://twitter.com/arvydev
+* Rob Berwick - http://twitter.com/robberwick
+
