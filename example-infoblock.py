@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-from blinkstick import *
+from BlinkStick import blinkstick
 
 print "Display BlinkStick Name (InfoBlock1)"
 print "(c) Agile Innovative Ltd"
 print ""
 
-bstick = BlinkStick.find_first()
+bstick = blinkstick.find_first()
 bstick.set_info_block1("Kitchen BlinkStick")
 print bstick.get_info_block1()
 
