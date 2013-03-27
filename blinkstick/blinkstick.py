@@ -67,7 +67,7 @@ class BlinkStick(object):
 
         return color
 
-    def get_color(self, format=None):
+    def get_color(self):
         """Get the color to the device as Color namedtuple
 
         Returns:
