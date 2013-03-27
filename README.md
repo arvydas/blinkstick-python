@@ -12,26 +12,18 @@ Requirements
 
 * Python
 * PyUSB
+* grapefruit - package for color manipulations
+* pyusb - package to access USB devices
 * psutil - only for example-cpu.py
 * websocket-client - only for example-connect.py to connect to BlinkStick.com
 
 Installation
 ------------
 
-Download and install PyUSB from here:
-
-http://sourceforge.net/projects/pyusb/files/latest/download
+Install all required packages with pip:
 
 ```sh
-[sudo] python setup.py install
-```
-
-Alternatively you can use pip to install all required packages:
-
-```sh
-[sudo] pip install pyusb
-[sudo] pip install psutil
-[sudo] pip install websocket-client
+[sudo] pip install grapefruit pyusb psutil websocket-client
 ```
 
 If websocket-client fails to install, please make sure you run the following command:
