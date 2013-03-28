@@ -26,7 +26,16 @@ Install all required packages with pip:
 
 ::
 
-    [sudo] pip install grapefruit pyusb psutil websocket-client
+    [sudo] pip install blinkstick
+
+::
+
+If you would like to run the example scripts, you may also need to install
+the extra dependencies
+
+::
+
+    [sudo] pip install psutil websocket-client
 
 If websocket-client fails to install, please make sure you run the
 following command:

@@ -1,2 +1,4 @@
 include *.txt
-recursive-include docs *.txt
+include LICENSE.txt
+include README.rst
+recursive-include bin *.py
