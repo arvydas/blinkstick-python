@@ -28,7 +28,6 @@ Install all required packages with pip:
 
     [sudo] pip install blinkstick
 
-::
 
 If you would like to run the example scripts, you may also need to install
 the extra dependencies
