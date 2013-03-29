@@ -61,11 +61,13 @@ class BlinkStick(object):
         """
         device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
         # Color object requires RGB values in range 0-1, not 0-255
-        color = Color.NewFromRgb(float(device_bytes[1]) / 255, float(device_bytes[2]) / 255, float(device_bytes[3]) / 255)
+        color = Color.NewFromRgb(float(device_bytes[1]) / 255,
+                                 float(device_bytes[2]) / 255,
+                                 float(device_bytes[3]) / 255)
 
         return color
 
-    def get_color(self, format=None):
+    def get_color(self):
         """Get the color to the device as Color namedtuple
 
         Returns:
@@ -78,8 +80,8 @@ class BlinkStick(object):
             print g
             print b
         """
-
-        return self._get_color().rgb
+        r, g, b = self._get_color().rgb
+        return int(r * 255), int(g * 255), int(b * 255)
 
     def get_color_string(self):
         """Get the color to the device as Color namedtuple

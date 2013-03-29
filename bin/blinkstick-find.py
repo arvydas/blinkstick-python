@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from BlinkStick import blinkstick
+from blinkstick import blinkstick
 
 print "Find BlinkStick by serial number"
 print "(c) Agile Innovative Ltd"

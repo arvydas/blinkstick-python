@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from BlinkStick import blinkstick
+from blinkstick import blinkstick
 import psutil
 
 print "Display CPU usage with BlinkStick"
@@ -9,7 +9,7 @@ print ""
 
 bstick = blinkstick.find_first()
 
-if (bstick == None):
+if bstick is None:
     print "No BlinkSticks found..."
 else:
     print "Displaying CPU usage (Green = 0%, Amber = 50%, Red = 100%)"
