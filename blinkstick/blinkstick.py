@@ -1,4 +1,5 @@
 from grapefruit import Color
+import webcolors
 
 import usb.core
 import usb.util
@@ -40,14 +41,23 @@ class BlinkStick(object):
         """Get the description of the device"""
         return usb.util.get_string(self.device, 256, 2)
 
-    def set_color(self, red=0, green=0, blue=0):
+    def set_color(self, red=0, green=0, blue=0, name=None, hex=None):
         """Set the color to the device as RGB
 
         Args:
             r (byte): Red color intensity 0 is off, 255 is full red intensity
             g (byte): Green color intensity 0 is off, 255 is full green intensity
             b (byte): Blue color intensity 0 is off, 255 is full blue intensity
+            colour_name: Use CSS colour name as defined here: http://www.w3.org/TR/css3-color/
         """
+
+        try:
+            if name:
+                red, green, blue = webcolors.name_to_rgb(name)
+            else:
+                red, green, blue = webcolors.hex_to_rgb(hex)
+        except ValueError:
+            red = green = blue = 0
 
         self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(red) + chr(green) + chr(blue))
 
