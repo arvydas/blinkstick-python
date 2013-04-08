@@ -54,7 +54,7 @@ class BlinkStick(object):
         try:
             if name:
                 red, green, blue = webcolors.name_to_rgb(name)
-            else:
+            elif hex:
                 red, green, blue = webcolors.hex_to_rgb(hex)
         except ValueError:
             red = green = blue = 0
