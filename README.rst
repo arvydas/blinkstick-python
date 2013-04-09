@@ -13,6 +13,7 @@ Requirements
 
 -  Python
 -  PyUSB
+-  webcolors
 -  grapefruit - package for color manipulations
 -  pyusb - package to access USB devices
 -  psutil - only for example-cpu.py

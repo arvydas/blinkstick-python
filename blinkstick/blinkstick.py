@@ -1,4 +1,5 @@
 from grapefruit import Color
+import webcolors
 
 import usb.core
 import usb.util
@@ -40,14 +41,24 @@ class BlinkStick(object):
         """Get the description of the device"""
         return usb.util.get_string(self.device, 256, 2)
 
-    def set_color(self, red=0, green=0, blue=0):
+    def set_color(self, red=0, green=0, blue=0, name=None, hex=None):
         """Set the color to the device as RGB
 
         Args:
-            r (byte): Red color intensity 0 is off, 255 is full red intensity
-            g (byte): Green color intensity 0 is off, 255 is full green intensity
-            b (byte): Blue color intensity 0 is off, 255 is full blue intensity
+            red: Red color intensity 0 is off, 255 is full red intensity
+            green: Green color intensity 0 is off, 255 is full green intensity
+            blue: Blue color intensity 0 is off, 255 is full blue intensity
+            name: Use CSS colour name as defined here: http://www.w3.org/TR/css3-color/
+            hex: Specify color using hexadecimal color value e.g. '#FF3366'
         """
+
+        try:
+            if name:
+                red, green, blue = webcolors.name_to_rgb(name)
+            elif hex:
+                red, green, blue = webcolors.hex_to_rgb(hex)
+        except ValueError:
+            red = green = blue = 0
 
         self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(red) + chr(green) + chr(blue))
 
@@ -55,9 +66,6 @@ class BlinkStick(object):
 
         """
         Get the current color settings as a grapefruit Color object
-
-        :param get_color_obj:
-        :return:
         """
         device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
         # Color object requires RGB values in range 0-1, not 0-255
@@ -71,7 +79,7 @@ class BlinkStick(object):
         """Get the color to the device as Color namedtuple
 
         Returns:
-            Color - the current color of the device
+            Color - the current color of the device as a 3-tuple of integers
 
         Example:
             b = BlinkStick.find_first()
@@ -84,7 +92,7 @@ class BlinkStick(object):
         return int(r * 255), int(g * 255), int(b * 255)
 
     def get_color_string(self):
-        """Get the color to the device as Color namedtuple
+        """Get the current device color as hexadecimal string
 
         Returns:
             String - current color of the device as HEX encoded string #rrggbb
