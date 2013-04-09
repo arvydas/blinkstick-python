@@ -4,7 +4,8 @@ BlinkStick Python
 BlinkStick Python interface to control devices connected to the
 computer.
 
-What is BlinkStick? Check it out here:
+What is BlinkStick? It's a DIY USB RGB LED device. More info 
+about it here:
 
 http://www.blinkstick.com
 
@@ -12,7 +13,11 @@ Requirements
 ------------
 
 -  Python
--  PyUSB
+-  BlinkStick pip module
+
+Depends on modules
+------------------
+
 -  webcolors
 -  grapefruit - package for color manipulations
 -  pyusb - package to access USB devices
@@ -52,21 +57,21 @@ Description
 
 Description of files:
 
--  blinkstick.py - main BlinkStick class definition
--  example-info.py - displays information of each BlinkStick
--  example-infoblock.py - read/write info block sample
--  example-off.py - turn all blinksticks off
--  example-random.py - set random color to all BlinkSticks
--  example-cpu.py - displays CPU usage with a BlinkStick (transitions
+-  /blinkstick - main BlinkStick module
+-  /bin/blinkstick-info.py - displays information of each BlinkStick
+-  /bin/blinkstick-infoblock.py - read/write info block sample
+-  /bin/blinkstick-off.py - turn all blinksticks off
+-  /bin/blinkstick-random.py - set random color to all BlinkSticks
+-  /bin/blinkstick-cpu.py - displays CPU usage with a BlinkStick (transitions
    from green as 0% to red as 100%)
--  example-connect.py - sample code to connect to BlinkStick.com and
+-  /bin/blinkstick-connect.py - sample code to connect to BlinkStick.com and
    control it remotely
 
 Running examples:
 
 ::
 
-    python example-info.py
+    [sudo] blinkstick-info.py
 
 Permission problems
 -------------------
@@ -81,7 +86,7 @@ You can either run the script with sudo, for example:
 
 ::
 
-    sudo python example-info.py
+    sudo blinkstick-info.py
 
 Or you can add a udev rule to allow any user to access the device
 without root permissions with this single command:
