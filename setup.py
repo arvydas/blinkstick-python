@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='BlinkStick',
-    version='0.1.0',
+    version='0.2.0',
     author='Arvydas Juskevicius',
     author_email='arvydas@arvydas.co.uk',
     packages=find_packages(),
@@ -25,6 +25,8 @@ setup(
     long_description=read('README.rst'),
     install_requires=[
         "grapefruit",
-        "pyusb"
+        "webcolors",
+        "pyusb",
+        "websocket-client"
     ],
 )
