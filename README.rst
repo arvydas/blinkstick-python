@@ -15,32 +15,14 @@ Requirements
 -  Python
 -  BlinkStick pip module
 
-Depends on modules
-------------------
-
--  webcolors
--  grapefruit - package for color manipulations
--  pyusb - package to access USB devices
--  psutil - only for example-cpu.py
--  websocket-client - only for example-connect.py to connect to
-   BlinkStick.com
-
 Installation
 ------------
 
-Install all required packages with pip:
+Install blinkstick Python package with pip:
 
 ::
 
     [sudo] pip install blinkstick
-
-
-If you would like to run the example scripts, you may also need to install
-the extra dependencies
-
-::
-
-    [sudo] pip install psutil websocket-client
 
 If websocket-client fails to install, please make sure you run the
 following command:
@@ -97,27 +79,33 @@ Command Line Examples
 Set random color all BlinkSticks:
 
 ::
+
     blinkstick --set-color random
 
 Set blue color for the blinkstick with serial number BS000001-1.0:
 
 ::
+
     blinkstick --serial BS000001-1.0 --set-color blue
 
 Connect to blinkstick.com with access code:
 
 ::
+
     blinkstick --connect 9ad4ca313f41330cad6c219d
 
 Use BlinkStick to display CPU usage:
 
 ::
+
     blinkstick --cpu-usage
 
 Code Examples
 -------------
 
-Code examples are available in the [wiki](Home).
+Code examples are available in the wiki:
+
+https://github.com/arvydas/blinkstick-python/wiki
 
 
 Permission problems
