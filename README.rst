@@ -55,23 +55,70 @@ Raspberry Pi.
 Description
 -----------
 
-Description of files:
-
--  /blinkstick - main BlinkStick module
--  /bin/blinkstick-info.py - displays information of each BlinkStick
--  /bin/blinkstick-infoblock.py - read/write info block sample
--  /bin/blinkstick-off.py - turn all blinksticks off
--  /bin/blinkstick-random.py - set random color to all BlinkSticks
--  /bin/blinkstick-cpu.py - displays CPU usage with a BlinkStick (transitions
-   from green as 0% to red as 100%)
--  /bin/blinkstick-connect.py - sample code to connect to BlinkStick.com and
-   control it remotely
-
-Running examples:
+Together with the Python module an additional command line tool is 
+installed to control BlinkSticks. Use the following command to see all
+available options:
 
 ::
 
-    [sudo] blinkstick-info.py
+    blinkstick -h
+
+::
+
+    Usage: blinkstick [options]
+
+    Options:
+      -h, --help            show this help message and exit
+      -i, --info            display BlinkStick info
+      -s SERIAL, --serial=SERIAL
+                            select device by serial number. If unspecified, action
+                            will be performed on all BlinkSticks.
+      --set-color=COLOR     set the color for the device. The value can either be
+                            a named color, hex value, 'random' or 'off'.
+                            CSS color names are defined
+                            http://www.w3.org/TR/css3-color/ e.g. red, green,
+                            blue.Specify color using hexadecimal color value e.g.
+                            '#FF3366'
+      --set-infoblock1=INFOBLOCK1
+                            set the first info block for the device.
+      --set-infoblock2=INFOBLOCK2
+                            set the second info block for the device.
+      --cpu-usage           Use BlinkStick to display CPU usage.
+      --connect=ACCESS_CODE
+                            Connect to blinkstick.com and control the device
+                            remotely.
+      -v, --verbose         Display debug output
+      --add-udev-rule       Add udev rule to access BlinkSticks without root
+                            permissions. Must be run as root.
+
+Command Line Examples
+---------------------
+
+Set random color all BlinkSticks:
+
+::
+    blinkstick --set-color random
+
+Set blue color for the blinkstick with serial number BS000001-1.0:
+
+::
+    blinkstick --serial BS000001-1.0 --set-color blue
+
+Connect to blinkstick.com with access code:
+
+::
+    blinkstick --connect 9ad4ca313f41330cad6c219d
+
+Use BlinkStick to display CPU usage:
+
+::
+    blinkstick --cpu-usage
+
+Code Examples
+-------------
+
+Code examples are available in the [wiki](Home).
+
 
 Permission problems
 -------------------
@@ -86,10 +133,16 @@ You can either run the script with sudo, for example:
 
 ::
 
-    sudo blinkstick-info.py
+    sudo blinkstick --set-color random 
 
 Or you can add a udev rule to allow any user to access the device
-without root permissions with this single command:
+without root permissions with this single command.
+
+::
+
+    sudo blinkstick --add-udev-rule
+
+There is also another equivalent command that does exactly the same thing:
 
 ::
 
