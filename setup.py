@@ -12,13 +12,7 @@ setup(
     author='Arvydas Juskevicius',
     author_email='arvydas@arvydas.co.uk',
     packages=find_packages(),
-    scripts=["bin/blinkstick-connect.py",
-             "bin/blinkstick-cpu.py",
-             "bin/blinkstick-find.py",
-             "bin/blinkstick-info.py",
-             "bin/blinkstick-infoblock.py",
-             "bin/blinkstick-off.py",
-             "bin/blinkstick-random.py"],
+    scripts=["bin/blinkstick"],
     url='http://pypi.python.org/pypi/BlinkStick/',
     license='LICENSE.txt',
     description='Python package to control BlinkStick USB devices.',
@@ -27,6 +21,7 @@ setup(
         "grapefruit",
         "webcolors",
         "pyusb",
-        "websocket-client"
+        "websocket-client",
+        "psutil"
     ],
 )
