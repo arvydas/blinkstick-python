@@ -75,35 +75,40 @@ class BlinkStick(object):
 
         return color
 
-    def get_color(self):
-        """Get the color to the device as Color namedtuple
-
-        Returns:
-            Color - the current color of the device as a 3-tuple of integers
-
-        Example:
-            b = BlinkStick.find_first()
-            (r,g,b) = b.get_color()
-            print r
-            print g
-            print b
-        """
+    def _get_color_rgb(self):
         r, g, b = self._get_color().rgb
         return int(r * 255), int(g * 255), int(b * 255)
 
-    def get_color_string(self):
-        """Get the current device color as hexadecimal string
-
-        Returns:
-            String - current color of the device as HEX encoded string #rrggbb
-
-        Examples:
-            #FF0000 - red
-            #00FF00 - green
-            #0000FF - blue
-            #008000 - 50% intensity green
-        """
+    def _get_color_hex(self):
         return self._get_color().html
+
+    def get_color(self, color_format='rgb'):
+
+        """
+        Get the current device color in the defined format. Default format is (r,g,b).
+
+        Currently supported formats:
+        rgb (default) - Returns values as 3-tuple (r,g,b)
+        hex - returns current device color as hexadecimal string
+
+        Example:
+            b = BlinkStick.find_first()
+            b.set_color(red=255,0,0)
+            # Get color as rbg tuple
+            (r,g,b) = b.get_color() # (255,0,0)
+            # Get color as hex string
+            hex = b.get_color() # '#ff0000'
+
+        """
+
+        # Attempt to find a function to return the appropriate format
+        get_color_func = getattr(self, "_get_color_%s" % color_format, self._get_color_rgb)
+        if callable(get_color_func):
+            return get_color_func()
+        else:
+            # Should never get here, as we should always default to self._get_color_rgb
+            raise BlinkStickException("Could not return current color in format %s" % color_format)
+
 
     def get_info_block1(self):
         """Get the infoblock1 of the device.
