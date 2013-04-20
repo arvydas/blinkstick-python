@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='BlinkStick',
-    version='0.3.0',
+    version='0.3.1',
     author='Arvydas Juskevicius',
     author_email='arvydas@arvydas.co.uk',
     packages=find_packages(),
