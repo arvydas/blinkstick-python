@@ -14,25 +14,51 @@ Requirements
 
 -  Python
 -  BlinkStick pip module
+-  Libusb for Mac OSX
 
-Installation
-------------
+Requirements Installation
+-------------------------
 
-Install blinkstick Python package with pip:
+Linux
+`````
 
-::
-
-    [sudo] pip install blinkstick
-
-If websocket-client fails to install, please make sure you run the
-following command:
+Install requirement for websocket-client package:
 
 ::
 
     sudo apt-get install python-dev
 
-Replace *python-dev* with *python2.7-dev* if you are installing on
-Raspberry Pi.
+Note: Replace *python-dev* with *python2.7-dev* if you are installing on Raspberry Pi.
+
+Install pip (Python package management software):
+
+::
+
+    sudo apt-get install python-pip
+
+Mac OS X
+````````
+
+Install libusb with `homebrew <http://mxcl.github.io/homebrew/>`_:
+
+::
+
+    sudo brew install libusb
+
+Install pip
+
+:: 
+
+    sudo easy_install pip
+
+BlinkStick package Installation
+-------------------------------
+
+Install blinkstick Python package with pip:
+
+::
+
+    sudo pip install blinkstick
 
 Description
 -----------
