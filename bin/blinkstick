@@ -267,6 +267,8 @@ def main():
                 stick.turn_off()
             else:
                 stick.set_color(name=options.color)
+        else:
+            parser.print_help()
 
     return 0
 

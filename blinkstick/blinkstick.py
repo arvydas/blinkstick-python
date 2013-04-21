@@ -222,12 +222,6 @@ class BlinkStick(object):
             except usb.core.USBError as e:
                 raise BlinkStickException("Could not detach kernel driver: %s" % str(e))
 
-        try:
-            self.device.set_configuration()
-            self.device.reset()
-        except usb.core.USBError as e:
-            raise BlinkStickException("Could not set configuration: %s" % str(e))
-
         return True
 
 

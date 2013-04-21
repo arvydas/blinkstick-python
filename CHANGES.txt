@@ -1,2 +1,26 @@
-v0.1.0, 2013-03-27 -- Initial release.
-v0.2.0, 2013-04-08 -- Add ability to set color by CSS name or hex string
+Changelog
+=========
+
+0.3.1 (2013-04-20)
+------------------
+
+* Fixed support for Mac OS X
+
+0.3.0 (2013-04-16)
+------------------
+
+* Removed example scripts as they have been moved to wiki
+  https://github.com/arvydas/blinkstick-python/wiki
+
+* Added BlinkStick control script. All features of BlinkStick can now be
+  controlled with a single blinkstick command
+
+0.2.0 (2013-04-08)
+------------------
+
+* Add ability to set color by CSS name or hex string
+
+0.1.0 (2013-03-27)
+------------------
+
+* Initial release.
