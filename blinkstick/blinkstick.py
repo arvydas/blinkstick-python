@@ -1,4 +1,5 @@
 from grapefruit import Color
+import time
 import webcolors
 
 import usb.core
@@ -52,13 +53,8 @@ class BlinkStick(object):
             hex: Specify color using hexadecimal color value e.g. '#FF3366'
         """
 
-        try:
-            if name:
-                red, green, blue = webcolors.name_to_rgb(name)
-            elif hex:
-                red, green, blue = webcolors.hex_to_rgb(hex)
-        except ValueError:
-            red = green = blue = 0
+        red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex
+        )
 
         self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(red) + chr(green) + chr(blue))
 
@@ -74,6 +70,21 @@ class BlinkStick(object):
                                  float(device_bytes[3]) / 255)
 
         return color
+
+    def _determine_rgb(self, red=0, green=0, blue=0, name=None, hex=None):
+        print locals()
+
+        try:
+            if name:
+                red, green, blue = webcolors.name_to_rgb(name)
+            elif hex:
+                red, green, blue = webcolors.hex_to_rgb(hex)
+        except ValueError:
+            red = green = blue = 0
+
+        # TODO - do smarts to determine input type from red var in case it is not int
+
+        return red, green, blue
 
     def _get_color_rgb(self):
         r, g, b = self._get_color().rgb
@@ -208,6 +219,17 @@ class BlinkStick(object):
                 cg -= 1
 
             self.set_color(red=cr, green=cg, blue=cb)
+
+    def blink(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
+
+        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
+        ms_delay = float(delay)/float(1000)
+        for x in range(repeats):
+            if x:
+                time.sleep(ms_delay)
+            self.set_color(red=r, green=g, blue=b)
+            time.sleep(ms_delay)
+            self.set_color()
 
     def open_device(self, d):
         """Open device.
