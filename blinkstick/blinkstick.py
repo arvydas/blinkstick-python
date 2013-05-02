@@ -53,10 +53,11 @@ class BlinkStick(object):
             hex: Specify color using hexadecimal color value e.g. '#FF3366'
         """
 
-        red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex
-        )
+        red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(int(red)) + chr(int(green)) + chr(int(blue)))
+        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(int(round(red, 3)))
+                                                        + chr(int(round(green, 3)))
+                                                        + chr(int(round(blue, 3))))
 
     def _get_color(self):
 
@@ -189,35 +190,22 @@ class BlinkStick(object):
     def turn_off(self):
         self.set_color()
 
-    def pulse_color(self, red=0, green=0, blue=0):
-        """Pulses specified RGB color."""
-        cr = 0
-        cg = 0
-        cb = 0
+    def pulse(self, red=0, green=0, blue=0, name=None, hex=None, duration=1000, steps=50):
+        """
+        Morph to the specified color from black and back again.
+        :param red: color intensity 0 is off, 255 is full red intensity
+        :param green: color intensity 0 is off, 255 is full green intensity
+        :param blue: color intensity 0 is off, 255 is full blue intensity
+        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        :param duration: Duration for pulse in milliseconds
+        :param steps: Number of gradient steps (default 50)
+        """
+        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        for i in range(max(red, green, blue)):
-            if cr < red:
-                cr += 1
-            if cg < green:
-                cg += 1
-            if cb < blue:
-                cb += 1
-
-            self.set_color(red=cr, green=cg, blue=cb)
-
-        cr = red
-        cg = green
-        cb = blue
-
-        while cr > 0 or cg > 0 or cb > 0:
-            if cr > 0:
-                cr -= 1
-            if cb > 0:
-                cb -= 1
-            if cg > 0:
-                cg -= 1
-
-            self.set_color(red=cr, green=cg, blue=cb)
+        self.turn_off()
+        self.morph(red=r, green=g, blue=b, duration=duration, steps=steps)
+        self.morph(red=0, green=0, blue=0, duration=duration, steps=steps)
 
     def blink(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
         """
@@ -247,8 +235,8 @@ class BlinkStick(object):
         :param blue: color intensity 0 is off, 255 is full blue intensity
         :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
         :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
-        :param duration:
-        :param steps:
+        :param duration: Duration for morph in milliseconds
+        :param steps: Number of gradient steps (default 50)
         """
         r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
@@ -263,6 +251,10 @@ class BlinkStick(object):
             self.set_color(grad_r * 255, grad_g * 255, grad_b * 255)
             ms_delay = float(duration)/float(1000 * steps)
             time.sleep(ms_delay)
+
+    #     set target colour
+
+        self.set_color(red=r, green=g, blue=b)
 
     def open_device(self, d):
         """Open device.
