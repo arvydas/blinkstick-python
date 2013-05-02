@@ -56,7 +56,7 @@ class BlinkStick(object):
         red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex
         )
 
-        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(red) + chr(green) + chr(blue))
+        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(int(red)) + chr(int(green)) + chr(int(blue)))
 
     def _get_color(self):
 
@@ -238,6 +238,31 @@ class BlinkStick(object):
             self.set_color(red=r, green=g, blue=b)
             time.sleep(ms_delay)
             self.set_color()
+
+    def morph(self, red=0, green=0, blue=0, name=None, hex=None, duration=1000, steps=50):
+        """
+        Morph to the specified color.
+        :param red: color intensity 0 is off, 255 is full red intensity
+        :param green: color intensity 0 is off, 255 is full green intensity
+        :param blue: color intensity 0 is off, 255 is full blue intensity
+        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        :param duration:
+        :param steps:
+        """
+        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
+
+        current_color = self._get_color()
+
+        target_color = Color.NewFromRgb(float(r) / 255, float(g) / 255, float(b) / 255)
+
+        gradient_list = current_color.Gradient(target_color, steps=steps)
+
+        for grad in gradient_list:
+            grad_r, grad_g, grad_b = grad.rgb
+            self.set_color(grad_r * 255, grad_g * 255, grad_b * 255)
+            ms_delay = float(duration)/float(1000 * steps)
+            time.sleep(ms_delay)
 
     def open_device(self, d):
         """Open device.
