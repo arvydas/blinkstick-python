@@ -72,7 +72,6 @@ class BlinkStick(object):
         return color
 
     def _determine_rgb(self, red=0, green=0, blue=0, name=None, hex=None):
-        print locals()
 
         try:
             if name:
@@ -221,7 +220,16 @@ class BlinkStick(object):
             self.set_color(red=cr, green=cg, blue=cb)
 
     def blink(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
-
+        """
+        Blink the specified color.
+        :param red: color intensity 0 is off, 255 is full red intensity
+        :param green: color intensity 0 is off, 255 is full green intensity
+        :param blue: color intensity 0 is off, 255 is full blue intensity
+        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        :param repeats: Number of times to blink the LED
+        :param delay: time in milliseconds to light LED for, and also between blinks
+        """
         r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
         ms_delay = float(delay)/float(1000)
         for x in range(repeats):
