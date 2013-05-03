@@ -1,3 +1,4 @@
+from _version import __version__
 from grapefruit import Color
 import time
 import webcolors
