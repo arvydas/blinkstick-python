@@ -179,6 +179,30 @@ def main():
                       help="set the color for the device. The value can either be a named color, hex value, 'random' or 'off'.\n\n"
                            "CSS color names are defined http://www.w3.org/TR/css3-color/ e.g. red, green, blue."
                            "Specify color using hexadecimal color value e.g. '#FF3366'")
+    parser.add_option("--duration",
+                      dest="duration",
+                      default=1000,
+                      help="Set duration of transition in milliseconds (use with --morph and --pulse).")
+
+    parser.add_option("--delay",
+                      dest="delay",
+                      default=500,
+                      help="Set time in milliseconds to light LED for (use with --blink).")
+
+    parser.add_option("--blink",
+                      dest="blink",
+                      action='store_true',
+                      help="Blink LED (requires --set-color, and optionally --delay)")
+
+    parser.add_option("--pulse",
+                      dest="pulse",
+                      action='store_true',
+                      help="Pulse LED (requires --set-color, and optionally --duration).")
+
+    parser.add_option("--morph",
+                      dest="morph",
+                      action='store_true',
+                      help="Morph to specified color (requires --set-color, and optionally --duration).")
 
     parser.add_option("--set-infoblock1",
                       dest="infoblock1",
@@ -263,14 +287,33 @@ def main():
         if options.info:
             print_info(stick)
         elif options.color:
+            # determine color
+            args = {}
             if options.color.startswith('#'):
-                stick.set_color(hex=options.color)
+                args['hex'] =options.color
             elif options.color == "random":
-                stick.set_random_color()
+                args['name'] = 'random'
             elif options.color == "off":
-                stick.turn_off()
+                args['hex'] = "#000000"
             else:
-                stick.set_color(name=options.color)
+                args['name'] = options.color
+
+            # handle blink/pulse/morph
+            func = stick.set_color
+            if options.blink:
+                func = stick.blink
+                args['delay'] = options.delay
+            elif options.pulse:
+                func = stick.pulse
+                args['duration'] = options.duration
+            elif options.morph:
+                func = stick.morph
+                args['duration'] = options.duration
+
+
+            func(**args)
+
+
         else:
             parser.print_help()
 
