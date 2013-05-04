@@ -77,7 +77,13 @@ class BlinkStick(object):
 
         try:
             if name:
-                red, green, blue = webcolors.name_to_rgb(name)
+                # Special case for name="random"
+                if name is "random":
+                    red = randint(0, 255)
+                    green = randint(0, 255)
+                    blue = randint(0, 255)
+                else:
+                    red, green, blue = webcolors.name_to_rgb(name)
             elif hex:
                 red, green, blue = webcolors.hex_to_rgb(hex)
         except ValueError:
@@ -186,7 +192,7 @@ class BlinkStick(object):
 
     def set_random_color(self):
         """Sets random color to the device."""
-        self.set_color(red=randint(0, 255), green=randint(0, 255), blue=randint(0, 255))
+        self.set_color(name="random")
 
     def turn_off(self):
         self.set_color()
