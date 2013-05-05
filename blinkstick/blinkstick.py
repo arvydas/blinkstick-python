@@ -1,4 +1,6 @@
+from _version import __version__
 from grapefruit import Color
+import time
 import webcolors
 
 import usb.core
@@ -14,6 +16,8 @@ class BlinkStickException(Exception):
 
 
 class BlinkStick(object):
+    inverse = False
+
     def __init__(self, device=None):
 
         if device:
@@ -52,15 +56,19 @@ class BlinkStick(object):
             hex: Specify color using hexadecimal color value e.g. '#FF3366'
         """
 
-        try:
-            if name:
-                red, green, blue = webcolors.name_to_rgb(name)
-            elif hex:
-                red, green, blue = webcolors.hex_to_rgb(hex)
-        except ValueError:
-            red = green = blue = 0
+        red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(red) + chr(green) + chr(blue))
+        if (self.inverse):
+            control_string = "\x00" + chr(255 - int(round(red, 3))) \
+                                    + chr(255 - int(round(green, 3))) \
+                                    + chr(255 - int(round(blue, 3)))
+        else:
+            control_string = "\x00" + chr(int(round(red, 3))) \
+                                    + chr(int(round(green, 3))) \
+                                    + chr(int(round(blue, 3)))
+
+
+        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
 
     def _get_color(self):
 
@@ -69,41 +77,71 @@ class BlinkStick(object):
         """
         device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
         # Color object requires RGB values in range 0-1, not 0-255
-        color = Color.NewFromRgb(float(device_bytes[1]) / 255,
-                                 float(device_bytes[2]) / 255,
-                                 float(device_bytes[3]) / 255)
+        if self.inverse:
+            color = Color.NewFromRgb(float(255 - device_bytes[1]) / 255,
+                                     float(255 - device_bytes[2]) / 255,
+                                     float(255 - device_bytes[3]) / 255)
+        else:
+            color = Color.NewFromRgb(float(device_bytes[1]) / 255,
+                                     float(device_bytes[2]) / 255,
+                                     float(device_bytes[3]) / 255)
 
         return color
 
-    def get_color(self):
-        """Get the color to the device as Color namedtuple
+    def _determine_rgb(self, red=0, green=0, blue=0, name=None, hex=None):
 
-        Returns:
-            Color - the current color of the device as a 3-tuple of integers
+        try:
+            if name:
+                # Special case for name="random"
+                if name is "random":
+                    red = randint(0, 255)
+                    green = randint(0, 255)
+                    blue = randint(0, 255)
+                else:
+                    red, green, blue = webcolors.name_to_rgb(name)
+            elif hex:
+                red, green, blue = webcolors.hex_to_rgb(hex)
+        except ValueError:
+            red = green = blue = 0
 
-        Example:
-            b = BlinkStick.find_first()
-            (r,g,b) = b.get_color()
-            print r
-            print g
-            print b
-        """
+        # TODO - do smarts to determine input type from red var in case it is not int
+
+        return red, green, blue
+
+    def _get_color_rgb(self):
         r, g, b = self._get_color().rgb
         return int(r * 255), int(g * 255), int(b * 255)
 
-    def get_color_string(self):
-        """Get the current device color as hexadecimal string
-
-        Returns:
-            String - current color of the device as HEX encoded string #rrggbb
-
-        Examples:
-            #FF0000 - red
-            #00FF00 - green
-            #0000FF - blue
-            #008000 - 50% intensity green
-        """
+    def _get_color_hex(self):
         return self._get_color().html
+
+    def get_color(self, color_format='rgb'):
+
+        """
+        Get the current device color in the defined format. Default format is (r,g,b).
+
+        Currently supported formats:
+        rgb (default) - Returns values as 3-tuple (r,g,b)
+        hex - returns current device color as hexadecimal string
+
+        Example:
+            b = BlinkStick.find_first()
+            b.set_color(red=255,0,0)
+            # Get color as rbg tuple
+            (r,g,b) = b.get_color() # (255,0,0)
+            # Get color as hex string
+            hex = b.get_color() # '#ff0000'
+
+        """
+
+        # Attempt to find a function to return the appropriate format
+        get_color_func = getattr(self, "_get_color_%s" % color_format, self._get_color_rgb)
+        if callable(get_color_func):
+            return get_color_func()
+        else:
+            # Should never get here, as we should always default to self._get_color_rgb
+            raise BlinkStickException("Could not return current color in format %s" % color_format)
+
 
     def get_info_block1(self):
         """Get the infoblock1 of the device.
@@ -169,40 +207,78 @@ class BlinkStick(object):
 
     def set_random_color(self):
         """Sets random color to the device."""
-        self.set_color(red=randint(0, 255), green=randint(0, 255), blue=randint(0, 255))
+        self.set_color(name="random")
 
     def turn_off(self):
         self.set_color()
 
-    def pulse_color(self, red=0, green=0, blue=0):
-        """Pulses specified RGB color."""
-        cr = 0
-        cg = 0
-        cb = 0
+    def pulse(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, duration=1000, steps=50):
+        """
+        Morph to the specified color from black and back again.
+        :param red: color intensity 0 is off, 255 is full red intensity
+        :param green: color intensity 0 is off, 255 is full green intensity
+        :param blue: color intensity 0 is off, 255 is full blue intensity
+        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        :param repeats: Number of times to pulse the LED
+        :param duration: Duration for pulse in milliseconds
+        :param steps: Number of gradient steps (default 50)
+        """
+        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        for i in range(max(red, green, blue)):
-            if cr < red:
-                cr += 1
-            if cg < green:
-                cg += 1
-            if cb < blue:
-                cb += 1
+        self.turn_off()
+        for x in range(repeats):
+            self.morph(red=r, green=g, blue=b, duration=duration, steps=steps)
+            self.morph(red=0, green=0, blue=0, duration=duration, steps=steps)
 
-            self.set_color(red=cr, green=cg, blue=cb)
+    def blink(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
+        """
+        Blink the specified color.
+        :param red: color intensity 0 is off, 255 is full red intensity
+        :param green: color intensity 0 is off, 255 is full green intensity
+        :param blue: color intensity 0 is off, 255 is full blue intensity
+        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        :param repeats: Number of times to blink the LED
+        :param delay: time in milliseconds to light LED for, and also between blinks
+        """
+        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
+        ms_delay = float(delay)/float(1000)
+        for x in range(repeats):
+            if x:
+                time.sleep(ms_delay)
+            self.set_color(red=r, green=g, blue=b)
+            time.sleep(ms_delay)
+            self.set_color()
 
-        cr = red
-        cg = green
-        cb = blue
+    def morph(self, red=0, green=0, blue=0, name=None, hex=None, duration=1000, steps=50):
+        """
+        Morph to the specified color.
+        :param red: color intensity 0 is off, 255 is full red intensity
+        :param green: color intensity 0 is off, 255 is full green intensity
+        :param blue: color intensity 0 is off, 255 is full blue intensity
+        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        :param duration: Duration for morph in milliseconds
+        :param steps: Number of gradient steps (default 50)
+        """
+        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        while cr > 0 or cg > 0 or cb > 0:
-            if cr > 0:
-                cr -= 1
-            if cb > 0:
-                cb -= 1
-            if cg > 0:
-                cg -= 1
+        current_color = self._get_color()
 
-            self.set_color(red=cr, green=cg, blue=cb)
+        target_color = Color.NewFromRgb(float(r) / 255, float(g) / 255, float(b) / 255)
+
+        gradient_list = current_color.Gradient(target_color, steps=steps)
+
+        for grad in gradient_list:
+            grad_r, grad_g, grad_b = grad.rgb
+            self.set_color(grad_r * 255, grad_g * 255, grad_b * 255)
+            ms_delay = float(duration)/float(1000 * steps)
+            time.sleep(ms_delay)
+
+    #     set target colour
+
+        self.set_color(red=r, green=g, blue=b)
 
     def open_device(self, d):
         """Open device.
@@ -219,6 +295,16 @@ class BlinkStick(object):
 
         return True
 
+    def get_inverse(self):
+        """Get the value of inverse mode
+        """
+        return self.inverse
+
+    def set_inverse(self, value):
+        """Set the value of inverse mode
+        :param value: True/False to set the inverse mode
+        """
+        self.inverse = value
 
 def _find_blicksticks(find_all=True):
     return usb.core.find(find_all=find_all, idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
@@ -252,3 +338,6 @@ def find_by_serial(serial=None):
 
     if devices:
         return BlinkStick(device=devices[0])
+
+def get_blinkstick_package_version():
+    return __version__
