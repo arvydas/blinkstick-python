@@ -197,7 +197,7 @@ def main():
     parser.add_option("--repeats",
                       dest="repeats",
                       default=1,
-                      help="Set the number of repeats (use with --blink or --pulse).")
+                      help="Number of repetitions (use with --blink and --pulse).")
 
     parser.add_option("--blink",
                       dest="blink",
