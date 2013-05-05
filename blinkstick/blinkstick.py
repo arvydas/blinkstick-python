@@ -311,3 +311,6 @@ def find_by_serial(serial=None):
 
     if devices:
         return BlinkStick(device=devices[0])
+
+def get_blinkstick_package_version():
+    return __version__

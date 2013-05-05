@@ -230,7 +230,7 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    print "BlinkStick control script"
+    print "BlinkStick control script " + blinkstick.get_blinkstick_package_version()
     print "(c) Agile Innovative Ltd 2013"
     print ""
 
