@@ -189,6 +189,11 @@ def main():
                       default=500,
                       help="Set time in milliseconds to light LED for (use with --blink).")
 
+    parser.add_option("--repeats",
+                      dest="repeats",
+                      default=3,
+                      help="Number of repetitions (use with --blink and --pulse).")
+
     parser.add_option("--blink",
                       dest="blink",
                       action='store_true',
@@ -303,9 +308,11 @@ def main():
             if options.blink:
                 func = stick.blink
                 args['delay'] = options.delay
+                args['repeats'] = options.repeats
             elif options.pulse:
                 func = stick.pulse
                 args['duration'] = options.duration
+                args['repeats'] = options.repeats
             elif options.morph:
                 func = stick.morph
                 args['duration'] = options.duration
