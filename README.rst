@@ -81,12 +81,24 @@ available options:
       -s SERIAL, --serial=SERIAL
                             select device by serial number. If unspecified, action
                             will be performed on all BlinkSticks.
+      --inverse             control BlinkSticks in inverse mode
       --set-color=COLOR     set the color for the device. The value can either be
                             a named color, hex value, 'random' or 'off'.
                             CSS color names are defined
                             http://www.w3.org/TR/css3-color/ e.g. red, green,
                             blue.Specify color using hexadecimal color value e.g.
                             '#FF3366'
+      --duration=DURATION   Set duration of transition in milliseconds (use with
+                            --morph and --pulse).
+      --delay=DELAY         Set time in milliseconds to light LED for (use with
+                            --blink).
+      --repeats=REPEATS     Number of repetitions (use with --blink and --pulse).
+      --blink               Blink LED (requires --set-color, and optionally
+                            --delay)
+      --pulse               Pulse LED (requires --set-color, and optionally
+                            --duration).
+      --morph               Morph to specified color (requires --set-color, and
+                            optionally --duration).
       --set-infoblock1=INFOBLOCK1
                             set the first info block for the device.
       --set-infoblock2=INFOBLOCK2
@@ -98,6 +110,7 @@ available options:
       -v, --verbose         Display debug output
       --add-udev-rule       Add udev rule to access BlinkSticks without root
                             permissions. Must be run as root.
+
 
 Command Line Examples
 ---------------------
@@ -114,11 +127,32 @@ Set blue color for the blinkstick with serial number BS000001-1.0:
 
     blinkstick --serial BS000001-1.0 --set-color blue
 
-Connect to blinkstick.com with access code:
+Blink red color twice
 
 ::
 
-    blinkstick --connect 9ad4ca313f41330cad6c219d
+    blinkstick --set-color red --blink --repeats 2
+
+
+Blink pulse green color three times
+
+::
+
+    blinkstick --set-color green --pulse --repeats 2
+
+Morph from to red, green and blue
+
+::
+
+    blinkstick --set-color red --morph
+    blinkstick --set-color gree --morph
+    blinkstick --set-color blue --morph
+
+Connect to blinkstick.com with access_code available on the device details page:
+
+::
+
+    blinkstick --connect access_code
 
 Use BlinkStick to display CPU usage:
 
