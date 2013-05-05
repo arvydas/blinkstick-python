@@ -75,7 +75,7 @@ def print_info(stick):
     print "    Manufacturer:  " + stick.get_manufacturer()
     print "    Description:   " + stick.get_description()
     print "    Serial:        " + stick.get_serial()
-    print "    Current Color: " + stick.get_color_string()
+    print "    Current Color: " + stick.get_color(color_format="hex")
     print "    Info Block 1:  " + stick.get_info_block1()
     print "    Info Block 2:  " + stick.get_info_block2()
 
