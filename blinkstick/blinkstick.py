@@ -16,6 +16,8 @@ class BlinkStickException(Exception):
 
 
 class BlinkStick(object):
+    inverse = False
+
     def __init__(self, device=None):
 
         if device:
@@ -56,9 +58,17 @@ class BlinkStick(object):
 
         red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, "\x00" + chr(int(round(red, 3)))
-                                                        + chr(int(round(green, 3)))
-                                                        + chr(int(round(blue, 3))))
+        if (self.inverse):
+            control_string = "\x00" + chr(255 - int(round(red, 3))) \
+                                    + chr(255 - int(round(green, 3))) \
+                                    + chr(255 - int(round(blue, 3)))
+        else:
+            control_string = "\x00" + chr(int(round(red, 3))) \
+                                    + chr(int(round(green, 3))) \
+                                    + chr(int(round(blue, 3)))
+
+
+        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
 
     def _get_color(self):
 
@@ -67,9 +77,14 @@ class BlinkStick(object):
         """
         device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
         # Color object requires RGB values in range 0-1, not 0-255
-        color = Color.NewFromRgb(float(device_bytes[1]) / 255,
-                                 float(device_bytes[2]) / 255,
-                                 float(device_bytes[3]) / 255)
+        if self.inverse:
+            color = Color.NewFromRgb(float(255 - device_bytes[1]) / 255,
+                                     float(255 - device_bytes[2]) / 255,
+                                     float(255 - device_bytes[3]) / 255)
+        else:
+            color = Color.NewFromRgb(float(device_bytes[1]) / 255,
+                                     float(device_bytes[2]) / 255,
+                                     float(device_bytes[3]) / 255)
 
         return color
 
@@ -280,6 +295,16 @@ class BlinkStick(object):
 
         return True
 
+    def get_inverse(self):
+        """Get the value of inverse mode
+        """
+        return self.inverse
+
+    def set_inverse(self, value):
+        """Set the value of inverse mode
+        :param value: True/False to set the inverse mode
+        """
+        self.inverse = value
 
 def _find_blicksticks(find_all=True):
     return usb.core.find(find_all=find_all, idVendor=VENDOR_ID, idProduct=PRODUCT_ID)

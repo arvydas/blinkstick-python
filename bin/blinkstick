@@ -174,11 +174,16 @@ def main():
                       dest="serial",
                       help="select device by serial number. If unspecified, action will be performed on all BlinkSticks.")
 
+    parser.add_option("--inverse",
+                      action="store_true", dest="inverse",
+                      help="control BlinkSticks in inverse mode")
+
     parser.add_option("--set-color",
                       dest="color",
                       help="set the color for the device. The value can either be a named color, hex value, 'random' or 'off'.\n\n"
                            "CSS color names are defined http://www.w3.org/TR/css3-color/ e.g. red, green, blue."
                            "Specify color using hexadecimal color value e.g. '#FF3366'")
+
     parser.add_option("--duration",
                       dest="duration",
                       default=1000,
@@ -266,6 +271,10 @@ def main():
         print "Reboot your computer for changes to take effect"
         return 0
 
+    for stick in sticks:
+        if options.inverse:
+            stick.set_inverse(True)
+
     #Actions here work only on the first BlinkStick found
     if options.cpu_usage:
         show_cpu_usage(sticks[0])
@@ -295,7 +304,7 @@ def main():
             # determine color
             args = {}
             if options.color.startswith('#'):
-                args['hex'] =options.color
+                args['hex'] = options.color
             elif options.color == "random":
                 args['name'] = 'random'
             elif options.color == "off":
