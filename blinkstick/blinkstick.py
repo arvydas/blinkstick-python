@@ -197,7 +197,7 @@ class BlinkStick(object):
     def turn_off(self):
         self.set_color()
 
-    def pulse(self, red=0, green=0, blue=0, name=None, hex=None, duration=1000, steps=50):
+    def pulse(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, duration=1000, steps=50):
         """
         Morph to the specified color from black and back again.
         :param red: color intensity 0 is off, 255 is full red intensity
@@ -205,14 +205,16 @@ class BlinkStick(object):
         :param blue: color intensity 0 is off, 255 is full blue intensity
         :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
         :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        :param repeats: Number of times to pulse the LED
         :param duration: Duration for pulse in milliseconds
         :param steps: Number of gradient steps (default 50)
         """
         r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
         self.turn_off()
-        self.morph(red=r, green=g, blue=b, duration=duration, steps=steps)
-        self.morph(red=0, green=0, blue=0, duration=duration, steps=steps)
+        for x in range(repeats):
+            self.morph(red=r, green=g, blue=b, duration=duration, steps=steps)
+            self.morph(red=0, green=0, blue=0, duration=duration, steps=steps)
 
     def blink(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
         """
