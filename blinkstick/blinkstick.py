@@ -215,14 +215,15 @@ class BlinkStick(object):
     def pulse(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, duration=1000, steps=50):
         """
         Morph to the specified color from black and back again.
-        :param red: color intensity 0 is off, 255 is full red intensity
-        :param green: color intensity 0 is off, 255 is full green intensity
-        :param blue: color intensity 0 is off, 255 is full blue intensity
-        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
-        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
-        :param repeats: Number of times to pulse the LED
-        :param duration: Duration for pulse in milliseconds
-        :param steps: Number of gradient steps (default 50)
+
+        @param red: color intensity 0 is off, 255 is full red intensity
+        @param green: color intensity 0 is off, 255 is full green intensity
+        @param blue: color intensity 0 is off, 255 is full blue intensity
+        @param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        @param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        @param repeats: Number of times to pulse the LED
+        @param duration: Duration for pulse in milliseconds
+        @param steps: Number of gradient steps (default 50)
         """
         r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
@@ -234,13 +235,14 @@ class BlinkStick(object):
     def blink(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
         """
         Blink the specified color.
-        :param red: color intensity 0 is off, 255 is full red intensity
-        :param green: color intensity 0 is off, 255 is full green intensity
-        :param blue: color intensity 0 is off, 255 is full blue intensity
-        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
-        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
-        :param repeats: Number of times to blink the LED
-        :param delay: time in milliseconds to light LED for, and also between blinks
+
+        @param red: color intensity 0 is off, 255 is full red intensity
+        @param green: color intensity 0 is off, 255 is full green intensity
+        @param blue: color intensity 0 is off, 255 is full blue intensity
+        @param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        @param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        @param repeats: Number of times to blink the LED
+        @param delay: time in milliseconds to light LED for, and also between blinks
         """
         r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
         ms_delay = float(delay)/float(1000)
@@ -254,13 +256,14 @@ class BlinkStick(object):
     def morph(self, red=0, green=0, blue=0, name=None, hex=None, duration=1000, steps=50):
         """
         Morph to the specified color.
-        :param red: color intensity 0 is off, 255 is full red intensity
-        :param green: color intensity 0 is off, 255 is full green intensity
-        :param blue: color intensity 0 is off, 255 is full blue intensity
-        :param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
-        :param hex: Specify color using hexadecimal color value e.g. '#FF3366'
-        :param duration: Duration for morph in milliseconds
-        :param steps: Number of gradient steps (default 50)
+
+        @param red: color intensity 0 is off, 255 is full red intensity
+        @param green: color intensity 0 is off, 255 is full green intensity
+        @param blue: color intensity 0 is off, 255 is full blue intensity
+        @param name: Use CSS colour name as defined here:- http://www.w3.org/TR/css3-color/
+        @param hex: Specify color using hexadecimal color value e.g. '#FF3366'
+        @param duration: Duration for morph in milliseconds
+        @param steps: Number of gradient steps (default 50)
         """
         r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
@@ -282,7 +285,7 @@ class BlinkStick(object):
 
     def open_device(self, d):
         """Open device.
-        :param d:
+        @param d:
         """
         if self.device is None:
             raise BlinkStickException("Could not find BlinkStick...")
@@ -302,7 +305,7 @@ class BlinkStick(object):
 
     def set_inverse(self, value):
         """Set the value of inverse mode
-        :param value: True/False to set the inverse mode
+        @param value: True/False to set the inverse mode
         """
         self.inverse = value
 
