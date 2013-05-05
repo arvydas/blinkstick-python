@@ -140,7 +140,7 @@ Blink pulse green color three times
 
     blinkstick --set-color green --pulse --repeats 2
 
-Morph from to red, green and blue
+Morph to red, green and blue
 
 ::
 
