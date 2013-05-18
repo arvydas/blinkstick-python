@@ -23,6 +23,37 @@ class BlinkStick(object):
         if device:
             self.device = device
             self.open_device(device)
+            self.bs_serial = self.get_serial()
+
+    def _usb_get_string(self, device, length, index):
+        try:
+            return usb.util.get_string(device, length, index)
+        except usb.USBError:
+            # Could not communicate with BlinkStick device
+            # attempt to find it again based on serial
+
+            if self._refresh_device():
+                return usb.util.get_string(self.device, length, index)
+            else:
+                raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
+
+    def _usb_ctrl_transfer(self, bmRequestType, bRequest, wValue, wIndex, data_or_wLength):
+        try:
+            return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
+        except usb.USBError:
+            # Could not communicate with BlinkStick device
+            # attempt to find it again based on serial
+
+            if self._refresh_device():
+                return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
+            else:
+                raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
+
+    def _refresh_device(self):
+        d = find_by_serial(self.bs_serial)
+        if d:
+            self.device = d.device
+            return True
 
     def get_serial(self):
         """Returns the serial number of device.
@@ -35,15 +66,15 @@ class BlinkStick(object):
 
         Software version defines the capabilities of the device
         """
-        return usb.util.get_string(self.device, 256, 3)
+        return self._usb_get_string(self.device, 256, 3)
 
     def get_manufacturer(self):
         """Get the manufacturer of the device"""
-        return usb.util.get_string(self.device, 256, 1)
+        return self._usb_get_string(self.device, 256, 1)
 
     def get_description(self):
         """Get the description of the device"""
-        return usb.util.get_string(self.device, 256, 2)
+        return self._usb_get_string(self.device, 256, 2)
 
     def set_color(self, red=0, green=0, blue=0, name=None, hex=None):
         """Set the color to the device as RGB
@@ -58,24 +89,23 @@ class BlinkStick(object):
 
         red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        if (self.inverse):
+        if self.inverse:
             control_string = "\x00" + chr(255 - int(round(red, 3))) \
-                                    + chr(255 - int(round(green, 3))) \
-                                    + chr(255 - int(round(blue, 3)))
+                             + chr(255 - int(round(green, 3))) \
+                             + chr(255 - int(round(blue, 3)))
         else:
             control_string = "\x00" + chr(int(round(red, 3))) \
-                                    + chr(int(round(green, 3))) \
-                                    + chr(int(round(blue, 3)))
+                             + chr(int(round(green, 3))) \
+                             + chr(int(round(blue, 3)))
 
-
-        self.device.ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
+        self._usb_ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
 
     def _get_color(self):
 
         """
         Get the current color settings as a grapefruit Color object
         """
-        device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
+        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
         # Color object requires RGB values in range 0-1, not 0-255
         if self.inverse:
             color = Color.NewFromRgb(float(255 - device_bytes[1]) / 255,
@@ -150,7 +180,7 @@ class BlinkStick(object):
         hold the "Name" of the device making it easier to identify rather than
         a serial number.
         """
-        device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0002, 0, 33)
+        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0002, 0, 33)
         result = ""
         for i in device_bytes[1:]:
             if i == 0:
@@ -163,7 +193,7 @@ class BlinkStick(object):
 
         This is a 32 byte array that can contain any data.
         """
-        device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0003, 0, 33)
+        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0003, 0, 33)
         result = ""
         for i in device_bytes[1:]:
             if i == 0:
@@ -196,14 +226,14 @@ class BlinkStick(object):
         
         It fills the rest of bytes with zeros.
         """
-        self.device.ctrl_transfer(0x20, 0x9, 0x0002, 0, self.data_to_message(data))
+        self._usb_ctrl_transfer(0x20, 0x9, 0x0002, 0, self.data_to_message(data))
 
     def set_info_block2(self, data):
         """Sets the infoblock2 with specified string.
         
         It fills the rest of bytes with zeros.
         """
-        self.device.ctrl_transfer(0x20, 0x9, 0x0003, 0, self.data_to_message(data))
+        self._usb_ctrl_transfer(0x20, 0x9, 0x0003, 0, self.data_to_message(data))
 
     def set_random_color(self):
         """Sets random color to the device."""
@@ -245,7 +275,7 @@ class BlinkStick(object):
         @param delay: time in milliseconds to light LED for, and also between blinks
         """
         r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
-        ms_delay = float(delay)/float(1000)
+        ms_delay = float(delay) / float(1000)
         for x in range(repeats):
             if x:
                 time.sleep(ms_delay)
@@ -276,10 +306,10 @@ class BlinkStick(object):
         for grad in gradient_list:
             grad_r, grad_g, grad_b = grad.rgb
             self.set_color(grad_r * 255, grad_g * 255, grad_b * 255)
-            ms_delay = float(duration)/float(1000 * steps)
+            ms_delay = float(duration) / float(1000 * steps)
             time.sleep(ms_delay)
 
-    #     set target colour
+            #     set target colour
 
         self.set_color(red=r, green=g, blue=b)
 
@@ -308,6 +338,7 @@ class BlinkStick(object):
         @param value: True/False to set the inverse mode
         """
         self.inverse = value
+
 
 def _find_blicksticks(find_all=True):
     return usb.core.find(find_all=find_all, idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
@@ -341,6 +372,7 @@ def find_by_serial(serial=None):
 
     if devices:
         return BlinkStick(device=devices[0])
+
 
 def get_blinkstick_package_version():
     return __version__
