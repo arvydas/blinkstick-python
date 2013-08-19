@@ -36,7 +36,7 @@ setup(
     description='Python package to control BlinkStick USB devices.',
     long_description=read('README.rst'),
     install_requires=[
-        "grapefruit",
+        "grapefruit==0.1a3",
         "webcolors",
         "pyusb",
         "websocket-client",
