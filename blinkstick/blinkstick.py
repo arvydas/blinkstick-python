@@ -84,15 +84,26 @@ class BlinkStick(object):
 
         Software version defines the capabilities of the device
         """
-        return self._usb_get_string(self.device, 256, 3)
+        if sys.platform == "win32":
+            return self.device.serial_number
+        else:
+            return self._usb_get_string(self.device, 256, 3)
 
     def get_manufacturer(self):
         """Get the manufacturer of the device"""
-        return self._usb_get_string(self.device, 256, 1)
+        if sys.platform == "win32":
+            return self.device.vendor_name
+        else:
+            return self._usb_get_string(self.device, 256, 1)
+
 
     def get_description(self):
         """Get the description of the device"""
-        return self._usb_get_string(self.device, 256, 2)
+        if sys.platform == "win32":
+            return self.device.product_name
+        else:
+            return self._usb_get_string(self.device, 256, 2)
+
 
     def set_color(self, red=0, green=0, blue=0, name=None, hex=None):
         """Set the color to the device as RGB
@@ -388,9 +399,14 @@ def find_by_serial(serial=None):
     """Find BlinkStick device based on serial number.
 
     Returns BlinkStick object or None if no devices found"""
-    devices = [d for d in _find_blicksticks()
-               if usb.util.get_string(d, 256, 3) == serial]
-
+    
+    if sys.platform == "win32":
+        devices = [d for d in _find_blicksticks()
+                   if d.serial_number == serial]
+    else:
+        devices = [d for d in _find_blicksticks()
+                   if usb.util.get_string(d, 256, 3) == serial]
+    
     if devices:
         return BlinkStick(device=devices[0])
 
