@@ -2,9 +2,15 @@ from _version import __version__
 from grapefruit import Color
 import time
 import webcolors
+import sys
 
-import usb.core
-import usb.util
+if sys.platform == "win32":
+    import pywinusb.hid as hid
+    from ctypes import *
+else:
+    import usb.core
+    import usb.util
+
 from random import randint
 
 VENDOR_ID = 0x20a0
@@ -22,8 +28,12 @@ class BlinkStick(object):
 
         if device:
             self.device = device
-            self.open_device(device)
-            self.bs_serial = self.get_serial()
+            if sys.platform == "win32":
+                self.device.open()
+                self.reports = self.device.find_feature_reports()
+            else:
+                self.open_device(device)
+                self.bs_serial = self.get_serial()
 
     def _usb_get_string(self, device, length, index):
         try:
@@ -38,16 +48,24 @@ class BlinkStick(object):
                 raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
 
     def _usb_ctrl_transfer(self, bmRequestType, bRequest, wValue, wIndex, data_or_wLength):
-        try:
-            return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
-        except usb.USBError:
-            # Could not communicate with BlinkStick device
-            # attempt to find it again based on serial
-
-            if self._refresh_device():
+        if sys.platform == "win32":
+            if bmRequestType == 0x20:
+                data = (c_ubyte * len(data_or_wLength))(*[c_ubyte(ord(c)) for c in data_or_wLength])
+                data[0] = wValue
+                self.device.send_feature_report(data)
+            elif bmRequestType == 0x80 | 0x20:
+                return self.reports[0].get()
+        else:
+            try:
                 return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
-            else:
-                raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
+            except usb.USBError:
+                # Could not communicate with BlinkStick device
+                # attempt to find it again based on serial
+
+                if self._refresh_device():
+                    return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
+                else:
+                    raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
 
     def _refresh_device(self):
         d = find_by_serial(self.bs_serial)
@@ -341,7 +359,10 @@ class BlinkStick(object):
 
 
 def _find_blicksticks(find_all=True):
-    return usb.core.find(find_all=find_all, idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
+    if sys.platform == "win32":
+        return hid.HidDeviceFilter(vendor_id = VENDOR_ID, product_id = PRODUCT_ID).get_devices()
+    else:
+        return usb.core.find(find_all=find_all, idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
 
 
 def find_all():
