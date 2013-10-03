@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import re
+import sys
 from setuptools import setup, find_packages
 
 
@@ -24,6 +25,22 @@ else:
         print "unable to find version in %s" % (VERSIONFILE,)
         raise RuntimeError("if %s.py exists, it is required to be well-formed" % (VERSIONFILE,))
 
+if sys.platform == "win32":
+    os_requires=[
+        "grapefruit==0.1a3",
+        "webcolors",
+        "pywinusb",
+        "websocket-client"
+    ]
+else:
+    os_requires=[
+        "grapefruit==0.1a3",
+        "webcolors",
+        "pyusb",
+        "websocket-client",
+        "psutil"
+    ]
+
 setup(
     name='BlinkStick',
     version=verstr,
@@ -35,11 +52,5 @@ setup(
     license='LICENSE.txt',
     description='Python package to control BlinkStick USB devices.',
     long_description=read('README.rst'),
-    install_requires=[
-        "grapefruit==0.1a3",
-        "webcolors",
-        "pyusb",
-        "websocket-client",
-        "psutil"
-    ],
+    install_requires=os_requires,
 )
