@@ -87,7 +87,7 @@ Open commandline environment by using Win+R keyboard shortcut and typing in:
 
     cmd
 
-Assuming that Python was installed into C:\Python27 folder, type in the 
+Assuming that Python was installed into C:\\Python27 folder, type in the 
 following into the command window:
 
 ::
