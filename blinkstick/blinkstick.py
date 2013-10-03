@@ -371,7 +371,14 @@ class BlinkStick(object):
 
 def _find_blicksticks(find_all=True):
     if sys.platform == "win32":
-        return hid.HidDeviceFilter(vendor_id = VENDOR_ID, product_id = PRODUCT_ID).get_devices()
+        devices = hid.HidDeviceFilter(vendor_id = VENDOR_ID, product_id = PRODUCT_ID).get_devices()
+        if find_all:
+            return devices
+        elif len(devices) > 0:
+            return devices[0]
+        else:
+            return None
+
     else:
         return usb.core.find(find_all=find_all, idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
 
