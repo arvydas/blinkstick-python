@@ -51,8 +51,26 @@ Install pip
 
     sudo easy_install pip
 
+Microsoft Windows
+`````````````````
+
+Download and install Python 2.7.x:
+  
+http://www.python.org/download/releases/
+
+Install setuptools:
+
+http://www.lfd.uci.edu/~gohlke/pythonlibs/#setuptools
+
+Install pip:
+
+http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip
+
 BlinkStick package Installation
 -------------------------------
+
+Linux and Mac OS X
+``````````````````
 
 Install blinkstick Python package with pip:
 
@@ -60,12 +78,40 @@ Install blinkstick Python package with pip:
 
     sudo pip install blinkstick
 
+Microsoft Windows
+`````````````````
+
+Open commandline environment by using Win+R keyboard shortcut and typing in:
+
+::
+
+    cmd
+
+Assuming that Python was installed into C:\Python27 folder, type in the 
+following into the command window:
+
+::
+    
+    C:\Python27\Scripts\pip.exe install blinkstick
+
+Code Examples
+-------------
+
+Code examples are available in the wiki:
+
+https://github.com/arvydas/blinkstick-python/wiki
+
+
 Description
 -----------
 
 Together with the Python module an additional command line tool is 
-installed to control BlinkSticks. Use the following command to see all
-available options:
+installed to control BlinkSticks. 
+
+Note: this tool is not available in Windows. 
+
+Use the following command to see all available options:
+
 
 ::
 
@@ -160,16 +206,8 @@ Use BlinkStick to display CPU usage:
 
     blinkstick --cpu-usage
 
-Code Examples
--------------
-
-Code examples are available in the wiki:
-
-https://github.com/arvydas/blinkstick-python/wiki
-
-
-Permission problems
--------------------
+Permission problems in Linux and Mac OS X
+-----------------------------------------
 
 If the script returns with an error
 
