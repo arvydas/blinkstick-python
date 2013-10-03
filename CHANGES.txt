@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.0 (2013-10-03)
+------------------
+
+* Added full support for Python in Windows
+
 0.6.0 (2013-08-20)
 ------------------
 
