@@ -54,7 +54,7 @@ class BlinkStick(object):
                 data[0] = wValue
                 self.device.send_feature_report(data)
             elif bmRequestType == 0x80 | 0x20:
-                return self.reports[0].get()
+                return self.reports[wValue - 1].get()
         else:
             try:
                 return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
