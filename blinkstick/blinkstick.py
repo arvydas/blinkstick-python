@@ -33,7 +33,8 @@ class BlinkStick(object):
                 self.reports = self.device.find_feature_reports()
             else:
                 self.open_device(device)
-                self.bs_serial = self.get_serial()
+
+            self.bs_serial = self.get_serial()
 
     def _usb_get_string(self, device, length, index):
         try:
@@ -52,7 +53,12 @@ class BlinkStick(object):
             if bmRequestType == 0x20:
                 data = (c_ubyte * len(data_or_wLength))(*[c_ubyte(ord(c)) for c in data_or_wLength])
                 data[0] = wValue
-                self.device.send_feature_report(data)
+                if not self.device.send_feature_report(data):
+                    if self._refresh_device():
+                        self.device.send_feature_report(data)
+                    else:
+                        raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
+
             elif bmRequestType == 0x80 | 0x20:
                 return self.reports[wValue - 1].get()
         else:
