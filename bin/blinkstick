@@ -4,7 +4,10 @@ from optparse import OptionParser, IndentedHelpFormatter
 from blinkstick import blinkstick
 import textwrap
 import sys
-import psutil
+
+if sys.platform != "win32":
+    import psutil
+
 import websocket
 import json
 
@@ -222,9 +225,10 @@ def main():
                       dest="infoblock2",
                       help="set the second info block for the device.")
 
-    parser.add_option("--cpu-usage",
-                      dest="cpu_usage", action="store_true",
-                      help="Use BlinkStick to display CPU usage.")
+    if sys.platform != "win32":
+        parser.add_option("--cpu-usage",
+                          dest="cpu_usage", action="store_true",
+                          help="Use BlinkStick to display CPU usage.")
 
     parser.add_option("--connect",
                       dest="access_code",
@@ -276,7 +280,7 @@ def main():
             stick.set_inverse(True)
 
     #Actions here work only on the first BlinkStick found
-    if options.cpu_usage:
+    if sys.platform != "win32" and options.cpu_usage:
         show_cpu_usage(sticks[0])
     elif options.access_code:
         access_code = options.access_code
