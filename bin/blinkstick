@@ -74,18 +74,18 @@ class IndentedHelpFormatterWithNL(IndentedHelpFormatter):
 
 
 def print_info(stick):
-    print "Found device:"
-    print "    Manufacturer:  " + stick.get_manufacturer()
-    print "    Description:   " + stick.get_description()
-    print "    Serial:        " + stick.get_serial()
-    print "    Current Color: " + stick.get_color(color_format="hex")
-    print "    Info Block 1:  " + stick.get_info_block1()
-    print "    Info Block 2:  " + stick.get_info_block2()
+    print("Found device:")
+    print ("    Manufacturer:  {0}").format(stick.get_manufacturer())
+    print ("    Description:   {0}").format(stick.get_description())
+    print ("    Serial:        {0}").format(stick.get_serial())
+    print ("    Current Color: {0}").format(stick.get_color(color_format="hex"))
+    print ("    Info Block 1:  {0}").format(stick.get_color(color_format="hex"))
+    print ("    Info Block 2:  {0}").format(stick.get_info_block2())
 
 
 def show_cpu_usage(stick):
-    print "Displaying CPU usage (Green = 0%, Amber = 50%, Red = 100%)"
-    print "Press Ctrl+C to exit"
+    print("Displaying CPU usage (Green = 0%, Amber = 50%, Red = 100%)")
+    print("Press Ctrl+C to exit")
 
     while True:
         cpu = psutil.cpu_percent(interval=1)
@@ -116,7 +116,7 @@ def on_message(ws, message):
     elif m[0]['channel'] == '/meta/handshake':
         client_id = m[0]['clientId']
 
-        print "Acquired clientId: " + client_id
+        print ("Acquired clientId: {0}").format(client_id)
 
         ws.send(json.dumps(
             {'channel': '/meta/subscribe',
@@ -126,18 +126,18 @@ def on_message(ws, message):
 
     elif m[0]['channel'] == '/devices/' + options.access_code:
         if 'color' in m[0]["data"]:
-            print "Received color: " + m[0]["data"]["color"]
+            print ("Received color: {0}").format(m[0]["data"]["color"])
 
             sticks[0].set_color(hex=m[0]["data"]["color"])
         elif 'status' in m[0]["data"] and m[0]["data"]['status'] == "off":
-            print "Turn off"
+            print("Turn off")
             sticks[0].turn_off()
 
     elif m[0]['channel'] == '/meta/subscribe':
         if m[0]['successful']:
-            print "Subscribed to device. Waiting for color message..."
+            print("Subscribed to device. Waiting for color message...")
         else:
-            print "Subscription to the device failed. Please check the AccessCode value."
+            print("Subscription to the device failed. Please check the AccessCode value.")
 
     #Reconnect again and wait for further messages
     ws.send(json.dumps(
@@ -151,7 +151,7 @@ def on_error(ws, error):
 
 
 def on_close(ws):
-    print "### closed ###"
+    print("### closed ###")
 
 
 def on_open(ws):
@@ -257,9 +257,9 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    print "BlinkStick control script " + blinkstick.get_blinkstick_package_version()
-    print "(c) Agile Innovative Ltd 2013"
-    print ""
+    print ("BlinkStick control script {0}").format(blinkstick.get_blinkstick_package_version())
+    print("(c) Agile Innovative Ltd 2013")
+    print("")
 
     if options.serial is None:
         sticks = blinkstick.find_all()
@@ -267,7 +267,7 @@ def main():
         sticks = [blinkstick.find_by_serial(options.serial)]
 
         if len(sticks) == 0:
-            print "BlinkStick with serial number " + options.device + " not found..."
+            print("BlinkStick with serial number " + options.device + " not found...")
             return 64
 
     #Global action
@@ -279,13 +279,13 @@ def main():
             file.write('SUBSYSTEM=="usb", ATTR{idVendor}=="20a0", ATTR{idProduct}=="41e5", MODE:="0666"')
             file.close()
 
-            print "Rule added to " + filename
+            print ("Rule added to {0}").format(filename)
         except IOError as e:
             print str(e)
-            print "Make sure you run this script as root: sudo blinkstick --add-udev-rule"
+            print("Make sure you run this script as root: sudo blinkstick --add-udev-rule")
             return 64
 
-        print "Reboot your computer for changes to take effect"
+        print("Reboot your computer for changes to take effect")
         return 0
 
     for stick in sticks:
@@ -298,7 +298,7 @@ def main():
     elif options.access_code:
         while True:
             connect()
-            print "Attempting to reconnect in 15s"
+            print("Attempting to reconnect in 15s")
             time.sleep(15)
 
     #Actions here work on all BlinkSticks
