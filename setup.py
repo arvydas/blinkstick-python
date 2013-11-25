@@ -27,14 +27,14 @@ else:
 
 if sys.platform == "win32":
     os_requires = [
-        "grapefruit==0.1a3",
+        "colour",
         "webcolors",
         "pywinusb",
         "websocket-client"
     ]
 else:
     os_requires = [
-        "grapefruit==0.1a3",
+        "colour",
         "webcolors",
         "pyusb",
         "websocket-client",
