@@ -12,6 +12,7 @@ import websocket
 import json
 import time
 
+
 class IndentedHelpFormatterWithNL(IndentedHelpFormatter):
     def format_description(self, description):
         if not description: return ""
@@ -75,12 +76,12 @@ class IndentedHelpFormatterWithNL(IndentedHelpFormatter):
 
 def print_info(stick):
     print("Found device:")
-    print ("    Manufacturer:  {0}").format(stick.get_manufacturer())
-    print ("    Description:   {0}").format(stick.get_description())
-    print ("    Serial:        {0}").format(stick.get_serial())
-    print ("    Current Color: {0}").format(stick.get_color(color_format="hex"))
-    print ("    Info Block 1:  {0}").format(stick.get_color(color_format="hex"))
-    print ("    Info Block 2:  {0}").format(stick.get_info_block2())
+    print("    Manufacturer:  {0}").format(stick.get_manufacturer())
+    print("    Description:   {0}").format(stick.get_description())
+    print("    Serial:        {0}").format(stick.get_serial())
+    print("    Current Color: {0}").format(stick.get_color(color_format="hex"))
+    print("    Info Block 1:  {0}").format(stick.get_color(color_format="hex"))
+    print("    Info Block 2:  {0}").format(stick.get_info_block2())
 
 
 def show_cpu_usage(stick):
@@ -102,7 +103,7 @@ def on_message(ws, message):
 
     #Uncomment this for debugging purposes
     if options.verbose:
-        print message
+        print(message)
 
     m = json.loads(message)
 
@@ -116,7 +117,7 @@ def on_message(ws, message):
     elif m[0]['channel'] == '/meta/handshake':
         client_id = m[0]['clientId']
 
-        print ("Acquired clientId: {0}").format(client_id)
+        print("Acquired clientId: {0}").format(client_id)
 
         ws.send(json.dumps(
             {'channel': '/meta/subscribe',
@@ -126,9 +127,10 @@ def on_message(ws, message):
 
     elif m[0]['channel'] == '/devices/' + options.access_code:
         if 'color' in m[0]["data"]:
-            print ("Received color: {0}").format(m[0]["data"]["color"])
+            print("Received color: {0}").format(m[0]["data"]["color"])
+            print(m[0]['data']['color'], type(m[0]['data']['color']))
 
-            sticks[0].set_color(hex=m[0]["data"]["color"])
+            sticks[0].set_color(hex=str(m[0]["data"]["color"]))
         elif 'status' in m[0]["data"] and m[0]["data"]['status'] == "off":
             print("Turn off")
             sticks[0].turn_off()
@@ -147,7 +149,7 @@ def on_message(ws, message):
 
 
 def on_error(ws, error):
-    print error
+    print(error)
 
 
 def on_close(ws):
@@ -160,9 +162,10 @@ def on_open(ws):
          'version': '1.0',
          'supportedConnectionTypes': ['long-polling', 'websocket']}))
 
+
 def connect():
     global options
-    
+
     # Set this to True for debugging purposes
     websocket.enableTrace(options.verbose)
     ws = websocket.WebSocketApp("ws://live.blinkstick.com:9292/faye",
@@ -257,7 +260,7 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    print ("BlinkStick control script {0}").format(blinkstick.get_blinkstick_package_version())
+    print("BlinkStick control script {0}").format(blinkstick.get_blinkstick_package_version())
     print("(c) Agile Innovative Ltd 2013")
     print("")
 
@@ -279,9 +282,9 @@ def main():
             file.write('SUBSYSTEM=="usb", ATTR{idVendor}=="20a0", ATTR{idProduct}=="41e5", MODE:="0666"')
             file.close()
 
-            print ("Rule added to {0}").format(filename)
+            print("Rule added to {0}").format(filename)
         except IOError as e:
-            print str(e)
+            print(str(e))
             print("Make sure you run this script as root: sudo blinkstick --add-udev-rule")
             return 64
 
@@ -336,7 +339,6 @@ def main():
             elif options.morph:
                 func = stick.morph
                 args['duration'] = options.duration
-
 
             func(**args)
 
