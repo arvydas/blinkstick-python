@@ -131,7 +131,7 @@ class BlinkStick(object):
         if self.inverse:
             r, g, b = 255 - r, 255 - g, 255 - b
 
-        control_string = bytearray([0, r, g, b])
+        control_string = bytes(bytearray([0, r, g, b]))
 
         self._usb_ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
 
