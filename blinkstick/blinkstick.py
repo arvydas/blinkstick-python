@@ -165,7 +165,6 @@ class BlinkStick(object):
                 else:
                     red, green, blue = webcolors.name_to_rgb(name)
             elif hex:
-                hex = "#" + hex if hex[:1] is not "#" else hex
                 red, green, blue = webcolors.hex_to_rgb(hex)
         except ValueError:
             red = green = blue = 0
