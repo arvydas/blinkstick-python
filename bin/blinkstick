@@ -11,6 +11,8 @@ if sys.platform != "win32":
 import websocket
 import json
 import time
+import logging
+logging.basicConfig()
 
 
 class IndentedHelpFormatterWithNL(IndentedHelpFormatter):
@@ -117,7 +119,7 @@ def on_message(ws, message):
     elif m[0]['channel'] == '/meta/handshake':
         client_id = m[0]['clientId']
 
-        print("Acquired clientId: {0}").format(client_id)
+        print("Acquired clientId: {0}".format(client_id))
 
         ws.send(json.dumps(
             {'channel': '/meta/subscribe',
@@ -127,10 +129,9 @@ def on_message(ws, message):
 
     elif m[0]['channel'] == '/devices/' + options.access_code:
         if 'color' in m[0]["data"]:
-            print("Received color: {0}").format(m[0]["data"]["color"])
-            print(m[0]['data']['color'], type(m[0]['data']['color']))
+            print("Received color: {0}".format(m[0]["data"]["color"]))
 
-            sticks[0].set_color(hex=str(m[0]["data"]["color"]))
+            sticks[0].set_color(hex=m[0]["data"]["color"])
         elif 'status' in m[0]["data"] and m[0]["data"]['status'] == "off":
             print("Turn off")
             sticks[0].turn_off()
@@ -260,7 +261,7 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    print("BlinkStick control script {0}").format(blinkstick.get_blinkstick_package_version())
+    print("BlinkStick control script {0}".format(blinkstick.get_blinkstick_package_version()))
     print("(c) Agile Innovative Ltd 2013")
     print("")
 
