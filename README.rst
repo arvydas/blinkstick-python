@@ -43,7 +43,7 @@ Install libusb with `homebrew <http://mxcl.github.io/homebrew/>`_:
 
 ::
 
-    sudo brew install libusb
+    brew install libusb
 
 Install pip
 
