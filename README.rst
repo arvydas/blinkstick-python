@@ -51,6 +51,23 @@ Install pip
 
     sudo easy_install pip
 
+Known Errors
+^^^^^^^^^^^^
+
+::
+
+    ValueError: No backend available
+
+This means that the Python usb module cannot find your installation of libusb.
+It seems to be an issue when you have ``homebrew`` installed somewhere that is
+not expected.
+
+It can be mitigated with
+
+::
+
+    sudo ln -s `brew --prefix`/lib/libusb-* /usr/local/lib/
+
 Microsoft Windows
 `````````````````
 
