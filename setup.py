@@ -22,19 +22,19 @@ else:
     if mo:
         verstr = mo.group(1)
     else:
-        print "unable to find version in %s" % (VERSIONFILE,)
-        raise RuntimeError("if %s.py exists, it is required to be well-formed" % (VERSIONFILE,))
+        print("unable to find version in {0}").format(VERSIONFILE)
+        raise RuntimeError("if {0}.py exists, it is required to be well-formed".format(VERSIONFILE))
 
 if sys.platform == "win32":
-    os_requires=[
-        "grapefruit==0.1a3",
+    os_requires = [
+        "colour",
         "webcolors",
         "pywinusb",
         "websocket-client"
     ]
 else:
-    os_requires=[
-        "grapefruit==0.1a3",
+    os_requires = [
+        "colour",
         "webcolors",
         "pyusb",
         "websocket-client",

@@ -1,5 +1,5 @@
-from _version import __version__
-from grapefruit import Color
+from ._version import  __version__
+from colour import Color
 import time
 import webcolors
 import sys
@@ -124,14 +124,14 @@ class BlinkStick(object):
 
         red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
+        r = int(round(red, 3))
+        g = int(round(green, 3))
+        b = int(round(blue, 3))
+
         if self.inverse:
-            control_string = "\x00" + chr(255 - int(round(red, 3))) \
-                             + chr(255 - int(round(green, 3))) \
-                             + chr(255 - int(round(blue, 3)))
-        else:
-            control_string = "\x00" + chr(int(round(red, 3))) \
-                             + chr(int(round(green, 3))) \
-                             + chr(int(round(blue, 3)))
+            r, g, b = 255 - r, 255 - g, 255 - b
+
+        control_string = bytes(bytearray([0, r, g, b]))
 
         self._usb_ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
 
@@ -143,13 +143,13 @@ class BlinkStick(object):
         device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
         # Color object requires RGB values in range 0-1, not 0-255
         if self.inverse:
-            color = Color.NewFromRgb(float(255 - device_bytes[1]) / 255,
-                                     float(255 - device_bytes[2]) / 255,
-                                     float(255 - device_bytes[3]) / 255)
+            color = Color(red=float(255 - device_bytes[1]) / 255,
+                          green=float(255 - device_bytes[2]) / 255,
+                          blue=float(255 - device_bytes[3]) / 255)
         else:
-            color = Color.NewFromRgb(float(device_bytes[1]) / 255,
-                                     float(device_bytes[2]) / 255,
-                                     float(device_bytes[3]) / 255)
+            color = Color(red=float(device_bytes[1]) / 255,
+                          green=float(device_bytes[2]) / 255,
+                          blue=float(device_bytes[3]) / 255)
 
         return color
 
@@ -178,7 +178,7 @@ class BlinkStick(object):
         return int(r * 255), int(g * 255), int(b * 255)
 
     def _get_color_hex(self):
-        return self._get_color().html
+        return self._get_color().hex
 
     def get_color(self, color_format='rgb'):
 
@@ -330,23 +330,36 @@ class BlinkStick(object):
         @param duration: Duration for morph in milliseconds
         @param steps: Number of gradient steps (default 50)
         """
-        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        current_color = self._get_color()
+        r_end, g_end, b_end = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        target_color = Color.NewFromRgb(float(r) / 255, float(g) / 255, float(b) / 255)
+        r_start, g_start, b_start = self._get_color().rgb
+        r_start, g_start, b_start = 255 * r_start, 255 * g_start, 255 * b_start
 
-        gradient_list = current_color.Gradient(target_color, steps=steps)
+        gradient = []
 
-        for grad in gradient_list:
-            grad_r, grad_g, grad_b = grad.rgb
-            self.set_color(grad_r * 255, grad_g * 255, grad_b * 255)
-            ms_delay = float(duration) / float(1000 * steps)
+        steps += 1
+        for n in range(1, steps):
+            d = 1.0 * n / steps
+            r = (r_start * (1 - d)) + (r_end * d)
+            g = (g_start * (1 - d)) + (g_end * d)
+            b = (b_start * (1 - d)) + (b_end * d)
+
+            gradient.append((r, g, b))
+
+        ms_delay = float(duration) / float(1000 * steps)
+
+        self.set_color(red=r_start, green=g_start, blue=b_start)
+
+        for grad in gradient:
+            grad_r, grad_g, grad_b = grad
+
+            self.set_color(red=grad_r, green=grad_g, blue=grad_b)
             time.sleep(ms_delay)
 
-            #     set target colour
+        self.set_color(red=r_end, green=g_end, blue=b_end)
 
-        self.set_color(red=r, green=g, blue=b)
+
 
     def open_device(self, d):
         """Open device.
