@@ -221,11 +221,24 @@ class BlinkStick(object):
         return device_bytes 
 
     def set_mode(self, mode):
+        """Set device mode
+
+        0 - (default) use R, G and B channels to control single RGB LED
+        1 - same as 0, but inverse mode
+        2 - control up to 64 WS2812 individual LEDs per each R, G and B channel
+        """
         control_string = bytes(bytearray([4, mode]))
 
         self.device.ctrl_transfer(0x20, 0x9, 0x0004, 0, control_string)
 
     def get_mode(self):
+        """Get current device mode
+
+        0 - (default) use R, G and B channels to control single RGB LED
+        1 - same as 0, but inverse mode
+        2 - control up to 64 WS2812 individual LEDs per each R, G and B channel
+        """
+
         device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0004, 0, 2)
 
         if (len(device_bytes) >= 2):
