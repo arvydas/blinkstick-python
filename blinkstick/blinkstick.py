@@ -221,8 +221,7 @@ class BlinkStick(object):
         return device_bytes 
 
     def set_mode(self, mode):
-        ##control_string = bytes(bytearray([4, mode]))
-        control_string = "\x00" + chr(int(round(mode, 3)))
+        control_string = bytes(bytearray([4, mode]))
 
         self.device.ctrl_transfer(0x20, 0x9, 0x0004, 0, control_string)
 
