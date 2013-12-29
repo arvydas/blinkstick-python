@@ -240,11 +240,26 @@ class BlinkStick(object):
 
         self.device.ctrl_transfer(0x20, 0x9, reportId, 0, bytes(bytearray(report)))
 
-    def get_led_data(self):
-        #return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
-        #device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0005, 0, 6)
-        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0006, 0, 25)
-        return device_bytes 
+    def get_led_data(self, count):
+        reportId = 9
+        max_leds = 64
+
+        if count <= 8:
+            max_leds = 8
+            reportId = 6
+        elif count <= 16:
+            max_leds = 16
+            reportId = 7
+        elif count <= 32:
+            max_leds = 32
+            reportId = 8
+        elif count <= 64:
+            max_leds = 64
+            reportId = 9
+
+        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, reportId, 0, max_leds * 3 + 1)
+
+        return device_bytes[2 : 2 + count * 3]
 
     def set_mode(self, mode):
         """Set device mode
