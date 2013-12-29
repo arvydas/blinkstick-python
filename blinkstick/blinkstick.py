@@ -111,7 +111,7 @@ class BlinkStick(object):
             return self._usb_get_string(self.device, 256, 2)
 
 
-    def set_color(self, red=0, green=0, blue=0, name=None, hex=None):
+    def set_color(self, channel=0, index=0, red=0, green=0, blue=0, name=None, hex=None):
         """Set the color to the device as RGB
 
         Args:
@@ -131,9 +131,15 @@ class BlinkStick(object):
         if self.inverse:
             r, g, b = 255 - r, 255 - g, 255 - b
 
-        control_string = bytes(bytearray([0, r, g, b]))
+        if index == 0 and channel == 0:
+            control_string = bytes(bytearray([0, r, g, b]))
 
-        self._usb_ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
+            self._usb_ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
+        else:
+            control_string = bytes(bytearray([0, channel, index, r, g, b]))
+
+            self._usb_ctrl_transfer(0x20, 0x9, 0x0005, 0, control_string)
+
 
     def _get_color(self):
 
@@ -207,6 +213,26 @@ class BlinkStick(object):
             # Should never get here, as we should always default to self._get_color_rgb
             raise BlinkStickException("Could not return current color in format %s" % color_format)
 
+
+    def get_led_data(self):
+        #return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
+        #device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0005, 0, 6)
+        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0006, 0, 25)
+        return device_bytes 
+
+    def set_mode(self, mode):
+        ##control_string = bytes(bytearray([4, mode]))
+        control_string = "\x00" + chr(int(round(mode, 3)))
+
+        self.device.ctrl_transfer(0x20, 0x9, 0x0004, 0, control_string)
+
+    def get_mode(self):
+        device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0004, 0, 2)
+
+        if (len(device_bytes) >= 2):
+            return device_bytes[1]
+        else:
+            return -1
 
     def get_info_block1(self):
         """Get the infoblock1 of the device.

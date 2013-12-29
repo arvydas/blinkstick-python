@@ -198,6 +198,14 @@ def main():
                       action="store_true", dest="inverse",
                       help="control BlinkSticks in inverse mode")
 
+    parser.add_option("--channel",
+                      default=0, dest="channel",
+                      help="Select channel")
+
+    parser.add_option("--index",
+                      default=0, dest="index",
+                      help="Select index")
+
     parser.add_option("--set-color",
                       dest="color",
                       help="set the color for the device. The value can either be a named color, hex value, 'random' or 'off'.\n\n"
@@ -326,6 +334,9 @@ def main():
                 args['hex'] = "#000000"
             else:
                 args['name'] = options.color
+
+            args['index'] = options.index
+            args['channel'] = options.channel
 
             # handle blink/pulse/morph
             func = stick.set_color
