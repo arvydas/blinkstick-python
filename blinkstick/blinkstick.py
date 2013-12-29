@@ -213,6 +213,32 @@ class BlinkStick(object):
             # Should never get here, as we should always default to self._get_color_rgb
             raise BlinkStickException("Could not return current color in format %s" % color_format)
 
+    def set_led_data(self, channel, data):
+        reportId = 9
+        max_leds = 64
+
+        if len(data) <= 8 * 3:
+            max_leds = 8
+            reportId = 6
+        elif len(data) <= 16 * 3:
+            max_leds = 16
+            reportId = 7
+        elif len(data) <= 32 * 3:
+            max_leds = 32
+            reportId = 8
+        elif len(data) <= 64 * 3:
+            max_leds = 64
+            reportId = 9
+
+        report = [0, channel]
+
+        for i in range(0, max_leds * 3):
+            if len(data) > i:
+                report.append(data[i])
+            else:
+                report.append(0)
+
+        self.device.ctrl_transfer(0x20, 0x9, reportId, 0, bytes(bytearray(report)))
 
     def get_led_data(self):
         #return self.device.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, data_or_wLength)
