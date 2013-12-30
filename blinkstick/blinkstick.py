@@ -214,21 +214,21 @@ class BlinkStick(object):
             raise BlinkStickException("Could not return current color in format %s" % color_format)
 
     def set_led_data(self, channel, data):
-        reportId = 9
+        report_id = 9
         max_leds = 64
 
         if len(data) <= 8 * 3:
             max_leds = 8
-            reportId = 6
+            report_id = 6
         elif len(data) <= 16 * 3:
             max_leds = 16
-            reportId = 7
+            report_id = 7
         elif len(data) <= 32 * 3:
             max_leds = 32
-            reportId = 8
+            report_id = 8
         elif len(data) <= 64 * 3:
             max_leds = 64
-            reportId = 9
+            report_id = 9
 
         report = [0, channel]
 
@@ -238,28 +238,28 @@ class BlinkStick(object):
             else:
                 report.append(0)
 
-        self.device.ctrl_transfer(0x20, 0x9, reportId, 0, bytes(bytearray(report)))
+        self.device.ctrl_transfer(0x20, 0x9, report_id, 0, bytes(bytearray(report)))
 
     def get_led_data(self, count):
-        reportId = 9
+        report_id = 9
         max_leds = 64
 
         if count <= 8:
             max_leds = 8
-            reportId = 6
+            report_id = 6
         elif count <= 16:
             max_leds = 16
-            reportId = 7
+            report_id = 7
         elif count <= 32:
             max_leds = 32
-            reportId = 8
+            report_id = 8
         elif count <= 64:
             max_leds = 64
-            reportId = 9
+            report_id = 9
 
-        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, reportId, 0, max_leds * 3 + 1)
+        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, report_id, 0, max_leds * 3 + 1)
 
-        return device_bytes[2 : 2 + count * 3]
+        return device_bytes[2: 2 + count * 3]
 
     def set_mode(self, mode):
         """Set device mode
@@ -282,7 +282,7 @@ class BlinkStick(object):
 
         device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0004, 0, 2)
 
-        if (len(device_bytes) >= 2):
+        if len(device_bytes) >= 2:
             return device_bytes[1]
         else:
             return -1
@@ -437,8 +437,6 @@ class BlinkStick(object):
             time.sleep(ms_delay)
 
         self.set_color(red=r_end, green=g_end, blue=b_end)
-
-
 
     def open_device(self, d):
         """Open device.
