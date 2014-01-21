@@ -335,8 +335,8 @@ def main():
             else:
                 args['name'] = options.color
 
-            args['index'] = options.index
-            args['channel'] = options.channel
+            args['index'] = int(options.index)
+            args['channel'] = int(options.channel)
 
             # handle blink/pulse/morph
             func = stick.set_color
