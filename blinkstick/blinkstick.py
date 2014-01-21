@@ -136,7 +136,7 @@ class BlinkStick(object):
 
             self._usb_ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
         else:
-            control_string = bytes(bytearray([0, channel, index, r, g, b]))
+            control_string = bytes(bytearray([5, channel, index, r, g, b]))
 
             self._usb_ctrl_transfer(0x20, 0x9, 0x0005, 0, control_string)
 
