@@ -82,6 +82,7 @@ def print_info(stick):
     print("    Description:   {0}").format(stick.get_description())
     print("    Serial:        {0}").format(stick.get_serial())
     print("    Current Color: {0}").format(stick.get_color(color_format="hex"))
+    print("    Mode:          {0}").format(stick.get_mode())
     print("    Info Block 1:  {0}").format(stick.get_color(color_format="hex"))
     print("    Info Block 2:  {0}").format(stick.get_info_block2())
 
@@ -267,6 +268,10 @@ def main():
                       action="store_true", dest="udev",
                       help="Add udev rule to access BlinkSticks without root permissions. Must be run as root.")
 
+    parser.add_option("--set-mode",
+                      default=0, dest="mode",
+                      help="Set mode for BlinkStick Pro. 0 - default, 1 - inverse, 2 - ws2812")
+
     (options, args) = parser.parse_args()
 
     print("BlinkStick control script {0}".format(blinkstick.get_blinkstick_package_version()))
@@ -321,7 +326,12 @@ def main():
         if options.infoblock2:
             stick.set_info_block2(options.infoblock2)
 
-        if options.info:
+        if options.mode:
+            if options.mode == "0" or options.mode == "1" or options.mode == "2":
+                stick.set_mode(int(options.mode))
+            else:
+                print("Error: Invalid mode parameter value")
+        elif options.info:
             print_info(stick)
         elif options.color:
             # determine color
