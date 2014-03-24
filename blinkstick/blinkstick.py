@@ -356,7 +356,7 @@ class BlinkStick(object):
     def turn_off(self):
         self.set_color()
 
-    def pulse(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, duration=1000, steps=50):
+    def pulse(self, channel=0, index=0, red=0, green=0, blue=0, name=None, hex=None, repeats=1, duration=1000, steps=50):
         """
         Morph to the specified color from black and back again.
 
@@ -373,10 +373,10 @@ class BlinkStick(object):
 
         self.turn_off()
         for x in range(repeats):
-            self.morph(red=r, green=g, blue=b, duration=duration, steps=steps)
-            self.morph(red=0, green=0, blue=0, duration=duration, steps=steps)
+            self.morph(channel=channel, index=index, red=r, green=g, blue=b, duration=duration, steps=steps)
+            self.morph(channel=channel, index=index, red=0, green=0, blue=0, duration=duration, steps=steps)
 
-    def blink(self, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
+    def blink(self, channel=0, index=0, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
         """
         Blink the specified color.
 
@@ -393,11 +393,11 @@ class BlinkStick(object):
         for x in range(repeats):
             if x:
                 time.sleep(ms_delay)
-            self.set_color(red=r, green=g, blue=b)
+            self.set_color(channel=channel, index=index, red=r, green=g, blue=b)
             time.sleep(ms_delay)
-            self.set_color()
+            self.set_color(channel=channel, index=index)
 
-    def morph(self, red=0, green=0, blue=0, name=None, hex=None, duration=1000, steps=50):
+    def morph(self, channel=0, index=0, red=0, green=0, blue=0, name=None, hex=None, duration=1000, steps=50):
         """
         Morph to the specified color.
 
@@ -428,7 +428,7 @@ class BlinkStick(object):
 
         ms_delay = float(duration) / float(1000 * steps)
 
-        self.set_color(red=r_start, green=g_start, blue=b_start)
+        self.set_color(channel=channel, index=index, red=r_start, green=g_start, blue=b_start)
 
         for grad in gradient:
             grad_r, grad_g, grad_b = grad
