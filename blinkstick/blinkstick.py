@@ -23,8 +23,11 @@ class BlinkStickException(Exception):
 
 class BlinkStick(object):
     inverse = False
+    error_reporting = True
 
-    def __init__(self, device=None):
+    def __init__(self, device=None, error_reporting=True):
+
+        self.error_reporting = error_reporting
 
         if device:
             self.device = device
@@ -110,6 +113,8 @@ class BlinkStick(object):
         else:
             return self._usb_get_string(self.device, 256, 2)
 
+    def set_error_reporting(self, error_reporting):
+        self.error_reporting = error_reporting
 
     def set_color(self, channel=0, index=0, red=0, green=0, blue=0, name=None, hex=None):
         """Set the color to the device as RGB
@@ -133,13 +138,18 @@ class BlinkStick(object):
 
         if index == 0 and channel == 0:
             control_string = bytes(bytearray([0, r, g, b]))
-
-            self._usb_ctrl_transfer(0x20, 0x9, 0x0001, 0, control_string)
+            report_id = 0x0001
         else:
             control_string = bytes(bytearray([5, channel, index, r, g, b]))
+            report_id = 0x0005
 
-            self._usb_ctrl_transfer(0x20, 0x9, 0x0005, 0, control_string)
-
+        if self.error_reporting:
+            self._usb_ctrl_transfer(0x20, 0x9, report_id, 0, control_string)
+        else:
+            try:
+                self._usb_ctrl_transfer(0x20, 0x9, report_id, 0, control_string)
+            except Exception as e:
+                pass
 
     def _get_color(self):
 

@@ -309,6 +309,8 @@ def main():
         if options.inverse:
             stick.set_inverse(True)
 
+        stick.set_error_reporting(False)
+
     #Actions here work only on the first BlinkStick found
     if sys.platform != "win32" and options.cpu_usage:
         show_cpu_usage(sticks[0])
