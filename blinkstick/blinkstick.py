@@ -495,7 +495,13 @@ def find_all():
 
     Returns a list of BlinkStick objects or None if no devices found
     """
-    return [BlinkStick(device=d) for d in _find_blicksticks()]
+    result = []
+    for d in _find_blicksticks():
+        try:
+            result.extend([BlinkStick(device=d)])
+        except usb.USBError:
+            print "Skipping device"
+    return result
 
 
 def find_first():
@@ -514,12 +520,18 @@ def find_by_serial(serial=None):
 
     Returns BlinkStick object or None if no devices found"""
     
+    devices = []
     if sys.platform == "win32":
         devices = [d for d in _find_blicksticks()
                    if d.serial_number == serial]
     else:
-        devices = [d for d in _find_blicksticks()
-                   if usb.util.get_string(d, 256, 3) == serial]
+        for d in _find_blicksticks():
+            try:
+                if usb.util.get_string(d, 256, 3) == serial:
+                    devices = [d]
+                    break
+            except:
+                print "Skipping..."
     
     if devices:
         return BlinkStick(device=devices[0])
