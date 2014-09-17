@@ -151,21 +151,29 @@ class BlinkStick(object):
             except Exception as e:
                 pass
 
-    def _get_color(self):
+    def _get_color(self, index=0):
 
         """
         Get the current color settings as a grapefruit Color object
         """
-        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
-        # Color object requires RGB values in range 0-1, not 0-255
-        if self.inverse:
-            color = Color(red=float(255 - device_bytes[1]) / 255,
-                          green=float(255 - device_bytes[2]) / 255,
-                          blue=float(255 - device_bytes[3]) / 255)
+        if index == 0:
+            device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
+            # Color object requires RGB values in range 0-1, not 0-255
+            if self.inverse:
+                color = Color(red=float(255 - device_bytes[1]) / 255,
+                              green=float(255 - device_bytes[2]) / 255,
+                              blue=float(255 - device_bytes[3]) / 255)
+            else:
+                color = Color(red=float(device_bytes[1]) / 255,
+                              green=float(device_bytes[2]) / 255,
+                              blue=float(device_bytes[3]) / 255)
         else:
-            color = Color(red=float(device_bytes[1]) / 255,
-                          green=float(device_bytes[2]) / 255,
-                          blue=float(device_bytes[3]) / 255)
+            data = self.get_led_data(index + 1)
+
+            # Color object requires RGB values in range 0-1, not 0-255
+            color = Color(red=float(data[index * 3 + 1]) / 255,
+                          green=float(data[index * 3]) / 255,
+                          blue=float(data[index * 3 + 2]) / 255)
 
         return color
 
@@ -189,14 +197,14 @@ class BlinkStick(object):
 
         return red, green, blue
 
-    def _get_color_rgb(self):
-        r, g, b = self._get_color().rgb
+    def _get_color_rgb(self, index=0):
+        r, g, b = self._get_color(index).rgb
         return int(r * 255), int(g * 255), int(b * 255)
 
-    def _get_color_hex(self):
-        return self._get_color().hex
+    def _get_color_hex(self, index=0):
+        return self._get_color(index).hex
 
-    def get_color(self, color_format='rgb'):
+    def get_color(self, channel=0, index=0, color_format='rgb'):
 
         """
         Get the current device color in the defined format. Default format is (r,g,b).
@@ -218,27 +226,32 @@ class BlinkStick(object):
         # Attempt to find a function to return the appropriate format
         get_color_func = getattr(self, "_get_color_%s" % color_format, self._get_color_rgb)
         if callable(get_color_func):
-            return get_color_func()
+            return get_color_func(index)
         else:
             # Should never get here, as we should always default to self._get_color_rgb
             raise BlinkStickException("Could not return current color in format %s" % color_format)
 
-    def set_led_data(self, channel, data):
+    def _determine_report_id(self, led_count):
         report_id = 9
         max_leds = 64
 
-        if len(data) <= 8 * 3:
+        if led_count <= 8 * 3:
             max_leds = 8
             report_id = 6
-        elif len(data) <= 16 * 3:
+        elif led_count <= 16 * 3:
             max_leds = 16
             report_id = 7
-        elif len(data) <= 32 * 3:
+        elif led_count <= 32 * 3:
             max_leds = 32
             report_id = 8
-        elif len(data) <= 64 * 3:
+        elif led_count <= 64 * 3:
             max_leds = 64
             report_id = 9
+
+        return report_id, max_leds
+
+    def set_led_data(self, channel, data):
+        report_id, max_leds = self._determine_report_id(len(data))
 
         report = [0, channel]
 
@@ -251,21 +264,7 @@ class BlinkStick(object):
         self.device.ctrl_transfer(0x20, 0x9, report_id, 0, bytes(bytearray(report)))
 
     def get_led_data(self, count):
-        report_id = 9
-        max_leds = 64
-
-        if count <= 8:
-            max_leds = 8
-            report_id = 6
-        elif count <= 16:
-            max_leds = 16
-            report_id = 7
-        elif count <= 32:
-            max_leds = 32
-            report_id = 8
-        elif count <= 64:
-            max_leds = 64
-            report_id = 9
+        report_id, max_leds = self._determine_report_id(count)
 
         device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, report_id, 0, max_leds * 3 + 1)
 
@@ -422,7 +421,7 @@ class BlinkStick(object):
 
         r_end, g_end, b_end = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        r_start, g_start, b_start = self._get_color().rgb
+        r_start, g_start, b_start = self._get_color(index).rgb
         r_start, g_start, b_start = 255 * r_start, 255 * g_start, 255 * b_start
 
         gradient = []
@@ -443,10 +442,10 @@ class BlinkStick(object):
         for grad in gradient:
             grad_r, grad_g, grad_b = grad
 
-            self.set_color(red=grad_r, green=grad_g, blue=grad_b)
+            self.set_color(channel=channel, index=index, red=grad_r, green=grad_g, blue=grad_b)
             time.sleep(ms_delay)
 
-        self.set_color(red=r_end, green=g_end, blue=b_end)
+        self.set_color(channel=channel, index=index, red=r_end, green=g_end, blue=b_end)
 
     def open_device(self, d):
         """Open device.
