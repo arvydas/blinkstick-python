@@ -83,7 +83,7 @@ def print_info(stick):
     print("    Serial:        {0}").format(stick.get_serial())
     print("    Current Color: {0}").format(stick.get_color(color_format="hex"))
     print("    Mode:          {0}").format(stick.get_mode())
-    print("    Info Block 1:  {0}").format(stick.get_color(color_format="hex"))
+    print("    Info Block 1:  {0}").format(stick.get_info_block1())
     print("    Info Block 2:  {0}").format(stick.get_info_block2())
 
 
