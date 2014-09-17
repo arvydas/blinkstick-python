@@ -276,6 +276,7 @@ class BlinkStick(object):
         0 - (default) use R, G and B channels to control single RGB LED
         1 - same as 0, but inverse mode
         2 - control up to 64 WS2812 individual LEDs per each R, G and B channel
+        3 - WS2812 mirror for BlinkStick Nano
         """
         control_string = bytes(bytearray([4, mode]))
 
@@ -287,6 +288,7 @@ class BlinkStick(object):
         0 - (default) use R, G and B channels to control single RGB LED
         1 - same as 0, but inverse mode
         2 - control up to 64 WS2812 individual LEDs per each R, G and B channel
+        3 - WS2812 mirror for BlinkStick Nano
         """
 
         device_bytes = self.device.ctrl_transfer(0x80 | 0x20, 0x1, 0x0004, 0, 2)
