@@ -329,7 +329,7 @@ def main():
             stick.set_info_block2(options.infoblock2)
 
         if options.mode:
-            if options.mode == "0" or options.mode == "1" or options.mode == "2":
+            if options.mode == "0" or options.mode == "1" or options.mode == "2" or options.mode == "3":
                 stick.set_mode(int(options.mode))
             else:
                 print("Error: Invalid mode parameter value")
