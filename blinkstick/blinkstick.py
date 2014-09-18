@@ -600,20 +600,6 @@ class BlinkStickPro(object):
         if self.b_led_count > 0:
             self.send_data(2)
 
-    def print_fps(self):
-        """
-        Print FPS on screen every 50 frames
-        """
-        self.fps_count += 1
-        if self.fps_count == 50:
-            self.fps_count = 0
-            delta_time = datetime.now() - self.time_start
-
-            print 50. / delta_time.total_seconds()
-
-        if self.fps_count == 0:
-            self.time_start = datetime.now()
-
 class BlinkStickProMatrix(BlinkStickPro):
     def __init__(self, r_columns=0, r_rows=0, g_columns=0, g_rows=0, b_columns=0, b_rows=0, delay=0.002, max_rgb_value=255):
         """
