@@ -679,11 +679,11 @@ class BlinkStickProMatrix(BlinkStickPro):
         Args:
             remove: whether to remove the pixels on the last column or move the to the first column
         """
-        self.matrix_data = numpy.roll(self.data, 1, axis=1)
+        self.matrix_data = numpy.roll(self.matrix_data, 1, axis=1)
 
         if remove:
             #set right most column to zeros
-            self.data[:, 0, :] = numpy.zeros(shape=3)
+            self.matrix_data[:, 0, :] = numpy.zeros(shape=3)
 
     def shift_right(self, remove=False):
         """Shift all LED values in the matrix to the right
@@ -692,11 +692,11 @@ class BlinkStickProMatrix(BlinkStickPro):
             remove: whether to remove the pixels on the last column or move the to the first column
         """
 
-        self.data = numpy.roll(self.data, -1, axis=1)
+        self.matrix_data = numpy.roll(self.matrix_data, -1, axis=1)
 
         if remove:
             #set left most column to zeros
-            self.data[:, -1, :] = numpy.zeros(shape=3)
+            self.matrix_data[:, -1, :] = numpy.zeros(shape=3)
 
     def shift_down(self, remove=False):
         """Shift all LED values in the matrix down
@@ -705,10 +705,10 @@ class BlinkStickProMatrix(BlinkStickPro):
             remove: whether to remove the pixels on the last row or move the to the first row
         """
 
-        self.data = numpy.roll(self.data, 1, axis=0)
+        self.matrix_data = numpy.roll(self.matrix_data, 1, axis=0)
         if remove:
             #set top row to zeros
-            self.data[0, :, :] = numpy.zeros(shape=3)
+            self.matrix_data[0, :, :] = numpy.zeros(shape=3)
 
     def shift_up(self, remove=False):
         """Shift all LED values in the matrix up
@@ -717,11 +717,11 @@ class BlinkStickProMatrix(BlinkStickPro):
             remove: whether to remove the pixels on the first row or move the to the first row
         """
 
-        self.data = numpy.roll(self.data, -1, axis=0)
+        self.matrix_data = numpy.roll(self.matrix_data, -1, axis=0)
 
         if remove:
             #set bottom row to zeros
-            self.data[-1, :, :] = numpy.zeros(shape=3)
+            self.matrix_data[-1, :, :] = numpy.zeros(shape=3)
 
     def number(self, x, y, n, r, g, b):
         """
