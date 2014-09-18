@@ -3,6 +3,7 @@ from colour import Color
 import time
 import webcolors
 import sys
+import numpy
 
 if sys.platform == "win32":
     import pywinusb.hid as hid
@@ -474,6 +475,144 @@ class BlinkStick(object):
         @param value: True/False to set the inverse mode
         """
         self.inverse = value
+
+class BlinkStickPro(object):
+    def __init__(self, r_led_count=0, g_led_count=0, b_led_count=0, delay=0.002, max_rgb_value=255):
+        """
+        Initialize class
+
+        Args:
+            r_led_count: number of LEDs on R channel
+            g_led_count: number of LEDs on G channel
+            b_led_count: number of LEDs on B channel
+            delay: default transmission delay between frames
+            max_rgb_value: maximum color value for RGB channels
+        """
+        self.r_led_count = r_led_count
+        self.g_led_count = g_led_count
+        self.b_led_count = b_led_count
+
+        self.fps_count = -1
+
+        self.data_transmission_delay = delay
+
+        self.max_rgb_value = max_rgb_value
+
+        # initialise data store for each channel
+        # pre-populated with zeroes
+        self.data = [numpy.zeros(shape=(r_led_count, 3), dtype=numpy.int),
+            numpy.zeros(shape=(g_led_count, 3), dtype=numpy.int),
+            numpy.zeros(shape=(b_led_count, 3), dtype=numpy.int)]
+
+        self.bstick = None
+
+    def _remap_rgb_value(self, rgb_val):
+        return int(numpy.interp(rgb_val, [0, 255], [0, self.max_rgb_value]))
+
+    def set_color(self, channel, index, r, g, b, remap_values=True):
+        """
+        Set the color of a single pixel
+
+        Args:
+            channel: R, G or B channel
+            x: the index of LED on the channel
+            r: red color byte
+            g: green color byte
+            b: blue color byte
+        """
+
+        if remap_values:
+            r, g, b = [self._remap_rgb_value(val) for val in [r, g, b]]
+
+        self.data[channel][index] = [g, r, b]
+
+    def get_color(self, channel, index):
+        """Get the current color of a single pixel.
+
+        Returns values as 3-tuple (r,g,b)
+        """
+
+        val = self.data[channel][index]
+        return [val[1], val[0], val[2]]
+
+    def clear(self):
+        """
+        Set all pixels to black in the frame buffer
+        """
+        for x in range(0, self.r_led_count):
+            self.set_color(0, x, 0, 0, 0)
+
+        for x in range(0, self.g_led_count):
+            self.set_color(1, x, 0, 0, 0)
+
+        for x in range(0, self.b_led_count):
+            self.set_color(2, x, 0, 0, 0)
+
+    def off(self):
+        """
+        Set all pixels to black in on the device
+        """
+        self.clear()
+        self.send_data_all()
+
+    def connect(self, serial=None):
+        """
+        Connect to the first BlinkStick found
+
+        Args:
+            serial: Select the serial number of BlinkStick
+        """
+
+        if serial is None:
+            self.bstick = find_first()
+        else:
+            self.bstick = find_by_serial(serial=serial)
+
+        return self.bstick is not None
+
+    def send_data(self, channel):
+        """
+        Send data to the channel.
+
+        Args:
+            channel: 0 - R pin on BlinkStick Pro board
+                     1 - G pin on BlinkStick Pro board
+                     2 - B pin on BlinkStick Pro board
+        """
+        packet_data = self.data[channel].astype(int).flatten().tolist()
+
+        try:
+            self.bstick.set_led_data(channel, packet_data)
+            time.sleep(self.data_transmission_delay)
+        except Exception as e:
+            print "Exception: {0}".format(e)
+
+    def send_data_all(self):
+        """
+        Send data to all channels
+        """
+        if self.r_led_count > 0:
+            self.send_data(0)
+
+        if self.g_led_count > 0:
+            self.send_data(1)
+
+        if self.b_led_count > 0:
+            self.send_data(2)
+
+    def print_fps(self):
+        """
+        Print FPS on screen every 50 frames
+        """
+        self.fps_count += 1
+        if self.fps_count == 50:
+            self.fps_count = 0
+            delta_time = datetime.now() - self.time_start
+
+            print 50. / delta_time.total_seconds()
+
+        if self.fps_count == 0:
+            self.time_start = datetime.now()
 
 
 def _find_blicksticks(find_all=True):
