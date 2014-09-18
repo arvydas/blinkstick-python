@@ -614,6 +614,262 @@ class BlinkStickPro(object):
         if self.fps_count == 0:
             self.time_start = datetime.now()
 
+class BlinkStickProMatrix(BlinkStickPro):
+    def __init__(self, r_columns=0, r_rows=0, g_columns=0, g_rows=0, b_columns=0, b_rows=0, delay=0.002, max_rgb_value=255):
+        """
+        Initialize class
+
+        Args:
+            columns: number of columns
+            rows: number of rows
+            channels: how many channels are used in r, g and b order
+            delay: default transmission delay between frames
+            max_rgb_value: maximum color value for RGB channels
+        """
+        r_leds = r_columns * r_rows
+        g_leds = g_columns * g_rows
+        b_leds = b_columns * b_rows
+
+        self.r_columns = r_columns
+        self.r_rows = r_rows
+        self.g_columns = g_columns
+        self.g_rows = g_rows
+        self.b_columns = b_columns
+        self.b_rows = b_rows
+
+        super(BlinkStickProMatrix, self).__init__(r_led_count=r_leds, g_led_count=g_leds, b_led_count=b_leds, delay=delay, max_rgb_value=max_rgb_value)
+
+        self.rows = max(r_rows, g_rows, b_rows)
+        self.cols = r_columns + g_columns + b_columns
+
+        # initialise data store as 3d numpy matrix
+        # pre-populated with zeroes
+        self.matrix_data = numpy.zeros(shape=(self.rows, self.cols, 3))
+
+    def set_color(self, x, y, r, g, b, remap_values=True):
+        """
+        Set the color of a single pixel
+
+        Args:
+            x: the x location in the matrix
+            y: the y location in the matrix
+            r: red color byte
+            g: green color byte
+            b: blue color byte
+        """
+
+        if remap_values:
+            r, g, b = [self._remap_rgb_value(val) for val in [r, g, b]]
+
+        self.matrix_data[y, x] = [g, r, b]
+
+    def get_color(self, x, y):
+        """Get the current color of a single pixel.
+
+        Returns values as 3-tuple (r,g,b)
+        """
+
+        val = self.matrix_data[y, x]
+        return [val[1], val[0], val[2]]
+
+    def shift_left(self, remove=False):
+        """
+        Shift all LED values in the matrix to the left
+
+        Args:
+            remove: whether to remove the pixels on the last column or move the to the first column
+        """
+        self.matrix_data = numpy.roll(self.data, 1, axis=1)
+
+        if remove:
+            #set right most column to zeros
+            self.data[:, 0, :] = numpy.zeros(shape=3)
+
+    def shift_right(self, remove=False):
+        """Shift all LED values in the matrix to the right
+
+        Args:
+            remove: whether to remove the pixels on the last column or move the to the first column
+        """
+
+        self.data = numpy.roll(self.data, -1, axis=1)
+
+        if remove:
+            #set left most column to zeros
+            self.data[:, -1, :] = numpy.zeros(shape=3)
+
+    def shift_down(self, remove=False):
+        """Shift all LED values in the matrix down
+
+        Args:
+            remove: whether to remove the pixels on the last row or move the to the first row
+        """
+
+        self.data = numpy.roll(self.data, 1, axis=0)
+        if remove:
+            #set top row to zeros
+            self.data[0, :, :] = numpy.zeros(shape=3)
+
+    def shift_up(self, remove=False):
+        """Shift all LED values in the matrix up
+
+        Args:
+            remove: whether to remove the pixels on the first row or move the to the first row
+        """
+
+        self.data = numpy.roll(self.data, -1, axis=0)
+
+        if remove:
+            #set bottom row to zeros
+            self.data[-1, :, :] = numpy.zeros(shape=3)
+
+    def number(self, x, y, n, r, g, b):
+        """
+        Render a 3x5 number n at location x,y and r,g,b color
+        """
+        if n == 0:
+            self.rectangle(x, y, x + 2, y + 4, r, g, b)
+        elif n == 1:
+            self.line(x + 1, y, x + 1, y + 4, r, g, b)
+            self.line(x, y + 4, x + 2, y + 4, r, g, b)
+            self.set_color(x, y + 1, r, g, b)
+        elif n == 2:
+            self.line(x, y, x + 2, y, r, g, b)
+            self.line(x, y + 2, x + 2, y + 2, r, g, b)
+            self.line(x, y + 4, x + 2, y + 4, r, g, b)
+            self.set_color(x + 2, y + 1, r, g, b)
+            self.set_color(x, y + 3, r, g, b)
+        elif n == 3:
+            self.line(x, y, x + 2, y, r, g, b)
+            self.line(x, y + 2, x + 2, y + 2, r, g, b)
+            self.line(x, y + 4, x + 2, y + 4, r, g, b)
+            self.set_color(x + 2, y + 1, r, g, b)
+            self.set_color(x + 2, y + 3, r, g, b)
+        elif n == 4:
+            self.line(x, y, x, y + 2, r, g, b)
+            self.line(x + 2, y, x + 2, y + 4, r, g, b)
+            self.set_color(x + 1, y + 2, r, g, b)
+        elif n == 5:
+            self.line(x, y, x + 2, y, r, g, b)
+            self.line(x, y + 2, x + 2, y + 2, r, g, b)
+            self.line(x, y + 4, x + 2, y + 4, r, g, b)
+            self.set_color(x, y + 1, r, g, b)
+            self.set_color(x + 2, y + 3, r, g, b)
+        elif n == 6:
+            self.line(x, y, x + 2, y, r, g, b)
+            self.line(x, y + 2, x + 2, y + 2, r, g, b)
+            self.line(x, y + 4, x + 2, y + 4, r, g, b)
+            self.set_color(x, y + 1, r, g, b)
+            self.set_color(x + 2, y + 3, r, g, b)
+            self.set_color(x, y + 3, r, g, b)
+        elif n == 7:
+            self.line(x + 1, y + 2, x + 1, y + 4, r, g, b)
+            self.line(x, y, x + 2, y, r, g, b)
+            self.set_color(x + 2, y + 1, r, g, b)
+        elif n == 8:
+            self.line(x, y, x + 2, y, r, g, b)
+            self.line(x, y + 2, x + 2, y + 2, r, g, b)
+            self.line(x, y + 4, x + 2, y + 4, r, g, b)
+            self.set_color(x, y + 1, r, g, b)
+            self.set_color(x + 2, y + 1, r, g, b)
+            self.set_color(x + 2, y + 3, r, g, b)
+            self.set_color(x, y + 3, r, g, b)
+        elif n == 9:
+            self.line(x, y, x + 2, y, r, g, b)
+            self.line(x, y + 2, x + 2, y + 2, r, g, b)
+            self.line(x, y + 4, x + 2, y + 4, r, g, b)
+            self.set_color(x, y + 1, r, g, b)
+            self.set_color(x + 2, y + 1, r, g, b)
+            self.set_color(x + 2, y + 3, r, g, b)
+
+    def rectangle(self, x1, y1, x2, y2, r, g, b):
+        """
+        Draw a rectangle with it's corners at x1:y1 and x2:y2
+        """
+
+        self.line(x1, y1, x1, y2, r, g, b)
+        self.line(x1, y1, x2, y1, r, g, b)
+        self.line(x2, y1, x2, y2, r, g, b)
+        self.line(x1, y2, x2, y2, r, g, b)
+
+    def line(self, x1, y1, x2, y2, r, g, b):
+        """
+        Draw a line from x1:y1 and x2:y2
+        """
+        points = []
+        is_steep = abs(y2 - y1) > abs(x2 - x1)
+        if is_steep:
+            x1, y1 = y1, x1
+            x2, y2 = y2, x2
+        rev = False
+        if x1 > x2:
+            x1, x2 = x2, x1
+            y1, y2 = y2, y1
+            rev = True
+        delta_x = x2 - x1
+        delta_y = abs(y2 - y1)
+        error = int(delta_x / 2)
+        y = y1
+        y_step = None
+
+        if y1 < y2:
+            y_step = 1
+        else:
+            y_step = -1
+        for x in range(x1, x2 + 1):
+            if is_steep:
+                #print y, "~", x
+                self.set_color(y, x, r, g, b)
+                points.append((y, x))
+            else:
+                #print x, " ", y
+                self.set_color(x, y, r, g, b)
+                points.append((x, y))
+            error -= delta_y
+            if error < 0:
+                y += y_step
+                error += delta_x
+                # Reverse the list if the coordinates were reversed
+        if rev:
+            points.reverse()
+        return points
+
+    def clear(self):
+        """
+        Set all pixels to black in the cached matrix
+        """
+        for y in range(0, self.rows):
+            for x in range(0, self.cols):
+                self.set_color(x, y, 0, 0, 0)
+
+    def send_data(self, channel):
+        """
+        Send data to the channel.
+
+        Args:
+            channel: 0 - R pin on BlinkStick Pro board
+                     1 - G pin on BlinkStick Pro board
+                     2 - B pin on BlinkStick Pro board
+        """
+
+        start_col = 0
+        end_col = 0
+
+        if channel == 0:
+            start_col = 0
+            end_col = self.r_columns
+
+        if channel == 1:
+            start_col = self.r_columns
+            end_col = start_col + self.g_columns
+
+        if channel == 2:
+            start_col = self.r_columns + self.g_columns
+            end_col = start_col + self.b_columns
+
+        self.data[channel] = self.matrix_data[:, start_col:end_col, :]
+
+        super(BlinkStickProMatrix, self).send_data(channel)
 
 def _find_blicksticks(find_all=True):
     if sys.platform == "win32":
