@@ -4,10 +4,14 @@ BlinkStick Python
 BlinkStick Python interface to control devices connected to the
 computer.
 
-What is BlinkStick? It's a DIY USB RGB LED device. More info 
-about it here:
+What is BlinkStick? It's a smart USB LED pixel. More info about it here:
 
 http://www.blinkstick.com
+
+API Reference
+-------------
+
+https://arvydas.github.io/blinkstick-python
 
 Requirements
 ------------
@@ -225,6 +229,14 @@ Use BlinkStick to display CPU usage:
 ::
 
     blinkstick --cpu-usage
+
+Control individual pixels on BlinkStick Pro. First you will need to set
+`BlinkStick Pro mode <http://mxcl.github.io/homebrew/>`_ to WS2812.
+
+::
+    blinkstick --set-mode 2
+
+
 
 Permission problems in Linux and Mac OS X
 -----------------------------------------
