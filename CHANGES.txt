@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.0 (2014-09-19)
+------------------
+
+* Added support for BlinkStick Pro
+* Removed grapefruit and replaced with colour
+
 0.7.0 (2013-10-03)
 ------------------
 
