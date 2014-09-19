@@ -145,6 +145,8 @@ Use the following command to see all available options:
                             select device by serial number. If unspecified, action
                             will be performed on all BlinkSticks.
       --inverse             control BlinkSticks in inverse mode
+      --channel=CHANNEL     Select channel
+      --index=INDEX         Select index
       --set-color=COLOR     set the color for the device. The value can either be
                             a named color, hex value, 'random' or 'off'.
                             CSS color names are defined
@@ -173,7 +175,8 @@ Use the following command to see all available options:
       -v, --verbose         Display debug output
       --add-udev-rule       Add udev rule to access BlinkSticks without root
                             permissions. Must be run as root.
-
+      --set-mode=MODE       Set mode for BlinkStick Pro. 0 - default, 1 - inverse,
+                            2 - ws2812
 
 Command Line Examples
 ---------------------
