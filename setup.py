@@ -30,7 +30,8 @@ if sys.platform == "win32":
         "colour",
         "webcolors",
         "pywinusb",
-        "websocket-client"
+        "websocket-client",
+        "numpy"
     ]
 else:
     os_requires = [
@@ -38,7 +39,8 @@ else:
         "webcolors",
         "pyusb",
         "websocket-client",
-        "psutil"
+        "psutil",
+        "numpy"
     ]
 
 setup(
