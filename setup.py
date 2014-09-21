@@ -29,15 +29,13 @@ if sys.platform == "win32":
     os_requires = [
         "colour",
         "webcolors",
-        "pywinusb",
-        "websocket-client"
+        "pywinusb"
     ]
 else:
     os_requires = [
         "colour",
         "webcolors",
-        "pyusb",
-        "websocket-client"
+        "pyusb"
     ]
 
 setup(

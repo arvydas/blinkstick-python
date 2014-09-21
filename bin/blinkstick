@@ -4,8 +4,6 @@ from optparse import OptionParser, IndentedHelpFormatter
 from blinkstick import blinkstick
 import textwrap
 import sys
-import websocket
-import json
 import time
 import logging
 logging.basicConfig()
@@ -83,86 +81,6 @@ def print_info(stick):
     print("    Info Block 2:  {0}").format(stick.get_info_block2())
 
 
-def on_message(ws, message):
-    global client_id
-    global sticks
-    global options
-
-    #Uncomment this for debugging purposes
-    if options.verbose:
-        print(message)
-
-    m = json.loads(message)
-
-    if m[0]['channel'] == '/meta/connect':
-        ws.send(json.dumps(
-            {'channel': '/meta/connect',
-             'clientId': client_id,
-             'connectionType': 'websocket'}))
-        return
-
-    elif m[0]['channel'] == '/meta/handshake':
-        client_id = m[0]['clientId']
-
-        print("Acquired clientId: {0}".format(client_id))
-
-        ws.send(json.dumps(
-            {'channel': '/meta/subscribe',
-             'clientId': client_id,
-             'subscription': '/devices/' + options.access_code}))
-        return
-
-    elif m[0]['channel'] == '/devices/' + options.access_code:
-        if 'color' in m[0]["data"]:
-            print("Received color: {0}".format(m[0]["data"]["color"]))
-
-            sticks[0].set_color(hex=m[0]["data"]["color"])
-        elif 'status' in m[0]["data"] and m[0]["data"]['status'] == "off":
-            print("Turn off")
-            sticks[0].turn_off()
-
-    elif m[0]['channel'] == '/meta/subscribe':
-        if m[0]['successful']:
-            print("Subscribed to device. Waiting for color message...")
-        else:
-            print("Subscription to the device failed. Please check the AccessCode value.")
-
-    #Reconnect again and wait for further messages
-    ws.send(json.dumps(
-        {'channel': '/meta/connect',
-         'clientId': client_id,
-         'connectionType': 'websocket'}))
-
-
-def on_error(ws, error):
-    print(error)
-
-
-def on_close(ws):
-    print("### closed ###")
-
-
-def on_open(ws):
-    ws.send(json.dumps(
-        {'channel': '/meta/handshake',
-         'version': '1.0',
-         'supportedConnectionTypes': ['long-polling', 'websocket']}))
-
-
-def connect():
-    global options
-
-    # Set this to True for debugging purposes
-    websocket.enableTrace(options.verbose)
-    ws = websocket.WebSocketApp("ws://live.blinkstick.com:9292/faye",
-                                on_message=on_message,
-                                on_error=on_error,
-                                on_close=on_close)
-    ws.on_open = on_open
-
-    ws.run_forever()
-
-
 def main():
     global options
     global sticks
@@ -235,10 +153,6 @@ def main():
                       dest="infoblock2",
                       help="set the second info block for the device.")
 
-    parser.add_option("--connect",
-                      dest="access_code",
-                      help="Connect to blinkstick.com and control the device remotely.")
-
     parser.add_option("-v", "--verbose",
                       action="store_true", dest="verbose",
                       help="Display debug output")
@@ -289,13 +203,6 @@ def main():
             stick.set_inverse(True)
 
         stick.set_error_reporting(False)
-
-    #Actions here work only on the first BlinkStick found
-    if options.access_code:
-        while True:
-            connect()
-            print("Attempting to reconnect in 15s")
-            time.sleep(15)
 
     #Actions here work on all BlinkSticks
     for stick in sticks:
