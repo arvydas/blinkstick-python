@@ -4,10 +4,6 @@ from optparse import OptionParser, IndentedHelpFormatter
 from blinkstick import blinkstick
 import textwrap
 import sys
-
-if sys.platform != "win32":
-    import psutil
-
 import websocket
 import json
 import time
@@ -85,18 +81,6 @@ def print_info(stick):
     print("    Mode:          {0}").format(stick.get_mode())
     print("    Info Block 1:  {0}").format(stick.get_info_block1())
     print("    Info Block 2:  {0}").format(stick.get_info_block2())
-
-
-def show_cpu_usage(stick):
-    print("Displaying CPU usage (Green = 0%, Amber = 50%, Red = 100%)")
-    print("Press Ctrl+C to exit")
-
-    while True:
-        cpu = psutil.cpu_percent(interval=1)
-
-        intensity = int(255 * cpu / 100)
-
-        stick.set_color(intensity, 255 - intensity, 0)
 
 
 def on_message(ws, message):
@@ -251,11 +235,6 @@ def main():
                       dest="infoblock2",
                       help="set the second info block for the device.")
 
-    if sys.platform != "win32":
-        parser.add_option("--cpu-usage",
-                          dest="cpu_usage", action="store_true",
-                          help="Use BlinkStick to display CPU usage.")
-
     parser.add_option("--connect",
                       dest="access_code",
                       help="Connect to blinkstick.com and control the device remotely.")
@@ -312,9 +291,7 @@ def main():
         stick.set_error_reporting(False)
 
     #Actions here work only on the first BlinkStick found
-    if sys.platform != "win32" and options.cpu_usage:
-        show_cpu_usage(sticks[0])
-    elif options.access_code:
+    if options.access_code:
         while True:
             connect()
             print("Attempting to reconnect in 15s")

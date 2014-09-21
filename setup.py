@@ -37,8 +37,7 @@ else:
         "colour",
         "webcolors",
         "pyusb",
-        "websocket-client",
-        "psutil"
+        "websocket-client"
     ]
 
 setup(
