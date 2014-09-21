@@ -1,8 +1,8 @@
 from ._version import  __version__
 from colour import Color
 import time
-import webcolors
 import sys
+import re
 
 if sys.platform == "win32":
     import pywinusb.hid as hid
@@ -22,6 +22,156 @@ class BlinkStickException(Exception):
 
 
 class BlinkStick(object):
+    _names_to_hex = {'aliceblue': '#f0f8ff',
+                     'antiquewhite': '#faebd7',
+                     'aqua': '#00ffff',
+                     'aquamarine': '#7fffd4',
+                     'azure': '#f0ffff',
+                     'beige': '#f5f5dc',
+                     'bisque': '#ffe4c4',
+                     'black': '#000000',
+                     'blanchedalmond': '#ffebcd',
+                     'blue': '#0000ff',
+                     'blueviolet': '#8a2be2',
+                     'brown': '#a52a2a',
+                     'burlywood': '#deb887',
+                     'cadetblue': '#5f9ea0',
+                     'chartreuse': '#7fff00',
+                     'chocolate': '#d2691e',
+                     'coral': '#ff7f50',
+                     'cornflowerblue': '#6495ed',
+                     'cornsilk': '#fff8dc',
+                     'crimson': '#dc143c',
+                     'cyan': '#00ffff',
+                     'darkblue': '#00008b',
+                     'darkcyan': '#008b8b',
+                     'darkgoldenrod': '#b8860b',
+                     'darkgray': '#a9a9a9',
+                     'darkgrey': '#a9a9a9',
+                     'darkgreen': '#006400',
+                     'darkkhaki': '#bdb76b',
+                     'darkmagenta': '#8b008b',
+                     'darkolivegreen': '#556b2f',
+                     'darkorange': '#ff8c00',
+                     'darkorchid': '#9932cc',
+                     'darkred': '#8b0000',
+                     'darksalmon': '#e9967a',
+                     'darkseagreen': '#8fbc8f',
+                     'darkslateblue': '#483d8b',
+                     'darkslategray': '#2f4f4f',
+                     'darkslategrey': '#2f4f4f',
+                     'darkturquoise': '#00ced1',
+                     'darkviolet': '#9400d3',
+                     'deeppink': '#ff1493',
+                     'deepskyblue': '#00bfff',
+                     'dimgray': '#696969',
+                     'dimgrey': '#696969',
+                     'dodgerblue': '#1e90ff',
+                     'firebrick': '#b22222',
+                     'floralwhite': '#fffaf0',
+                     'forestgreen': '#228b22',
+                     'fuchsia': '#ff00ff',
+                     'gainsboro': '#dcdcdc',
+                     'ghostwhite': '#f8f8ff',
+                     'gold': '#ffd700',
+                     'goldenrod': '#daa520',
+                     'gray': '#808080',
+                     'grey': '#808080',
+                     'green': '#008000',
+                     'greenyellow': '#adff2f',
+                     'honeydew': '#f0fff0',
+                     'hotpink': '#ff69b4',
+                     'indianred': '#cd5c5c',
+                     'indigo': '#4b0082',
+                     'ivory': '#fffff0',
+                     'khaki': '#f0e68c',
+                     'lavender': '#e6e6fa',
+                     'lavenderblush': '#fff0f5',
+                     'lawngreen': '#7cfc00',
+                     'lemonchiffon': '#fffacd',
+                     'lightblue': '#add8e6',
+                     'lightcoral': '#f08080',
+                     'lightcyan': '#e0ffff',
+                     'lightgoldenrodyellow': '#fafad2',
+                     'lightgray': '#d3d3d3',
+                     'lightgrey': '#d3d3d3',
+                     'lightgreen': '#90ee90',
+                     'lightpink': '#ffb6c1',
+                     'lightsalmon': '#ffa07a',
+                     'lightseagreen': '#20b2aa',
+                     'lightskyblue': '#87cefa',
+                     'lightslategray': '#778899',
+                     'lightslategrey': '#778899',
+                     'lightsteelblue': '#b0c4de',
+                     'lightyellow': '#ffffe0',
+                     'lime': '#00ff00',
+                     'limegreen': '#32cd32',
+                     'linen': '#faf0e6',
+                     'magenta': '#ff00ff',
+                     'maroon': '#800000',
+                     'mediumaquamarine': '#66cdaa',
+                     'mediumblue': '#0000cd',
+                     'mediumorchid': '#ba55d3',
+                     'mediumpurple': '#9370d8',
+                     'mediumseagreen': '#3cb371',
+                     'mediumslateblue': '#7b68ee',
+                     'mediumspringgreen': '#00fa9a',
+                     'mediumturquoise': '#48d1cc',
+                     'mediumvioletred': '#c71585',
+                     'midnightblue': '#191970',
+                     'mintcream': '#f5fffa',
+                     'mistyrose': '#ffe4e1',
+                     'moccasin': '#ffe4b5',
+                     'navajowhite': '#ffdead',
+                     'navy': '#000080',
+                     'oldlace': '#fdf5e6',
+                     'olive': '#808000',
+                     'olivedrab': '#6b8e23',
+                     'orange': '#ffa500',
+                     'orangered': '#ff4500',
+                     'orchid': '#da70d6',
+                     'palegoldenrod': '#eee8aa',
+                     'palegreen': '#98fb98',
+                     'paleturquoise': '#afeeee',
+                     'palevioletred': '#d87093',
+                     'papayawhip': '#ffefd5',
+                     'peachpuff': '#ffdab9',
+                     'peru': '#cd853f',
+                     'pink': '#ffc0cb',
+                     'plum': '#dda0dd',
+                     'powderblue': '#b0e0e6',
+                     'purple': '#800080',
+                     'red': '#ff0000',
+                     'rosybrown': '#bc8f8f',
+                     'royalblue': '#4169e1',
+                     'saddlebrown': '#8b4513',
+                     'salmon': '#fa8072',
+                     'sandybrown': '#f4a460',
+                     'seagreen': '#2e8b57',
+                     'seashell': '#fff5ee',
+                     'sienna': '#a0522d',
+                     'silver': '#c0c0c0',
+                     'skyblue': '#87ceeb',
+                     'slateblue': '#6a5acd',
+                     'slategray': '#708090',
+                     'slategrey': '#708090',
+                     'snow': '#fffafa',
+                     'springgreen': '#00ff7f',
+                     'steelblue': '#4682b4',
+                     'tan': '#d2b48c',
+                     'teal': '#008080',
+                     'thistle': '#d8bfd8',
+                     'tomato': '#ff6347',
+                     'turquoise': '#40e0d0',
+                     'violet': '#ee82ee',
+                     'wheat': '#f5deb3',
+                     'white': '#ffffff',
+                     'whitesmoke': '#f5f5f5',
+                     'yellow': '#ffff00',
+                     'yellowgreen': '#9acd32'}
+
+    HEX_COLOR_RE = re.compile(r'^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$')
+
     inverse = False
     error_reporting = True
 
@@ -154,7 +304,7 @@ class BlinkStick(object):
     def _get_color(self, index=0):
 
         """
-        Get the current color settings as a grapefruit Color object
+        Get the current color settings as a Color object
         """
         if index == 0:
             device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
@@ -187,9 +337,9 @@ class BlinkStick(object):
                     green = randint(0, 255)
                     blue = randint(0, 255)
                 else:
-                    red, green, blue = webcolors.name_to_rgb(name)
+                    red, green, blue = self._name_to_rgb(name)
             elif hex:
-                red, green, blue = webcolors.hex_to_rgb(hex)
+                red, green, blue = self._hex_to_rgb(hex)
         except ValueError:
             red = green = blue = 0
 
@@ -474,6 +624,111 @@ class BlinkStick(object):
         @param value: True/False to set the inverse mode
         """
         self.inverse = value
+
+    def _name_to_hex(self, name):
+        """
+        Convert a color name to a normalized hexadecimal color value.
+
+        The color name will be normalized to lower-case before being
+        looked up, and when no color of that name exists in the given
+        specification, ``ValueError`` is raised.
+
+        Examples:
+
+        >>> _name_to_hex('white')
+        '#ffffff'
+        >>> _name_to_hex('navy')
+        '#000080'
+        >>> _name_to_hex('goldenrod')
+        '#daa520'
+        """
+        normalized = name.lower()
+        try:
+            hex_value = self._names_to_hex[normalized]
+        except KeyError:
+            raise ValueError("'%s' is not defined as a named color." % (name))
+        return hex_value
+
+    def _hex_to_rgb(self, hex_value):
+        """
+        Convert a hexadecimal color value to a 3-tuple of integers
+        suitable for use in an ``rgb()`` triplet specifying that color.
+
+        The hexadecimal value will be normalized before being converted.
+
+        Examples:
+
+        >>> _hex_to_rgb('#fff')
+        (255, 255, 255)
+        >>> _hex_to_rgb('#000080')
+        (0, 0, 128)
+
+        """
+        hex_digits = self.normalize_hex(hex_value)
+        return tuple([int(s, 16) for s in (hex_digits[1:3], hex_digits[3:5], hex_digits[5:7])])
+
+    def normalize_hex(self, hex_value):
+        """
+        Normalize a hexadecimal color value to the following form and
+        return the result::
+
+            #[a-f0-9]{6}
+
+        In other words, the following transformations are applied as
+        needed:
+
+        * If the value contains only three hexadecimal digits, it is
+          expanded to six.
+
+        * The value is normalized to lower-case.
+
+        If the supplied value cannot be interpreted as a hexadecimal color
+        value, ``ValueError`` is raised.
+
+        Examples:
+
+        >>> normalize_hex('#0099cc')
+        '#0099cc'
+        >>> normalize_hex('#0099CC')
+        '#0099cc'
+        >>> normalize_hex('#09c')
+        '#0099cc'
+        >>> normalize_hex('#09C')
+        '#0099cc'
+        >>> normalize_hex('0099cc')
+        Traceback (most recent call last):
+            ...
+        ValueError: '0099cc' is not a valid hexadecimal color value.
+
+        """
+        try:
+            hex_digits = self.HEX_COLOR_RE.match(hex_value).groups()[0]
+        except AttributeError:
+            raise ValueError("'%s' is not a valid hexadecimal color value." % hex_value)
+        if len(hex_digits) == 3:
+            hex_digits = ''.join([2 * s for s in hex_digits])
+        return '#%s' % hex_digits.lower()
+
+    def _name_to_rgb(self, name):
+        """
+        Convert a color name to a 3-tuple of integers suitable for use in
+        an ``rgb()`` triplet specifying that color.
+
+        The color name will be normalized to lower-case before being
+        looked up, and when no color of that name exists in the given
+        specification, ``ValueError`` is raised.
+
+        Examples:
+
+        >>> _name_to_rgb('white')
+        (255, 255, 255)
+        >>> _name_to_rgb('navy')
+        (0, 0, 128)
+        >>> _name_to_rgb('goldenrod')
+        (218, 165, 32)
+
+        """
+        return self._hex_to_rgb(self._name_to_hex(name))
 
 class BlinkStickPro(object):
     def __init__(self, r_led_count=0, g_led_count=0, b_led_count=0, delay=0.002, max_rgb_value=255):
