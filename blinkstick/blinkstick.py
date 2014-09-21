@@ -1202,10 +1202,8 @@ def find_all():
     """
     result = []
     for d in _find_blicksticks():
-        try:
-            result.extend([BlinkStick(device=d)])
-        except usb.USBError:
-            print "Skipping device"
+        result.extend([BlinkStick(device=d)])
+        
     return result
 
 

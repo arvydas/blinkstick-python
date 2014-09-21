@@ -257,12 +257,6 @@ If the script returns with an error
 
     Access denied (insufficient permissions)
 
-Or it displays a message
-
-::
-
-    Skipping device
-
 You can either run the script with sudo, for example:
 
 ::
