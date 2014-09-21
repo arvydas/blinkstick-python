@@ -3,7 +3,6 @@ from colour import Color
 import time
 import webcolors
 import sys
-import numpy
 
 if sys.platform == "win32":
     import pywinusb.hid as hid
@@ -500,14 +499,36 @@ class BlinkStickPro(object):
 
         # initialise data store for each channel
         # pre-populated with zeroes
-        self.data = [numpy.zeros(shape=(r_led_count, 3), dtype=numpy.int),
-            numpy.zeros(shape=(g_led_count, 3), dtype=numpy.int),
-            numpy.zeros(shape=(b_led_count, 3), dtype=numpy.int)]
+
+        self.data = [[], [], []]
+
+        for i in range(0, r_led_count):
+            self.data[0].append([0, 0, 0])
+
+        for i in range(0, g_led_count):
+            self.data[1].append([0, 0, 0])
+
+        for i in range(0, b_led_count):
+            self.data[2].append([0, 0, 0])
 
         self.bstick = None
 
+    def _remap(self, value, leftMin, leftMax, rightMin, rightMax):
+        # Figure out how 'wide' each range is
+        leftSpan = leftMax - leftMin
+        rightSpan = rightMax - rightMin
+
+        # Convert the left range into a 0-1 range (float)
+        valueScaled = float(value - leftMin) / float(leftSpan)
+
+        # Convert the 0-1 range into a value in the right range.
+        return int(rightMin + (valueScaled * rightSpan))
+
+    def _remap_color(self, value):
+        return self._remap(value, 0, 255, 0, self.max_rgb_value)
+
     def _remap_rgb_value(self, rgb_val):
-        return int(numpy.interp(rgb_val, [0, 255], [0, self.max_rgb_value]))
+        return [self._remap_color(rgb_val[0]), self._remap_color(rgb_val[1]), self._remap_color(rgb_val[2])]
 
     def set_color(self, channel, index, r, g, b, remap_values=True):
         """
@@ -522,7 +543,7 @@ class BlinkStickPro(object):
         """
 
         if remap_values:
-            r, g, b = [self._remap_rgb_value(val) for val in [r, g, b]]
+            r, g, b = [self._remap_color(val) for val in [r, g, b]]
 
         self.data[channel][index] = [g, r, b]
 
@@ -579,7 +600,7 @@ class BlinkStickPro(object):
                      1 - G pin on BlinkStick Pro board
                      2 - B pin on BlinkStick Pro board
         """
-        packet_data = self.data[channel].astype(int).flatten().tolist()
+        packet_data = [item for sublist in self.data[channel] for item in sublist]
 
         try:
             self.bstick.set_led_data(channel, packet_data)
@@ -628,9 +649,11 @@ class BlinkStickProMatrix(BlinkStickPro):
         self.rows = max(r_rows, g_rows, b_rows)
         self.cols = r_columns + g_columns + b_columns
 
-        # initialise data store as 3d numpy matrix
-        # pre-populated with zeroes
-        self.matrix_data = numpy.zeros(shape=(self.rows, self.cols, 3))
+        # initialise data store for matrix pre-populated with zeroes
+        self.matrix_data = []
+
+        for i in range(0, self.rows * self.cols):
+            self.matrix_data.append([0, 0, 0])
 
     def set_color(self, x, y, r, g, b, remap_values=True):
         """
@@ -645,9 +668,12 @@ class BlinkStickProMatrix(BlinkStickPro):
         """
 
         if remap_values:
-            r, g, b = [self._remap_rgb_value(val) for val in [r, g, b]]
+            r, g, b = [self._remap_color(val) for val in [r, g, b]]
 
-        self.matrix_data[y, x] = [g, r, b]
+        self.matrix_data[self._coord_to_index(x, y)] = [g, r, b]
+
+    def _coord_to_index(self, x, y):
+        return y * self.cols + x
 
     def get_color(self, x, y):
         """Get the current color of a single pixel.
@@ -655,7 +681,7 @@ class BlinkStickProMatrix(BlinkStickPro):
         Returns values as 3-tuple (r,g,b)
         """
 
-        val = self.matrix_data[y, x]
+        val = self.matrix_data[self._coord_to_index(x, y)]
         return [val[1], val[0], val[2]]
 
     def shift_left(self, remove=False):
@@ -665,11 +691,24 @@ class BlinkStickProMatrix(BlinkStickPro):
         Args:
             remove: whether to remove the pixels on the last column or move the to the first column
         """
-        self.matrix_data = numpy.roll(self.matrix_data, 1, axis=1)
+        if not remove:
+            temp = []
+            for y in range(0, self.rows):
+                temp.append(self.get_color(0, y))
+
+        for y in range(0, self.rows):
+            for x in range(0, self.cols - 1):
+                r, g, b = self.get_color(x + 1, y)
+
+                self.set_color(x, y, r, g, b, False)
 
         if remove:
-            #set right most column to zeros
-            self.matrix_data[:, 0, :] = numpy.zeros(shape=3)
+            for y in range(0, self.rows):
+                self.set_color(self.cols - 1, y, 0, 0, 0, False)
+        else:
+            for y in range(0, self.rows):
+                col = temp[y]
+                self.set_color(self.cols - 1, y, col[0], col[1], col[2], False)
 
     def shift_right(self, remove=False):
         """Shift all LED values in the matrix to the right
@@ -678,11 +717,24 @@ class BlinkStickProMatrix(BlinkStickPro):
             remove: whether to remove the pixels on the last column or move the to the first column
         """
 
-        self.matrix_data = numpy.roll(self.matrix_data, -1, axis=1)
+        if not remove:
+            temp = []
+            for y in range(0, self.rows):
+                temp.append(self.get_color(self.cols - 1, y))
+
+        for y in range(0, self.rows):
+            for x in reversed(range(1, self.cols)):
+                r, g, b = self.get_color(x - 1, y)
+
+                self.set_color(x, y, r, g, b, False)
 
         if remove:
-            #set left most column to zeros
-            self.matrix_data[:, -1, :] = numpy.zeros(shape=3)
+            for y in range(0, self.rows):
+                self.set_color(0, y, 0, 0, 0, False)
+        else:
+            for y in range(0, self.rows):
+                col = temp[y]
+                self.set_color(self.cols - 1, y, col[0], col[1], col[2], False)
 
     def shift_down(self, remove=False):
         """Shift all LED values in the matrix down
@@ -691,10 +743,25 @@ class BlinkStickProMatrix(BlinkStickPro):
             remove: whether to remove the pixels on the last row or move the to the first row
         """
 
-        self.matrix_data = numpy.roll(self.matrix_data, 1, axis=0)
+        if not remove:
+            temp = []
+            for x in range(0, self.cols):
+                temp.append(self.get_color(x, self.rows - 1))
+
+        for x in range(0, self.cols):
+            for y in reversed(range(1, self.rows)):
+                r, g, b = self.get_color(x, y - 1)
+
+                self.set_color(x, y, r, g, b, False)
+
         if remove:
-            #set top row to zeros
-            self.matrix_data[0, :, :] = numpy.zeros(shape=3)
+            for x in range(0, self.cols):
+                self.set_color(x, 0, 0, 0, 0, False)
+        else:
+            for x in range(0, self.cols):
+                col = temp[y]
+                self.set_color(x, 0, col[0], col[1], col[2], False)
+
 
     def shift_up(self, remove=False):
         """Shift all LED values in the matrix up
@@ -703,11 +770,24 @@ class BlinkStickProMatrix(BlinkStickPro):
             remove: whether to remove the pixels on the first row or move the to the first row
         """
 
-        self.matrix_data = numpy.roll(self.matrix_data, -1, axis=0)
+        if not remove:
+            temp = []
+            for x in range(0, self.cols):
+                temp.append(self.get_color(x, 0))
+
+        for x in range(0, self.cols):
+            for y in range(0, self.rows - 1):
+                r, g, b = self.get_color(x, y + 1)
+
+                self.set_color(x, y, r, g, b, False)
 
         if remove:
-            #set bottom row to zeros
-            self.matrix_data[-1, :, :] = numpy.zeros(shape=3)
+            for x in range(0, self.cols):
+                self.set_color(x, self.rows - 1, 0, 0, 0, False)
+        else:
+            for x in range(0, self.cols):
+                col = temp[y]
+                self.set_color(x, self.rows - 1, col[0], col[1], col[2], False)
 
     def number(self, x, y, n, r, g, b):
         """
@@ -853,7 +933,14 @@ class BlinkStickProMatrix(BlinkStickPro):
             start_col = self.r_columns + self.g_columns
             end_col = start_col + self.b_columns
 
-        self.data[channel] = self.matrix_data[:, start_col:end_col, :]
+        self.data[channel] = []
+
+        #slice the huge array to individual packets
+        for y in range(0, self.rows):
+            start = y * self.cols + start_col
+            end = y * self.cols + end_col
+
+            self.data[channel].extend(self.matrix_data[start: end])
 
         super(BlinkStickProMatrix, self).send_data(channel)
 
