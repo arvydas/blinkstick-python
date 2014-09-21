@@ -99,19 +99,6 @@ Install blinkstick Python package with pip:
 
     sudo pip install blinkstick
 
-If you get an error that libusb can not be found
-
-::
-    Downloading/unpacking pyusb
-      Could not find a version that satisfies the requirement pyusb (from versions: 1.0.0a2, 1.0.0a2, 1.0.0a3, 1.0.0a3, 1.0.0b1)
-
-Run command with --pre option:
-
-::
-
-    sudo pip install --pre blinkstick
-
-This will install the pre-release version of pyusb, which is the only one currently available.
 
 Microsoft Windows
 `````````````````
