@@ -27,12 +27,10 @@ else:
 
 if sys.platform == "win32":
     os_requires = [
-        "colour",
         "pywinusb"
     ]
 else:
     os_requires = [
-        "colour",
         "pyusb"
     ]
 

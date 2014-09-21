@@ -1,5 +1,4 @@
 from ._version import  __version__
-from colour import Color
 import time
 import sys
 import re
@@ -301,32 +300,6 @@ class BlinkStick(object):
             except Exception as e:
                 pass
 
-    def _get_color(self, index=0):
-
-        """
-        Get the current color settings as a Color object
-        """
-        if index == 0:
-            device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
-            # Color object requires RGB values in range 0-1, not 0-255
-            if self.inverse:
-                color = Color(red=float(255 - device_bytes[1]) / 255,
-                              green=float(255 - device_bytes[2]) / 255,
-                              blue=float(255 - device_bytes[3]) / 255)
-            else:
-                color = Color(red=float(device_bytes[1]) / 255,
-                              green=float(device_bytes[2]) / 255,
-                              blue=float(device_bytes[3]) / 255)
-        else:
-            data = self.get_led_data(index + 1)
-
-            # Color object requires RGB values in range 0-1, not 0-255
-            color = Color(red=float(data[index * 3 + 1]) / 255,
-                          green=float(data[index * 3]) / 255,
-                          blue=float(data[index * 3 + 2]) / 255)
-
-        return color
-
     def _determine_rgb(self, red=0, green=0, blue=0, name=None, hex=None):
 
         try:
@@ -348,11 +321,20 @@ class BlinkStick(object):
         return red, green, blue
 
     def _get_color_rgb(self, index=0):
-        r, g, b = self._get_color(index).rgb
-        return int(r * 255), int(g * 255), int(b * 255)
+        if index == 0:
+            device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x0001, 0, 33)
+            if self.inverse:
+                return [255 - device_bytes[1], 255 - device_bytes[2], 255 - device_bytes[3]]
+            else:
+                return [device_bytes[1], device_bytes[2], device_bytes[3]]
+        else:
+            data = self.get_led_data(index * 3)
+
+            return [data[index * 3 + 1], data[index * 3], data[index * 3 + 2]]
 
     def _get_color_hex(self, index=0):
-        return self._get_color(index).hex
+        r, g, b = self._get_color_rgb(index)
+        return '#%02x%02x%02x' % (r, g, b)
 
     def get_color(self, index=0, color_format='rgb'):
 
