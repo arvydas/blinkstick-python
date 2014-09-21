@@ -76,7 +76,7 @@ Microsoft Windows
 `````````````````
 
 Download and install Python 2.7.x:
-  
+
 http://www.python.org/download/releases/
 
 Install setuptools:
@@ -172,10 +172,6 @@ Use the following command to see all available options:
                             set the first info block for the device.
       --set-infoblock2=INFOBLOCK2
                             set the second info block for the device.
-      --cpu-usage           Use BlinkStick to display CPU usage.
-      --connect=ACCESS_CODE
-                            Connect to blinkstick.com and control the device
-                            remotely.
       -v, --verbose         Display debug output
       --add-udev-rule       Add udev rule to access BlinkSticks without root
                             permissions. Must be run as root.
@@ -218,17 +214,8 @@ Morph to red, green and blue
     blinkstick --set-color gree --morph
     blinkstick --set-color blue --morph
 
-Connect to blinkstick.com with access_code available on the device details page:
-
-::
-
-    blinkstick --connect access_code
-
-Use BlinkStick to display CPU usage:
-
-::
-
-    blinkstick --cpu-usage
+Connect to blinkstick.com and CPU usage command line options are no longer available. Please read this
+notice about `module simplification <https://github.com/arvydas/blinkstick-python/wiki/Module-Simplification>`_.
 
 Control individual pixels on BlinkStick Pro. First you will need to set
 `BlinkStick Pro mode <http://mxcl.github.io/homebrew/>`_ to WS2812.
