@@ -354,7 +354,7 @@ class BlinkStick(object):
     def _get_color_hex(self, index=0):
         return self._get_color(index).hex
 
-    def get_color(self, channel=0, index=0, color_format='rgb'):
+    def get_color(self, index=0, color_format='rgb'):
 
         """
         Get the current device color in the defined format. Default format is (r,g,b).
