@@ -221,9 +221,18 @@ Control individual pixels on BlinkStick Pro. First you will need to set
 `BlinkStick Pro mode <http://mxcl.github.io/homebrew/>`_ to WS2812.
 
 ::
+
     blinkstick --set-mode 2
 
 
+Now you can set color of individual LEDs connected to R, G or B channels.
+
+::
+
+    blinkstick --channel 0 --index 5 --set-color red
+
+More code examples for controlling BlinkStick Pro are available in the 
+`wiki <https://github.com/arvydas/blinkstick-python/wiki>`_.
 
 Permission problems in Linux and Mac OS X
 -----------------------------------------
