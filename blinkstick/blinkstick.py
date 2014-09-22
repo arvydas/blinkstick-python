@@ -1250,6 +1250,8 @@ class BlinkStickProMatrix(BlinkStickPro):
         @param x: the x location in the matrix (left of the number)
         @type y: int
         @param y: the y location in the matrix (top of the number)
+        @type n: int
+        @param n: A number digit to render 0..9
         @type r: int
         @param r: red color byte
         @type g: int
