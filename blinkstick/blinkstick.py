@@ -1520,8 +1520,18 @@ def _remap(value, leftMin, leftMax, rightMin, rightMax):
 def _remap_color(value, max_value):
     return _remap(value, 0, 255, 0, max_value)
 
+def _remap_color_reverse(value, max_value):
+    return _remap(value, 0, max_value, 0, 255)
+
 def _remap_rgb_value(rgb_val, max_value):
-    return [_remap_color(rgb_val[0], max_value), _remap_color(rgb_val[1], max_value), _remap_color(rgb_val[2], max_value)]
+    return [_remap_color(rgb_val[0], max_value),
+        _remap_color(rgb_val[1], max_value),
+        _remap_color(rgb_val[2], max_value)]
+
+def _remap_rgb_value_reverse(rgb_val, max_value):
+    return [_remap_color_reverse(rgb_val[0], max_value),
+        _remap_color_reverse(rgb_val[1], max_value),
+        _remap_color_reverse(rgb_val[2], max_value)]
 
 def get_blinkstick_package_version():
     return __version__
