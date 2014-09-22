@@ -682,8 +682,12 @@ class BlinkStick(object):
 
         r_end, g_end, b_end = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        r_start, g_start, b_start = self._get_color(index).rgb
-        r_start, g_start, b_start = 255 * r_start, 255 * g_start, 255 * b_start
+        r_start, g_start, b_start = _remap_rgb_value_reverse(self._get_color_rgb(index), self.max_rgb_value)
+
+        if r_start > 255 or g_start > 255 or b_start > 255:
+            r_start = 0
+            g_start = 0
+            b_start = 0
 
         gradient = []
 
