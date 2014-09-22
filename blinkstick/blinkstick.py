@@ -186,6 +186,7 @@ class BlinkStick(object):
 
     inverse = False
     error_reporting = True
+    max_rbg_value = 255
 
     def __init__(self, device=None, error_reporting=True):
         """
@@ -358,6 +359,8 @@ class BlinkStick(object):
                 red, green, blue = self._hex_to_rgb(hex)
         except ValueError:
             red = green = blue = 0
+
+        red, gree, blue = _remap_rgb_value([red, green, blue], self.max_rgb_value)
 
         # TODO - do smarts to determine input type from red var in case it is not int
 
@@ -739,6 +742,26 @@ class BlinkStick(object):
         @param value: True/False to set the inverse mode
         """
         self.inverse = value
+
+    def set_max_rbg_value(self, value):
+        """
+        Set RGB color limit. {set_color} function will automatically remap
+        the values to maximum supplied.
+
+        @type  value: int
+        @param value: 0..255 maximum value for each R, G and B color
+        """
+        self.max_rgb_value = value
+
+    def get_max_rbg_value(self, max_rbg_value):
+        """
+        Get RGB color limit. {set_color} function will automatically remap
+        the values to maximum set.
+
+        @rtype: int
+        @return: 0..255 maximum value for each R, G and B color
+        """
+        return self.max_rgb_value
 
     def _name_to_hex(self, name):
         """
