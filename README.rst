@@ -8,15 +8,12 @@ What is BlinkStick? It's a smart USB LED pixel. More info about it here:
 
 http://www.blinkstick.com
 
-Source code repository
--------------
+Resources
+---------
 
-https://github.com/arvydas/blinkstick-python
-
-API Reference
--------------
-
-https://arvydas.github.io/blinkstick-python
+`Code repository on GitHub <https://github.com/arvydas/blinkstick-python>`_
+`API reference documentation <https://arvydas.github.io/blinkstick-python>`_
+`Code Examples <https://github.com/arvydas/blinkstick-python/wiki>`_
 
 Requirements
 ------------
@@ -30,14 +27,6 @@ Requirements Installation
 
 Linux
 `````
-
-Install requirement for websocket-client package:
-
-::
-
-    sudo apt-get install python-dev
-
-Note: Replace *python-dev* with *python2.7-dev* if you are installing on Raspberry Pi.
 
 Install pip (Python package management software):
 
@@ -56,7 +45,7 @@ Install libusb with `homebrew <http://mxcl.github.io/homebrew/>`_:
 
 Install pip
 
-:: 
+::
 
     sudo easy_install pip
 
@@ -80,17 +69,9 @@ It can be mitigated with
 Microsoft Windows
 `````````````````
 
-Download and install Python 2.7.x:
-
-http://www.python.org/download/releases/
-
-Install setuptools:
-
-http://www.lfd.uci.edu/~gohlke/pythonlibs/#setuptools
-
-Install pip:
-
-http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip
+* Download and install `Python 2.7.x <http://www.python.org/download/releases/>`_
+* Install `setuptools <http://www.lfd.uci.edu/~gohlke/pythonlibs/#setuptools>`_
+* Install `pip <http://www.lfd.uci.edu/~gohlke/pythonlibs/#pip>`_
 
 BlinkStick package Installation
 -------------------------------
@@ -118,16 +99,8 @@ Assuming that Python was installed into C:\\Python27 folder, type in the
 following into the command window:
 
 ::
-    
+
     C:\Python27\Scripts\pip.exe install blinkstick
-
-Code Examples
--------------
-
-Code examples are available in the wiki:
-
-https://github.com/arvydas/blinkstick-python/wiki
-
 
 Description
 -----------
@@ -187,13 +160,13 @@ Use the following command to see all available options:
 Command Line Examples
 ---------------------
 
-Set random color all BlinkSticks:
+Set random color for all BlinkSticks:
 
 ::
 
     blinkstick --set-color random
 
-Set blue color for the blinkstick with serial number BS000001-1.0:
+Set blue color for the BlinkStick with serial number BS000001-1.0:
 
 ::
 
@@ -224,7 +197,7 @@ Connect to blinkstick.com and CPU usage command line options are no longer avail
 notice about `module simplification <https://github.com/arvydas/blinkstick-python/wiki/Module-Simplification>`_.
 
 Control individual pixels on BlinkStick Pro. First you will need to set
-`BlinkStick Pro mode <http://mxcl.github.io/homebrew/>`_ to WS2812.
+`BlinkStick Pro mode <http://www.blinkstick.com/help/tutorials/blinkstick-pro-modes>`_ to WS2812.
 
 ::
 
