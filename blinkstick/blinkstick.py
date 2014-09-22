@@ -899,23 +899,6 @@ class BlinkStickPro(object):
 
         self.bstick = None
 
-    def _remap(self, value, leftMin, leftMax, rightMin, rightMax):
-        # Figure out how 'wide' each range is
-        leftSpan = leftMax - leftMin
-        rightSpan = rightMax - rightMin
-
-        # Convert the left range into a 0-1 range (float)
-        valueScaled = float(value - leftMin) / float(leftSpan)
-
-        # Convert the 0-1 range into a value in the right range.
-        return int(rightMin + (valueScaled * rightSpan))
-
-    def _remap_color(self, value):
-        return self._remap(value, 0, 255, 0, self.max_rgb_value)
-
-    def _remap_rgb_value(self, rgb_val):
-        return [self._remap_color(rgb_val[0]), self._remap_color(rgb_val[1]), self._remap_color(rgb_val[2])]
-
     def set_color(self, channel, index, r, g, b, remap_values=True):
         """
         Set the color of a single pixel
