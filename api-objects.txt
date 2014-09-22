@@ -9,11 +9,13 @@ blinkstick._version.__package__	blinkstick._version-module.html#__package__
 blinkstick.blinkstick	blinkstick.blinkstick-module.html
 blinkstick.blinkstick.get_blinkstick_package_version	blinkstick.blinkstick-module.html#get_blinkstick_package_version
 blinkstick.blinkstick._remap_rgb_value	blinkstick.blinkstick-module.html#_remap_rgb_value
+blinkstick.blinkstick._remap_rgb_value_reverse	blinkstick.blinkstick-module.html#_remap_rgb_value_reverse
 blinkstick.blinkstick._remap	blinkstick.blinkstick-module.html#_remap
 blinkstick.blinkstick.find_by_serial	blinkstick.blinkstick-module.html#find_by_serial
 blinkstick.blinkstick.find_first	blinkstick.blinkstick-module.html#find_first
 blinkstick.blinkstick.PRODUCT_ID	blinkstick.blinkstick-module.html#PRODUCT_ID
 blinkstick.blinkstick._remap_color	blinkstick.blinkstick-module.html#_remap_color
+blinkstick.blinkstick._remap_color_reverse	blinkstick.blinkstick-module.html#_remap_color_reverse
 blinkstick.blinkstick._find_blicksticks	blinkstick.blinkstick-module.html#_find_blicksticks
 blinkstick.blinkstick.VENDOR_ID	blinkstick.blinkstick-module.html#VENDOR_ID
 blinkstick.blinkstick.__package__	blinkstick.blinkstick-module.html#__package__
