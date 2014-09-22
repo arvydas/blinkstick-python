@@ -112,6 +112,10 @@ def main():
                       default=0, dest="index",
                       help="Select index")
 
+    parser.add_option("--limit",
+                      default=100, dest="limit",
+                      help="Limit the brightness of the color 0..100")
+
     parser.add_option("--set-color",
                       dest="color",
                       help="set the color for the device. The value can either be a named color, hex value, 'random' or 'off'.\n\n"
@@ -200,6 +204,8 @@ def main():
     for stick in sticks:
         if options.inverse:
             stick.set_inverse(True)
+
+        stick.set_max_rbg_value(int(float(options.limit) / 100.0 * 255))
 
         stick.set_error_reporting(False)
 
