@@ -933,7 +933,7 @@ class BlinkStickPro(object):
         """
 
         if remap_values:
-            r, g, b = [self._remap_color(val) for val in [r, g, b]]
+            r, g, b = [_remap_color(val, self.max_rgb_value) for val in [r, g, b]]
 
         self.data[channel][index] = [g, r, b]
 
@@ -1105,7 +1105,7 @@ class BlinkStickProMatrix(BlinkStickPro):
         """
 
         if remap_values:
-            r, g, b = [self._remap_color(val) for val in [r, g, b]]
+            r, g, b = [_remap_color(val, self.max_rgb_value) for val in [r, g, b]]
 
         self.matrix_data[self._coord_to_index(x, y)] = [g, r, b]
 
@@ -1498,5 +1498,23 @@ def find_by_serial(serial=None):
         return BlinkStick(device=devices[0])
 
 
+def _remap(value, leftMin, leftMax, rightMin, rightMax):
+    # Figure out how 'wide' each range is
+    leftSpan = leftMax - leftMin
+    rightSpan = rightMax - rightMin
+
+    # Convert the left range into a 0-1 range (float)
+    valueScaled = float(value - leftMin) / float(leftSpan)
+
+    # Convert the 0-1 range into a value in the right range.
+    return int(rightMin + (valueScaled * rightSpan))
+
+def _remap_color(value, max_value):
+    return _remap(value, 0, 255, 0, max_value)
+
+def _remap_rgb_value(rgb_val, max_value):
+    return [_remap_color(rgb_val[0], max_value), _remap_color(rgb_val[1], max_value), _remap_color(rgb_val[2], max_value)]
+
 def get_blinkstick_package_version():
     return __version__
+
