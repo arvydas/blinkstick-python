@@ -205,7 +205,7 @@ def main():
         if options.inverse:
             stick.set_inverse(True)
 
-        stick.set_max_rbg_value(int(float(options.limit) / 100.0 * 255))
+        stick.set_max_rgb_value(int(float(options.limit) / 100.0 * 255))
 
         stick.set_error_reporting(False)
 
