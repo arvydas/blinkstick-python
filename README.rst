@@ -11,9 +11,9 @@ http://www.blinkstick.com
 Resources
 ---------
 
-`Code repository on GitHub <https://github.com/arvydas/blinkstick-python>`_
-`API reference documentation <https://arvydas.github.io/blinkstick-python>`_
-`Code Examples <https://github.com/arvydas/blinkstick-python/wiki>`_
+- `Code repository on GitHub <https://github.com/arvydas/blinkstick-python>`_
+- `API reference documentation <https://arvydas.github.io/blinkstick-python>`_
+- `Code Examples <https://github.com/arvydas/blinkstick-python/wiki>`_
 
 Requirements
 ------------
