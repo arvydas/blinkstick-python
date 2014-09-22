@@ -130,6 +130,7 @@ Use the following command to see all available options:
       --inverse             control BlinkSticks in inverse mode
       --channel=CHANNEL     Select channel
       --index=INDEX         Select index
+      --limit=LIMIT         Limit the brightness of the color 0..100
       --set-color=COLOR     set the color for the device. The value can either be
                             a named color, hex value, 'random' or 'off'.
                             CSS color names are defined
