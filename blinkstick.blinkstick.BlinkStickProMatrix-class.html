@@ -45,8 +45,6 @@
     <td>
       <table cellpadding="0" cellspacing="0">
         <!-- hide/show private -->
-        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
-    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
             >]&nbsp;|&nbsp;<a href="blinkstick.blinkstick.BlinkStickProMatrix-class.html"
@@ -66,22 +64,44 @@
 </pre>
 
 <hr />
+<p>BlinkStickProMatrix class is specifically designed to control the 
+  individually addressable LEDs connected to the device and arranged in a 
+  matrix. The tutorials section contains all the details on how to connect 
+  them to BlinkStick Pro with matrices.</p>
+  <p><a 
+  href="http://www.blinkstick.com/help/tutorials/blinkstick-pro-adafruit-neopixel-matrices"
+  
+  target="_top">http://www.blinkstick.com/help/tutorials/blinkstick-pro-adafruit-neopixel-matrices</a></p>
+  <p>Code example on how you can use this class are available here:</p>
+  <p><a 
+  href="https://github.com/arvydas/blinkstick-python/wiki#code-examples-for-blinkstick-pro"
+  
+  target="_top">https://github.com/arvydas/blinkstick-python/wiki#code-examples-for-blinkstick-pro</a></p>
+  <p>Matrix is driven by using <a 
+  href="blinkstick.blinkstick.BlinkStickProMatrix-class.html#set_color" 
+  class="link">BlinkStickProMatrix.set_color</a> with [x,y] coordinates and
+  class automatically divides data into subsets and sends it to the 
+  matrices.</p>
+  <p>For example, if you have 2 8x8 matrices connected to BlinkStickPro and
+  you initialize the class with</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>matrix = BlinkStickProMatrix(r_columns=8, r_rows=8, g_columns=8, g_rows=8)</pre>
+  <p>Then you can set the internal framebuffer by using {set_color} 
+  command:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>matrix.set_color(x=10, y=5, r=255, g=0, b=0)
+<span class="py-prompt">&gt;&gt;&gt; </span>matrix.set_color(x=6, y=3, r=0, g=255, b=0)</pre>
+  <p>And send data to both matrices in one go:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>matrix.send_data_all()</pre>
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Instance Methods</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-InstanceMethods"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
@@ -98,7 +118,7 @@
         <span class="summary-sig-arg">b_rows</span>=<span class="summary-sig-default">0</span>,
         <span class="summary-sig-arg">delay</span>=<span class="summary-sig-default">0.002</span>,
         <span class="summary-sig-arg">max_rgb_value</span>=<span class="summary-sig-default">255</span>)</span><br />
-      Initialize class</td>
+      Initialize BlinkStickProMatrix class.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickProMatrix.__init__">source&nbsp;code</a></span>
             
@@ -121,7 +141,7 @@
         <span class="summary-sig-arg">g</span>,
         <span class="summary-sig-arg">b</span>,
         <span class="summary-sig-arg">remap_values</span>=<span class="summary-sig-default">True</span>)</span><br />
-      Set the color of a single pixel</td>
+      Set the color of a single pixel in the internal framebuffer.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickProMatrix.set_color">source&nbsp;code</a></span>
             
@@ -133,7 +153,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">(int, int, int)</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -228,7 +248,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="number"></a><span class="summary-sig-name">number</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStickProMatrix-class.html#number" class="summary-sig-name">number</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">x</span>,
         <span class="summary-sig-arg">y</span>,
         <span class="summary-sig-arg">n</span>,
@@ -251,7 +271,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="rectangle"></a><span class="summary-sig-name">rectangle</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStickProMatrix-class.html#rectangle" class="summary-sig-name">rectangle</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">x1</span>,
         <span class="summary-sig-arg">y1</span>,
         <span class="summary-sig-arg">x2</span>,
@@ -275,7 +295,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="line"></a><span class="summary-sig-name">line</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStickProMatrix-class.html#line" class="summary-sig-name">line</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">x1</span>,
         <span class="summary-sig-arg">y1</span>,
         <span class="summary-sig-arg">x2</span>,
@@ -318,7 +338,7 @@
         <tr>
           <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStickProMatrix-class.html#send_data" class="summary-sig-name">send_data</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">channel</span>)</span><br />
-      Send data to the channel.</td>
+      Send data stored in the internal buffer to the channel.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickProMatrix.send_data">source&nbsp;code</a></span>
             
@@ -335,9 +355,6 @@
       <code><a href="blinkstick.blinkstick.BlinkStickPro-class.html#off">off</a></code>,
       <code><a href="blinkstick.blinkstick.BlinkStickPro-class.html#send_data_all">send_data_all</a></code>
       </p>
-    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="blinkstick.blinkstick.BlinkStickPro-class.html">BlinkStickPro</a></code></b> (private):
-      <code><a href="blinkstick.blinkstick.BlinkStickPro-class.html#_remap_rgb_value" onclick="show_private();">_remap_rgb_value</a></code>
-      </p></div>
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
       <code>__delattr__</code>,
       <code>__format__</code>,
@@ -360,17 +377,8 @@
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Properties</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-Properties"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
 </tr>
   <tr>
     <td colspan="2" class="summary">
@@ -385,17 +393,8 @@
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Method Details</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-MethodDetails"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
 </tr>
 </table>
 <a name="__init__"></a>
@@ -421,19 +420,16 @@
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Initialize class
-
-Args:
-    columns: number of columns
-    rows: number of rows
-    channels: how many channels are used in r, g and b order
-    delay: default transmission delay between frames
-    max_rgb_value: maximum color value for RGB channels
-
-</pre>
+  <p>Initialize BlinkStickProMatrix class.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>r_columns</code></strong> (int) - number of matric columns for R channel</li>
+        <li><strong class="pname"><code>g_columns</code></strong> (int) - number of matric columns for R channel</li>
+        <li><strong class="pname"><code>b_columns</code></strong> (int) - number of matric columns for R channel</li>
+        <li><strong class="pname"><code>delay</code></strong> (int) - default transmission delay between frames</li>
+        <li><strong class="pname"><code>max_rgb_value</code></strong> (int) - maximum color value for RGB channels</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -460,19 +456,18 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Set the color of a single pixel
-
-Args:
-    x: the x location in the matrix
-    y: the y location in the matrix
-    r: red color byte
-    g: green color byte
-    b: blue color byte
-
-</pre>
+  <p>Set the color of a single pixel in the internal framebuffer.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x</code></strong> (int) - the x location in the matrix</li>
+        <li><strong class="pname"><code>y</code></strong> (int) - the y location in the matrix</li>
+        <li><strong class="pname"><code>r</code></strong> (int) - red color byte</li>
+        <li><strong class="pname"><code>g</code></strong> (int) - green color byte</li>
+        <li><strong class="pname"><code>b</code></strong> (int) - blue color byte</li>
+        <li><strong class="pname"><code>remap_values</code></strong> (bool) - Automatically remap values based on the {max_rbg_value} supplied 
+          in the constructor</li>
+    </ul></dd>
     <dt>Overrides:
         <a href="blinkstick.blinkstick.BlinkStickPro-class.html#set_color">BlinkStickPro.set_color</a>
     </dt>
@@ -496,8 +491,14 @@ Args:
   </tr></table>
   
   <p>Get the current color of a single pixel.</p>
-  <p>Returns values as 3-tuple (r,g,b)</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x</code></strong> (int) - x coordinate of the internal framebuffer</li>
+        <li><strong class="pname"><code>y</code></strong> (int) - y coordinate of the internal framebuffer</li>
+    </ul></dd>
+    <dt>Returns: (int, int, int)</dt>
+        <dd>3-tuple for R, G and B values</dd>
     <dt>Overrides:
         <a href="blinkstick.blinkstick.BlinkStickPro-class.html#get_color">BlinkStickPro.get_color</a>
     </dt>
@@ -519,15 +520,13 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Shift all LED values in the matrix to the left
-
-Args:
-    remove: whether to remove the pixels on the last column or move the to the first column
-
-</pre>
+  <p>Shift all LED values in the matrix to the left</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>remove</code></strong> (bool) - whether to remove the pixels on the last column or move the to 
+          the first column</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -546,14 +545,13 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-Shift all LED values in the matrix to the right
-
-Args:
-    remove: whether to remove the pixels on the last column or move the to the first column
-
-</pre>
+  <p>Shift all LED values in the matrix to the right</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>remove</code></strong> (bool) - whether to remove the pixels on the last column or move the to 
+          the first column</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -572,14 +570,13 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-Shift all LED values in the matrix down
-
-Args:
-    remove: whether to remove the pixels on the last row or move the to the first row
-
-</pre>
+  <p>Shift all LED values in the matrix down</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>remove</code></strong> (bool) - whether to remove the pixels on the last column or move the to 
+          the first column</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -598,14 +595,118 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-Shift all LED values in the matrix up
-
-Args:
-    remove: whether to remove the pixels on the first row or move the to the first row
-
-</pre>
+  <p>Shift all LED values in the matrix up</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>remove</code></strong> (bool) - whether to remove the pixels on the last column or move the to 
+          the first column</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="number"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">number</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">x</span>,
+        <span class="sig-arg">y</span>,
+        <span class="sig-arg">n</span>,
+        <span class="sig-arg">r</span>,
+        <span class="sig-arg">g</span>,
+        <span class="sig-arg">b</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickProMatrix.number">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Render a 3x5 number n at location x,y and r,g,b color</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x</code></strong> (int) - the x location in the matrix (left of the number)</li>
+        <li><strong class="pname"><code>y</code></strong> (int) - the y location in the matrix (top of the number)</li>
+        <li><strong class="pname"><code>r</code></strong> (int) - red color byte</li>
+        <li><strong class="pname"><code>g</code></strong> (int) - green color byte</li>
+        <li><strong class="pname"><code>b</code></strong> (int) - blue color byte</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="rectangle"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rectangle</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">x1</span>,
+        <span class="sig-arg">y1</span>,
+        <span class="sig-arg">x2</span>,
+        <span class="sig-arg">y2</span>,
+        <span class="sig-arg">r</span>,
+        <span class="sig-arg">g</span>,
+        <span class="sig-arg">b</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickProMatrix.rectangle">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Draw a rectangle with it's corners at x1:y1 and x2:y2</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x1</code></strong> (int) - the x1 location in the matrix for first corner of the rectangle</li>
+        <li><strong class="pname"><code>y1</code></strong> (int) - the y1 location in the matrix for first corner of the rectangle</li>
+        <li><strong class="pname"><code>x2</code></strong> (int) - the x2 location in the matrix for second corner of the rectangle</li>
+        <li><strong class="pname"><code>y2</code></strong> (int) - the y2 location in the matrix for second corner of the rectangle</li>
+        <li><strong class="pname"><code>r</code></strong> (int) - red color byte</li>
+        <li><strong class="pname"><code>g</code></strong> (int) - green color byte</li>
+        <li><strong class="pname"><code>b</code></strong> (int) - blue color byte</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="line"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">line</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">x1</span>,
+        <span class="sig-arg">y1</span>,
+        <span class="sig-arg">x2</span>,
+        <span class="sig-arg">y2</span>,
+        <span class="sig-arg">r</span>,
+        <span class="sig-arg">g</span>,
+        <span class="sig-arg">b</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickProMatrix.line">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Draw a line from x1:y1 and x2:y2</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>x1</code></strong> (int) - the x1 location in the matrix for the start of the line</li>
+        <li><strong class="pname"><code>y1</code></strong> (int) - the y1 location in the matrix for the start of the line</li>
+        <li><strong class="pname"><code>x2</code></strong> (int) - the x2 location in the matrix for the end of the line</li>
+        <li><strong class="pname"><code>y2</code></strong> (int) - the y2 location in the matrix for the end of the line</li>
+        <li><strong class="pname"><code>r</code></strong> (int) - red color byte</li>
+        <li><strong class="pname"><code>g</code></strong> (int) - green color byte</li>
+        <li><strong class="pname"><code>b</code></strong> (int) - blue color byte</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -646,17 +747,22 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Send data to the channel.
-
-Args:
-    channel: 0 - R pin on BlinkStick Pro board
-             1 - G pin on BlinkStick Pro board
-             2 - B pin on BlinkStick Pro board
-
-</pre>
+  <p>Send data stored in the internal buffer to the channel.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>channel</code></strong> - <ul>
+            <li>
+              0 - R pin on BlinkStick Pro board
+            </li>
+            <li>
+              1 - G pin on BlinkStick Pro board
+            </li>
+            <li>
+              2 - B pin on BlinkStick Pro board
+            </li>
+          </ul></li>
+    </ul></dd>
     <dt>Overrides:
         <a href="blinkstick.blinkstick.BlinkStickPro-class.html#send_data">BlinkStickPro.send_data</a>
     </dt>
@@ -690,7 +796,7 @@ Args:
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Sep 19 18:59:59 2014
+    Generated by Epydoc 3.0.1 on Mon Sep 22 15:53:29 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

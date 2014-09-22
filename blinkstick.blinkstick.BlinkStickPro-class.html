@@ -45,8 +45,6 @@
     <td>
       <table cellpadding="0" cellspacing="0">
         <!-- hide/show private -->
-        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
-    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
             >]&nbsp;|&nbsp;<a href="blinkstick.blinkstick.BlinkStickPro-class.html"
@@ -70,22 +68,25 @@ object --+
 </dd></dl>
 
 <hr />
+<p>BlinkStickPro class is specifically designed to control the 
+  individually addressable LEDs connected to the device. The tutorials 
+  section contains all the details on how to connect them to BlinkStick 
+  Pro.</p>
+  <p><a href="http://www.blinkstick.com/help/tutorials" 
+  target="_top">http://www.blinkstick.com/help/tutorials</a></p>
+  <p>Code example on how you can use this class are available here:</p>
+  <p><a 
+  href="https://github.com/arvydas/blinkstick-python/wiki#code-examples-for-blinkstick-pro"
+  
+  target="_top">https://github.com/arvydas/blinkstick-python/wiki#code-examples-for-blinkstick-pro</a></p>
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Instance Methods</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-InstanceMethods"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
@@ -99,26 +100,9 @@ object --+
         <span class="summary-sig-arg">b_led_count</span>=<span class="summary-sig-default">0</span>,
         <span class="summary-sig-arg">delay</span>=<span class="summary-sig-default">0.002</span>,
         <span class="summary-sig-arg">max_rgb_value</span>=<span class="summary-sig-default">255</span>)</span><br />
-      Initialize class</td>
+      Initialize BlinkStickPro class.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickPro.__init__">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_remap_rgb_value"></a><span class="summary-sig-name">_remap_rgb_value</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">rgb_val</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickPro._remap_rgb_value">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -151,7 +135,7 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">(int, int, int)</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -175,7 +159,7 @@ object --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="clear"></a><span class="summary-sig-name">clear</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Set all pixels to black in the frame buffer</td>
+      Set all pixels to black in the frame buffer.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickPro.clear">source&nbsp;code</a></span>
             
@@ -192,7 +176,7 @@ object --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="off"></a><span class="summary-sig-name">off</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Set all pixels to black in on the device</td>
+      Set all pixels to black in on the device.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickPro.off">source&nbsp;code</a></span>
             
@@ -228,7 +212,7 @@ object --+
         <tr>
           <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStickPro-class.html#send_data" class="summary-sig-name">send_data</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">channel</span>)</span><br />
-      Send data to the channel.</td>
+      Send data stored in the internal buffer to the channel.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStickPro.send_data">source&nbsp;code</a></span>
             
@@ -279,17 +263,8 @@ object --+
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Properties</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-Properties"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
 </tr>
   <tr>
     <td colspan="2" class="summary">
@@ -304,17 +279,8 @@ object --+
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Method Details</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-MethodDetails"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
 </tr>
 </table>
 <a name="__init__"></a>
@@ -337,19 +303,16 @@ object --+
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Initialize class
-
-Args:
-    r_led_count: number of LEDs on R channel
-    g_led_count: number of LEDs on G channel
-    b_led_count: number of LEDs on B channel
-    delay: default transmission delay between frames
-    max_rgb_value: maximum color value for RGB channels
-
-</pre>
+  <p>Initialize BlinkStickPro class.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>r_led_count</code></strong> (int) - number of LEDs on R channel</li>
+        <li><strong class="pname"><code>g_led_count</code></strong> (int) - number of LEDs on G channel</li>
+        <li><strong class="pname"><code>b_led_count</code></strong> (int) - number of LEDs on B channel</li>
+        <li><strong class="pname"><code>delay</code></strong> (int) - default transmission delay between frames</li>
+        <li><strong class="pname"><code>max_rgb_value</code></strong> (int) - maximum color value for RGB channels</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
     </dt>
@@ -376,19 +339,16 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Set the color of a single pixel
-
-Args:
-    channel: R, G or B channel
-    x: the index of LED on the channel
-    r: red color byte
-    g: green color byte
-    b: blue color byte
-
-</pre>
+  <p>Set the color of a single pixel</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>channel</code></strong> (int) - R, G or B channel</li>
+        <li><strong class="pname"><code>index</code></strong> (int) - the index of LED on the channel</li>
+        <li><strong class="pname"><code>r</code></strong> (int) - red color byte</li>
+        <li><strong class="pname"><code>g</code></strong> (int) - green color byte</li>
+        <li><strong class="pname"><code>b</code></strong> (int) - blue color byte</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -409,8 +369,14 @@ Args:
   </tr></table>
   
   <p>Get the current color of a single pixel.</p>
-  <p>Returns values as 3-tuple (r,g,b)</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>channel</code></strong> (int) - the channel of the LED</li>
+        <li><strong class="pname"><code>index</code></strong> (int) - the index of the LED</li>
+    </ul></dd>
+    <dt>Returns: (int, int, int)</dt>
+        <dd>3-tuple for R, G and B values</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -429,15 +395,12 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Connect to the first BlinkStick found
-
-Args:
-    serial: Select the serial number of BlinkStick
-
-</pre>
+  <p>Connect to the first BlinkStick found</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>serial</code></strong> (str) - Select the serial number of BlinkStick</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -456,17 +419,22 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Send data to the channel.
-
-Args:
-    channel: 0 - R pin on BlinkStick Pro board
-             1 - G pin on BlinkStick Pro board
-             2 - B pin on BlinkStick Pro board
-
-</pre>
+  <p>Send data stored in the internal buffer to the channel.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>channel</code></strong> - <ul>
+            <li>
+              0 - R pin on BlinkStick Pro board
+            </li>
+            <li>
+              1 - G pin on BlinkStick Pro board
+            </li>
+            <li>
+              2 - B pin on BlinkStick Pro board
+            </li>
+          </ul></li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -497,7 +465,7 @@ Args:
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Sep 19 18:59:59 2014
+    Generated by Epydoc 3.0.1 on Mon Sep 22 15:53:29 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

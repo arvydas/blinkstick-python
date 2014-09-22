@@ -45,8 +45,6 @@
     <td>
       <table cellpadding="0" cellspacing="0">
         <!-- hide/show private -->
-        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
-    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
             >]&nbsp;|&nbsp;<a href="blinkstick.blinkstick.BlinkStick-class.html"
@@ -64,22 +62,22 @@ object --+
 </pre>
 
 <hr />
+<p>BlinkStick class is designed to control regular BlinkStick devices, or
+  BlinkStick Pro devices in Normal or Inverse modes. Please refer to <a 
+  href="blinkstick.blinkstick.BlinkStick-class.html#set_mode" 
+  class="link">BlinkStick.set_mode</a> for more details about BlinkStick 
+  Pro device modes.</p>
+  <p>Code examples on how you can use this class are available here:</p>
+  <p><a href="https://github.com/arvydas/blinkstick-python/wiki" 
+  target="_top">https://github.com/arvydas/blinkstick-python/wiki</a></p>
+
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Instance Methods</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-InstanceMethods"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
@@ -90,7 +88,7 @@ object --+
           <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">device</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">error_reporting</span>=<span class="summary-sig-default">True</span>)</span><br />
-      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+      Constructor for the class.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.__init__">source&nbsp;code</a></span>
             
@@ -100,70 +98,14 @@ object --+
       
     </td>
   </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_usb_get_string"></a><span class="summary-sig-name">_usb_get_string</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">device</span>,
-        <span class="summary-sig-arg">length</span>,
-        <span class="summary-sig-arg">index</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick._usb_get_string">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_usb_ctrl_transfer"></a><span class="summary-sig-name">_usb_ctrl_transfer</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">bmRequestType</span>,
-        <span class="summary-sig-arg">bRequest</span>,
-        <span class="summary-sig-arg">wValue</span>,
-        <span class="summary-sig-arg">wIndex</span>,
-        <span class="summary-sig-arg">data_or_wLength</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick._usb_ctrl_transfer">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_refresh_device"></a><span class="summary-sig-name">_refresh_device</span>(<span class="summary-sig-arg">self</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick._refresh_device">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">str</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#get_serial" class="summary-sig-name">get_serial</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Returns the serial number of device.</td>
+      Returns the serial number of device.:</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_serial">source&nbsp;code</a></span>
             
@@ -175,11 +117,11 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">str</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_manufacturer"></a><span class="summary-sig-name">get_manufacturer</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#get_manufacturer" class="summary-sig-name">get_manufacturer</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Get the manufacturer of the device</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_manufacturer">source&nbsp;code</a></span>
@@ -192,11 +134,11 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">str</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_description"></a><span class="summary-sig-name">get_description</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#get_description" class="summary-sig-name">get_description</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Get the description of the device</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_description">source&nbsp;code</a></span>
@@ -213,8 +155,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="set_error_reporting"></a><span class="summary-sig-name">set_error_reporting</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">error_reporting</span>)</span></td>
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#set_error_reporting" class="summary-sig-name">set_error_reporting</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">error_reporting</span>)</span><br />
+      Enable or disable error reporting</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.set_error_reporting">source&nbsp;code</a></span>
             
@@ -248,87 +191,13 @@ object --+
       
     </td>
   </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_get_color"></a><span class="summary-sig-name">_get_color</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">index</span>=<span class="summary-sig-default">0</span>)</span><br />
-      Get the current color settings as a grapefruit Color object</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick._get_color">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_determine_rgb"></a><span class="summary-sig-name">_determine_rgb</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">red</span>=<span class="summary-sig-default">0</span>,
-        <span class="summary-sig-arg">green</span>=<span class="summary-sig-default">0</span>,
-        <span class="summary-sig-arg">blue</span>=<span class="summary-sig-default">0</span>,
-        <span class="summary-sig-arg">name</span>=<span class="summary-sig-default">None</span>,
-        <span class="summary-sig-arg">hex</span>=<span class="summary-sig-default">None</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick._determine_rgb">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_get_color_rgb"></a><span class="summary-sig-name">_get_color_rgb</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">index</span>=<span class="summary-sig-default">0</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick._get_color_rgb">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_get_color_hex"></a><span class="summary-sig-name">_get_color_hex</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">index</span>=<span class="summary-sig-default">0</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick._get_color_hex">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">(int, int, int) or str</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#get_color" class="summary-sig-name">get_color</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">channel</span>=<span class="summary-sig-default">0</span>,
         <span class="summary-sig-arg">index</span>=<span class="summary-sig-default">0</span>,
         <span class="summary-sig-arg">color_format</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">rgb</code><code class="variable-quote">'</code></span>)</span><br />
       Get the current device color in the defined format.</td>
@@ -341,32 +210,16 @@ object --+
       
     </td>
   </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="_determine_report_id"></a><span class="summary-sig-name">_determine_report_id</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">led_count</span>)</span></td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick._determine_report_id">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="set_led_data"></a><span class="summary-sig-name">set_led_data</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#set_led_data" class="summary-sig-name">set_led_data</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">channel</span>,
-        <span class="summary-sig-arg">data</span>)</span></td>
+        <span class="summary-sig-arg">data</span>)</span><br />
+      Send LED data frame.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.set_led_data">source&nbsp;code</a></span>
             
@@ -378,12 +231,13 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">int[0..64*3]</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_led_data"></a><span class="summary-sig-name">get_led_data</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">count</span>)</span></td>
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#get_led_data" class="summary-sig-name">get_led_data</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">count</span>)</span><br />
+      Get LED data frame on the device.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_led_data">source&nbsp;code</a></span>
             
@@ -401,7 +255,7 @@ object --+
         <tr>
           <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#set_mode" class="summary-sig-name">set_mode</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">mode</span>)</span><br />
-      Set device mode</td>
+      Set device mode for BlinkStick Pro.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.set_mode">source&nbsp;code</a></span>
             
@@ -413,12 +267,12 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">int</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#get_mode" class="summary-sig-name">get_mode</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Get current device mode</td>
+      Get BlinkStick Pro mode.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_mode">source&nbsp;code</a></span>
             
@@ -430,7 +284,7 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">str</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -447,7 +301,7 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">str</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -455,24 +309,6 @@ object --+
       Get the infoblock2 of the device.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_info_block2">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#data_to_message" class="summary-sig-name">data_to_message</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">data</span>)</span><br />
-      Helper method to convert a string to byte array of 32 bytes.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.data_to_message">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -539,7 +375,8 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="turn_off"></a><span class="summary-sig-name">turn_off</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="turn_off"></a><span class="summary-sig-name">turn_off</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Turns off LED.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.turn_off">source&nbsp;code</a></span>
             
@@ -648,12 +485,12 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">bool</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_inverse"></a><span class="summary-sig-name">get_inverse</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Get the value of inverse mode</td>
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#get_inverse" class="summary-sig-name">get_inverse</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get the value of inverse mode.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_inverse">source&nbsp;code</a></span>
             
@@ -671,9 +508,45 @@ object --+
         <tr>
           <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#set_inverse" class="summary-sig-name">set_inverse</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">value</span>)</span><br />
-      Set the value of inverse mode</td>
+      Set inverse mode.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.set_inverse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#set_max_rbg_value" class="summary-sig-name">set_max_rbg_value</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Set RGB color limit.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.set_max_rbg_value">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="blinkstick.blinkstick.BlinkStick-class.html#get_max_rbg_value" class="summary-sig-name">get_max_rbg_value</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">max_rbg_value</span>)</span><br />
+      Get RGB color limit.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_max_rbg_value">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -705,18 +578,16 @@ object --+
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Class Variables</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-ClassVariables"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Class Variables</span></td>
 </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="HEX_COLOR_RE"></a><span class="summary-name">HEX_COLOR_RE</span> = <code title="re.compile(r'^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$')">re.compile(r'^#<code class="re-group">(</code><code class="re-group">[</code>a<code class="re-op">-</code>fA<code class="re-op">-</code>F0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{3}</code><code class="re-op">|</code><code class="re-group">[</code>a<code class="re-op">-</code>fA<code class="re-op">-</code>F0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{6}</code><code class="re-group">)</code>$')</code>
+    </td>
+  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
@@ -731,23 +602,21 @@ object --+
         <a name="error_reporting"></a><span class="summary-name">error_reporting</span> = <code title="True">True</code>
     </td>
   </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="max_rbg_value"></a><span class="summary-name">max_rbg_value</span> = <code title="255">255</code>
+    </td>
+  </tr>
 </table>
 <!-- ==================== PROPERTIES ==================== -->
 <a name="section-Properties"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Properties</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-Properties"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
 </tr>
   <tr>
     <td colspan="2" class="summary">
@@ -762,17 +631,8 @@ object --+
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Method Details</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-MethodDetails"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
 </tr>
 </table>
 <a name="__init__"></a>
@@ -792,11 +652,14 @@ object --+
     </td>
   </tr></table>
   
-  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <p>Constructor for the class.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>error_reporting</code></strong> (Boolean) - display errors if they occur during communication with the device</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
-        <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
 </td></tr></table>
@@ -815,12 +678,84 @@ object --+
     </td>
   </tr></table>
   
-  <p>Returns the serial number of device.</p>
-  <p>BSnnnnnn-1.0 ||  |    | |- Software minor version ||  |    |--- 
-  Software major version ||  |-------- Denotes sequential number 
-  ||----------- Denotes BlinkStick device</p>
+  <p>Returns the serial number of device.:</p>
+<pre class="literalblock">
+   BSnnnnnn-1.0
+   ||  |    | |- Software minor version
+   ||  |    |--- Software major version
+   ||  |-------- Denotes sequential number
+   ||----------- Denotes BlinkStick device
+</pre>
   <p>Software version defines the capabilities of the device</p>
   <dl class="fields">
+    <dt>Returns: str</dt>
+        <dd>Serial number of the device</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_manufacturer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_manufacturer</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_manufacturer">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the manufacturer of the device</p>
+  <dl class="fields">
+    <dt>Returns: str</dt>
+        <dd>Device manufacturer's name</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_description"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_description</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_description">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the description of the device</p>
+  <dl class="fields">
+    <dt>Returns: str</dt>
+        <dd>Device description</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_error_reporting"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_error_reporting</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">error_reporting</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.set_error_reporting">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Enable or disable error reporting</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>error_reporting</code></strong> (Boolean) - display errors if they occur during communication with the device</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -845,18 +780,18 @@ object --+
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-Set the color to the device as RGB
-
-Args:
-    red: Red color intensity 0 is off, 255 is full red intensity
-    green: Green color intensity 0 is off, 255 is full green intensity
-    blue: Blue color intensity 0 is off, 255 is full blue intensity
-    name: Use CSS colour name as defined here: http://www.w3.org/TR/css3-color/
-    hex: Specify color using hexadecimal color value e.g. '#FF3366'
-
-</pre>
+  <p>Set the color to the device as RGB</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>red</code></strong> (int) - Red color intensity 0 is off, 255 is full red intensity</li>
+        <li><strong class="pname"><code>green</code></strong> (int) - Green color intensity 0 is off, 255 is full green intensity</li>
+        <li><strong class="pname"><code>blue</code></strong> (int) - Blue color intensity 0 is off, 255 is full blue intensity</li>
+        <li><strong class="pname"><code>name</code></strong> (str) - Use CSS color name as defined here: <a 
+          href="http://www.w3.org/TR/css3-color/" 
+          target="_top">http://www.w3.org/TR/css3-color/</a></li>
+        <li><strong class="pname"><code>hex</code></strong> (str) - Specify color using hexadecimal color value e.g. '#FF3366'</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -868,7 +803,6 @@ Args:
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">get_color</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">channel</span>=<span class="sig-default">0</span>,
         <span class="sig-arg">index</span>=<span class="sig-default">0</span>,
         <span class="sig-arg">color_format</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">rgb</code><code class="variable-quote">'</code></span>)</span>
   </h3>
@@ -877,24 +811,83 @@ Args:
     </td>
   </tr></table>
   
-  <pre class="literalblock">
-
-Get the current device color in the defined format. Default format is (r,g,b).
-
-Currently supported formats:
-rgb (default) - Returns values as 3-tuple (r,g,b)
-hex - returns current device color as hexadecimal string
-
-Example:
-    b = BlinkStick.find_first()
-    b.set_color(red=255,0,0)
-    # Get color as rbg tuple
-    (r,g,b) = b.get_color() # (255,0,0)
-    # Get color as hex string
-    hex = b.get_color() # '#ff0000'
-
-</pre>
+  <p>Get the current device color in the defined format.</p>
+  <p>Currently supported formats:</p>
+  <ol start="1">
+    <li>
+      rgb (default) - Returns values as 3-tuple (r,g,b)
+    </li>
+    <li>
+      hex - returns current device color as hexadecimal string
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>b = blinkstick.find_first()
+<span class="py-prompt">&gt;&gt;&gt; </span>b.set_color(red=255,green=0,blue=0)
+<span class="py-prompt">&gt;&gt;&gt; </span>(r,g,b) = b.get_color() <span class="py-comment"># Get color as rbg tuple</span>
+<span class="py-output">(255,0,0)</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>hex = b.get_color(color_format=<span class="py-string">'hex'</span>) <span class="py-comment"># Get color as hex string </span>
+<span class="py-output">'#ff0000'</span></pre>
+    </li>
+  </ol>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>index</code></strong> (int) - the index of the LED</li>
+        <li><strong class="pname"><code>color_format</code></strong> (str) - &quot;rgb&quot; or &quot;hex&quot;. Defaults to &quot;rgb&quot;.</li>
+    </ul></dd>
+    <dt>Returns: (int, int, int) or str</dt>
+        <dd>Either 3-tuple for R, G and B values, or hex string</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_led_data"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_led_data</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">channel</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.set_led_data">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Send LED data frame.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>channel</code></strong> (int) - the channel which to send data to (R=0, G=1, B=2)</li>
+        <li><strong class="pname"><code>data</code></strong> (int[0..64*3]) - The LED data frame in GRB format</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_led_data"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_led_data</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">count</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_led_data">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get LED data frame on the device.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>count</code></strong> (int) - How much data to retrieve. Can be in the range of 0..64*3</li>
+    </ul></dd>
+    <dt>Returns: int[0..64*3]</dt>
+        <dd>LED data currently stored in the RAM of the device</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -913,11 +906,29 @@ Example:
     </td>
   </tr></table>
   
-  <p>Set device mode</p>
-  <p>0 - (default) use R, G and B channels to control single RGB LED 1 - 
-  same as 0, but inverse mode 2 - control up to 64 WS2812 individual LEDs 
-  per each R, G and B channel 3 - WS2812 mirror for BlinkStick Nano</p>
+  <p>Set device mode for BlinkStick Pro. Device currently supports the 
+  following modes:</p>
+  <ul>
+    <li>
+      0 - (default) use R, G and B channels to control single RGB LED
+    </li>
+    <li>
+      1 - same as 0, but inverse mode
+    </li>
+    <li>
+      2 - control up to 64 WS2812 individual LEDs per each R, G and B 
+      channel
+    </li>
+  </ul>
+  <p>You can find out more about BlinkStick Pro modes:</p>
+  <p><a 
+  href="http://www.blinkstick.com/help/tutorials/blinkstick-pro-modes" 
+  target="_top">http://www.blinkstick.com/help/tutorials/blinkstick-pro-modes</a></p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>mode</code></strong> (int) - Device mode to set</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -935,11 +946,27 @@ Example:
     </td>
   </tr></table>
   
-  <p>Get current device mode</p>
-  <p>0 - (default) use R, G and B channels to control single RGB LED 1 - 
-  same as 0, but inverse mode 2 - control up to 64 WS2812 individual LEDs 
-  per each R, G and B channel 3 - WS2812 mirror for BlinkStick Nano</p>
+  <p>Get BlinkStick Pro mode. Device currently supports the following 
+  modes:</p>
+  <ul>
+    <li>
+      0 - (default) use R, G and B channels to control single RGB LED
+    </li>
+    <li>
+      1 - same as 0, but inverse mode
+    </li>
+    <li>
+      2 - control up to 64 WS2812 individual LEDs per each R, G and B 
+      channel
+    </li>
+  </ul>
+  <p>You can find out more about BlinkStick Pro modes:</p>
+  <p><a 
+  href="http://www.blinkstick.com/help/tutorials/blinkstick-pro-modes" 
+  target="_top">http://www.blinkstick.com/help/tutorials/blinkstick-pro-modes</a></p>
   <dl class="fields">
+    <dt>Returns: int</dt>
+        <dd>Device mode</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -962,6 +989,8 @@ Example:
   hold the &quot;Name&quot; of the device making it easier to identify 
   rather than a serial number.</p>
   <dl class="fields">
+    <dt>Returns: str</dt>
+        <dd>InfoBlock1 currently stored on the device</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -982,37 +1011,8 @@ Example:
   <p>Get the infoblock2 of the device.</p>
   <p>This is a 32 byte array that can contain any data.</p>
   <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
-<a name="data_to_message"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">data_to_message</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">data</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.data_to_message">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <pre class="literalblock">
-Helper method to convert a string to byte array of 32 bytes. 
-
-Args: 
-    data (str): The data to convert to byte array
-
-Returns:
-    byte[32]: array
-
-It fills the rest of bytes with zeros.
-
-</pre>
-  <dl class="fields">
+    <dt>Returns: str</dt>
+        <dd>InfoBlock2 currently stored on the device</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1032,8 +1032,12 @@ It fills the rest of bytes with zeros.
   </tr></table>
   
   <p>Sets the infoblock1 with specified string.</p>
-  <p>It fills the rest of bytes with zeros.</p>
+  <p>It fills the rest of 32 bytes with zeros.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> (str) - InfoBlock1 for the device to set</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1053,8 +1057,12 @@ It fills the rest of bytes with zeros.
   </tr></table>
   
   <p>Sets the infoblock2 with specified string.</p>
-  <p>It fills the rest of bytes with zeros.</p>
+  <p>It fills the rest of 32 bytes with zeros.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> (str) - InfoBlock2 for the device to set</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1086,15 +1094,16 @@ It fills the rest of bytes with zeros.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>red</code></strong> - color intensity 0 is off, 255 is full red intensity</li>
-        <li><strong class="pname"><code>green</code></strong> - color intensity 0 is off, 255 is full green intensity</li>
-        <li><strong class="pname"><code>blue</code></strong> - color intensity 0 is off, 255 is full blue intensity</li>
-        <li><strong class="pname"><code>name</code></strong> - Use CSS colour name as defined here:- 
-          http://www.w3.org/TR/css3-color/</li>
-        <li><strong class="pname"><code>hex</code></strong> - Specify color using hexadecimal color value e.g. '#FF3366'</li>
-        <li><strong class="pname"><code>repeats</code></strong> - Number of times to pulse the LED</li>
-        <li><strong class="pname"><code>duration</code></strong> - Duration for pulse in milliseconds</li>
-        <li><strong class="pname"><code>steps</code></strong> - Number of gradient steps (default 50)</li>
+        <li><strong class="pname"><code>red</code></strong> (int) - Red color intensity 0 is off, 255 is full red intensity</li>
+        <li><strong class="pname"><code>green</code></strong> (int) - Green color intensity 0 is off, 255 is full green intensity</li>
+        <li><strong class="pname"><code>blue</code></strong> (int) - Blue color intensity 0 is off, 255 is full blue intensity</li>
+        <li><strong class="pname"><code>name</code></strong> (str) - Use CSS color name as defined here: <a 
+          href="http://www.w3.org/TR/css3-color/" 
+          target="_top">http://www.w3.org/TR/css3-color/</a></li>
+        <li><strong class="pname"><code>hex</code></strong> (str) - Specify color using hexadecimal color value e.g. '#FF3366'</li>
+        <li><strong class="pname"><code>repeats</code></strong> (int) - Number of times to pulse the LED</li>
+        <li><strong class="pname"><code>duration</code></strong> (int) - Duration for pulse in milliseconds</li>
+        <li><strong class="pname"><code>steps</code></strong> (int) - Number of gradient steps</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -1126,14 +1135,15 @@ It fills the rest of bytes with zeros.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>red</code></strong> - color intensity 0 is off, 255 is full red intensity</li>
-        <li><strong class="pname"><code>green</code></strong> - color intensity 0 is off, 255 is full green intensity</li>
-        <li><strong class="pname"><code>blue</code></strong> - color intensity 0 is off, 255 is full blue intensity</li>
-        <li><strong class="pname"><code>name</code></strong> - Use CSS colour name as defined here:- 
-          http://www.w3.org/TR/css3-color/</li>
-        <li><strong class="pname"><code>hex</code></strong> - Specify color using hexadecimal color value e.g. '#FF3366'</li>
-        <li><strong class="pname"><code>repeats</code></strong> - Number of times to blink the LED</li>
-        <li><strong class="pname"><code>delay</code></strong> - time in milliseconds to light LED for, and also between blinks</li>
+        <li><strong class="pname"><code>red</code></strong> (int) - Red color intensity 0 is off, 255 is full red intensity</li>
+        <li><strong class="pname"><code>green</code></strong> (int) - Green color intensity 0 is off, 255 is full green intensity</li>
+        <li><strong class="pname"><code>blue</code></strong> (int) - Blue color intensity 0 is off, 255 is full blue intensity</li>
+        <li><strong class="pname"><code>name</code></strong> (str) - Use CSS color name as defined here: <a 
+          href="http://www.w3.org/TR/css3-color/" 
+          target="_top">http://www.w3.org/TR/css3-color/</a></li>
+        <li><strong class="pname"><code>hex</code></strong> (str) - Specify color using hexadecimal color value e.g. '#FF3366'</li>
+        <li><strong class="pname"><code>repeats</code></strong> (int) - Number of times to pulse the LED</li>
+        <li><strong class="pname"><code>delay</code></strong> (int) - time in milliseconds to light LED for, and also between blinks</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -1165,14 +1175,15 @@ It fills the rest of bytes with zeros.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>red</code></strong> - color intensity 0 is off, 255 is full red intensity</li>
-        <li><strong class="pname"><code>green</code></strong> - color intensity 0 is off, 255 is full green intensity</li>
-        <li><strong class="pname"><code>blue</code></strong> - color intensity 0 is off, 255 is full blue intensity</li>
-        <li><strong class="pname"><code>name</code></strong> - Use CSS colour name as defined here:- 
-          http://www.w3.org/TR/css3-color/</li>
-        <li><strong class="pname"><code>hex</code></strong> - Specify color using hexadecimal color value e.g. '#FF3366'</li>
-        <li><strong class="pname"><code>duration</code></strong> - Duration for morph in milliseconds</li>
-        <li><strong class="pname"><code>steps</code></strong> - Number of gradient steps (default 50)</li>
+        <li><strong class="pname"><code>red</code></strong> (int) - Red color intensity 0 is off, 255 is full red intensity</li>
+        <li><strong class="pname"><code>green</code></strong> (int) - Green color intensity 0 is off, 255 is full green intensity</li>
+        <li><strong class="pname"><code>blue</code></strong> (int) - Blue color intensity 0 is off, 255 is full blue intensity</li>
+        <li><strong class="pname"><code>name</code></strong> (str) - Use CSS color name as defined here: <a 
+          href="http://www.w3.org/TR/css3-color/" 
+          target="_top">http://www.w3.org/TR/css3-color/</a></li>
+        <li><strong class="pname"><code>hex</code></strong> (str) - Specify color using hexadecimal color value e.g. '#FF3366'</li>
+        <li><strong class="pname"><code>duration</code></strong> (int) - Duration for morph in milliseconds</li>
+        <li><strong class="pname"><code>steps</code></strong> (int) - Number of gradient steps (default 50)</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -1196,8 +1207,32 @@ It fills the rest of bytes with zeros.
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>d</code></strong></li>
+        <li><strong class="pname"><code>d</code></strong> - Device to open</li>
     </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_inverse"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_inverse</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_inverse">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get the value of inverse mode. This applies only to BlinkStick. Please
+  use <a href="blinkstick.blinkstick.BlinkStick-class.html#set_mode" 
+  class="link">set_mode</a> for BlinkStick Pro to permanently set the 
+  inverse mode to the device.</p>
+  <dl class="fields">
+    <dt>Returns: bool</dt>
+        <dd>True if inverse mode, otherwise false</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1216,12 +1251,63 @@ It fills the rest of bytes with zeros.
     </td>
   </tr></table>
   
-  <p>Set the value of inverse mode</p>
+  <p>Set inverse mode. This applies only to BlinkStick. Please use <a 
+  href="blinkstick.blinkstick.BlinkStick-class.html#set_mode" 
+  class="link">set_mode</a> for BlinkStick Pro to permanently set the 
+  inverse mode to the device.</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>value</code></strong> - True/False to set the inverse mode</li>
+        <li><strong class="pname"><code>value</code></strong> (bool) - True/False to set the inverse mode</li>
     </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_max_rbg_value"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_max_rbg_value</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.set_max_rbg_value">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set RGB color limit. {set_color} function will automatically remap the
+  values to maximum supplied.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>value</code></strong> (int) - 0..255 maximum value for each R, G and B color</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_max_rbg_value"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_max_rbg_value</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">max_rbg_value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="blinkstick.blinkstick-pysrc.html#BlinkStick.get_max_rbg_value">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get RGB color limit. {set_color} function will automatically remap the
+  values to maximum set.</p>
+  <dl class="fields">
+    <dt>Returns: int</dt>
+        <dd>0..255 maximum value for each R, G and B color</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1252,7 +1338,7 @@ It fills the rest of bytes with zeros.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Sep 19 18:59:59 2014
+    Generated by Epydoc 3.0.1 on Mon Sep 22 15:53:29 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
