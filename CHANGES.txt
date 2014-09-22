@@ -1,6 +1,17 @@
 Changelog
 =========
 
+1.1.0 (2014-09-22)
+------------------
+
+* Module simplification
+* Command line tool banner is only visible in help
+* Removed --cpu-usage and --connect features from command line tool
+* Explicitly specify beta version of pyusb
+* Improved documentation of public methods
+* Improved README structure and updated reference
+* Added ability to limit the brightness of the LED from base BlinkStick class
+
 1.0.1 (2014-09-19)
 ------------------
 
