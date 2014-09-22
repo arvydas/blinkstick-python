@@ -186,7 +186,7 @@ class BlinkStick(object):
 
     inverse = False
     error_reporting = True
-    max_rbg_value = 255
+    max_rgb_value = 255
 
     def __init__(self, device=None, error_reporting=True):
         """
@@ -360,7 +360,7 @@ class BlinkStick(object):
         except ValueError:
             red = green = blue = 0
 
-        red, gree, blue = _remap_rgb_value([red, green, blue], self.max_rgb_value)
+        red, green, blue = _remap_rgb_value([red, green, blue], self.max_rgb_value)
 
         # TODO - do smarts to determine input type from red var in case it is not int
 
@@ -747,7 +747,7 @@ class BlinkStick(object):
         """
         self.inverse = value
 
-    def set_max_rbg_value(self, value):
+    def set_max_rgb_value(self, value):
         """
         Set RGB color limit. {set_color} function will automatically remap
         the values to maximum supplied.
@@ -757,7 +757,7 @@ class BlinkStick(object):
         """
         self.max_rgb_value = value
 
-    def get_max_rbg_value(self, max_rbg_value):
+    def get_max_rgb_value(self, max_rgb_value):
         """
         Get RGB color limit. {set_color} function will automatically remap
         the values to maximum set.
@@ -1111,7 +1111,7 @@ class BlinkStickProMatrix(BlinkStickPro):
         @type b: int
         @param b: blue color byte
         @type remap_values: bool
-        @param remap_values: Automatically remap values based on the {max_rbg_value} supplied in the constructor
+        @param remap_values: Automatically remap values based on the {max_rgb_value} supplied in the constructor
         """
 
         if remap_values:
