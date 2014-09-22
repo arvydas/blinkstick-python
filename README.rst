@@ -8,6 +8,11 @@ What is BlinkStick? It's a smart USB LED pixel. More info about it here:
 
 http://www.blinkstick.com
 
+Source code repository
+-------------
+
+https://github.com/arvydas/blinkstick-python
+
 API Reference
 -------------
 
