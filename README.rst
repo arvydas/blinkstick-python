@@ -102,117 +102,19 @@ following into the command window:
 
     C:\Python27\Scripts\pip.exe install blinkstick
 
-Description
------------
+Command line tool
+-----------------
 
-Together with the Python module an additional command line tool is 
+Together with the Python module an additional command line tool is
 installed to control BlinkSticks. 
 
-Note: this tool is not available in Windows. 
-
-Use the following command to see all available options:
-
-
 ::
 
-    blinkstick -h
-
-::
-
-    Usage: blinkstick [options]
-
-    Options:
-      -h, --help            show this help message and exit
-      -i, --info            display BlinkStick info
-      -s SERIAL, --serial=SERIAL
-                            select device by serial number. If unspecified, action
-                            will be performed on all BlinkSticks.
-      --inverse             control BlinkSticks in inverse mode
-      --channel=CHANNEL     Select channel
-      --index=INDEX         Select index
-      --limit=LIMIT         Limit the brightness of the color 0..100
-      --set-color=COLOR     set the color for the device. The value can either be
-                            a named color, hex value, 'random' or 'off'.
-                            CSS color names are defined
-                            http://www.w3.org/TR/css3-color/ e.g. red, green,
-                            blue.Specify color using hexadecimal color value e.g.
-                            '#FF3366'
-      --duration=DURATION   Set duration of transition in milliseconds (use with
-                            --morph and --pulse).
-      --delay=DELAY         Set time in milliseconds to light LED for (use with
-                            --blink).
-      --repeats=REPEATS     Number of repetitions (use with --blink and --pulse).
-      --blink               Blink LED (requires --set-color, and optionally
-                            --delay)
-      --pulse               Pulse LED (requires --set-color, and optionally
-                            --duration).
-      --morph               Morph to specified color (requires --set-color, and
-                            optionally --duration).
-      --set-infoblock1=INFOBLOCK1
-                            set the first info block for the device.
-      --set-infoblock2=INFOBLOCK2
-                            set the second info block for the device.
-      -v, --verbose         Display debug output
-      --add-udev-rule       Add udev rule to access BlinkSticks without root
-                            permissions. Must be run as root.
-      --set-mode=MODE       Set mode for BlinkStick Pro. 0 - default, 1 - inverse,
-                            2 - ws2812
-
-Command Line Examples
----------------------
-
-Set random color for all BlinkSticks:
-
-::
-
-    blinkstick --set-color random
-
-Set blue color for the BlinkStick with serial number BS000001-1.0:
-
-::
-
-    blinkstick --serial BS000001-1.0 --set-color blue
-
-Blink red color twice
-
-::
-
-    blinkstick --set-color red --blink --repeats 2
+    blinkstick --pulse red
 
 
-Blink pulse green color three times
-
-::
-
-    blinkstick --set-color green --pulse --repeats 2
-
-Morph to red, green and blue
-
-::
-
-    blinkstick --set-color red --morph
-    blinkstick --set-color gree --morph
-    blinkstick --set-color blue --morph
-
-Connect to blinkstick.com and CPU usage command line options are no longer available. Please read this
-notice about `module simplification <https://github.com/arvydas/blinkstick-python/wiki/Module-Simplification>`_.
-
-Control individual pixels on BlinkStick Pro. First you will need to set
-`BlinkStick Pro mode <http://www.blinkstick.com/help/tutorials/blinkstick-pro-modes>`_ to WS2812.
-
-::
-
-    blinkstick --set-mode 2
-
-
-Now you can set color of individual LEDs connected to R, G or B channels.
-
-::
-
-    blinkstick --channel 0 --index 5 --set-color red
-
-More code examples for controlling BlinkStick Pro are available in the 
-`wiki <https://github.com/arvydas/blinkstick-python/wiki>`_.
+You can find more details about command line tool options and usage 
+examples in the `wiki <https://github.com/arvydas/blinkstick-python/wiki>`_.
 
 Permission problems in Linux and Mac OS X
 -----------------------------------------
