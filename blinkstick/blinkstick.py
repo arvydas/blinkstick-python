@@ -1503,8 +1503,8 @@ def find_by_serial(serial=None):
                 if usb.util.get_string(d, 256, 3) == serial:
                     devices = [d]
                     break
-            except:
-                print "Skipping..."
+            except Exception as e:
+                print "{0}".format(e)
 
     if devices:
         return BlinkStick(device=devices[0])
