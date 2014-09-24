@@ -217,17 +217,21 @@ def main():
     for stick in sticks:
         if options.infoblock1:
             stick.set_info_block1(options.infoblock1)
+            return 0
 
         if options.infoblock2:
             stick.set_info_block2(options.infoblock2)
+            return 0
 
         if options.mode:
             if options.mode == "0" or options.mode == "1" or options.mode == "2" or options.mode == "3":
                 stick.set_mode(int(options.mode))
             else:
                 print("Error: Invalid mode parameter value")
+            return 0
         elif options.info:
             print_info(stick)
+            return 0
         elif options.color or len(args) > 0:
             if options.color:
                 color = options.color
