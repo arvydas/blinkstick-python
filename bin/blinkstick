@@ -243,7 +243,15 @@ def main():
             elif color == "off":
                 fargs['hex'] = "#000000"
             else:
-                fargs['name'] = color
+                if len(color) == 6:
+                    # If color contains 6 chars check if it's hex
+                    try:
+                        int(color, 16)
+                        fargs['hex'] = "#" + color
+                    except:
+                        fargs['name'] = color
+                else:
+                    fargs['name'] = color
 
             fargs['index'] = int(options.index)
             fargs['channel'] = int(options.channel)
