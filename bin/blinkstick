@@ -258,6 +258,7 @@ def main():
 
         else:
             parser.print_help()
+            return 0
 
     return 0
 
