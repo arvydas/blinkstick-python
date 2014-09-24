@@ -88,7 +88,7 @@ def main():
     global options
     global sticks
 
-    parser = OptionParser(
+    parser = OptionParser(usage="usage: %prog [options] color",
         formatter=IndentedHelpFormatterWithNL()
     )
 
@@ -224,36 +224,41 @@ def main():
                 print("Error: Invalid mode parameter value")
         elif options.info:
             print_info(stick)
-        elif options.color:
-            # determine color
-            args = {}
-            if options.color.startswith('#'):
-                args['hex'] = options.color
-            elif options.color == "random":
-                args['name'] = 'random'
-            elif options.color == "off":
-                args['hex'] = "#000000"
+        elif options.color or len(args) > 0:
+            if options.color:
+                color = options.color
             else:
-                args['name'] = options.color
+                color = args[0]
 
-            args['index'] = int(options.index)
-            args['channel'] = int(options.channel)
+            # determine color
+            fargs = {}
+            if color.startswith('#'):
+                fargs['hex'] = color
+            elif color == "random":
+                fargs['name'] = 'random'
+            elif color == "off":
+                fargs['hex'] = "#000000"
+            else:
+                fargs['name'] = color
+
+            fargs['index'] = int(options.index)
+            fargs['channel'] = int(options.channel)
 
             # handle blink/pulse/morph
             func = stick.set_color
             if options.blink:
                 func = stick.blink
-                args['delay'] = options.delay
-                args['repeats'] = int(options.repeats)
+                fargs['delay'] = options.delay
+                fargs['repeats'] = int(options.repeats)
             elif options.pulse:
                 func = stick.pulse
-                args['duration'] = options.duration
-                args['repeats'] = int(options.repeats)
+                fargs['duration'] = options.duration
+                fargs['repeats'] = int(options.repeats)
             elif options.morph:
                 func = stick.morph
-                args['duration'] = options.duration
+                fargs['duration'] = options.duration
 
-            func(**args)
+            func(**fargs)
 
 
         else:
