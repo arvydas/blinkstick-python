@@ -88,7 +88,7 @@ def main():
     global options
     global sticks
 
-    parser = OptionParser(usage="usage: %prog [options] color",
+    parser = OptionParser(usage="usage: %prog [options] [color]",
         formatter=IndentedHelpFormatterWithNL()
     )
 
