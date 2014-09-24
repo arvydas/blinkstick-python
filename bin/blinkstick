@@ -112,9 +112,13 @@ def main():
                       default=0, dest="index",
                       help="Select index")
 
-    parser.add_option("--limit",
+    parser.add_option("--brightness",
                       default=100, dest="limit",
                       help="Limit the brightness of the color 0..100")
+
+    parser.add_option("--limit",
+                      default=100, dest="limit",
+                      help="Alias to --brightness option")
 
     parser.add_option("--set-color",
                       dest="color",
