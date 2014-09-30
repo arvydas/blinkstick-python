@@ -1,5 +1,5 @@
-BlinkStick Python
-=================
+.. image:: http://www.blinkstick.com/images/logos/blinkstick-python.png
+   :alt: BlinkStick Python
 
 BlinkStick Python interface to control devices connected to the
 computer.
