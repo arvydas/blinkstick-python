@@ -374,7 +374,7 @@ class BlinkStick(object):
             else:
                 return [device_bytes[1], device_bytes[2], device_bytes[3]]
         else:
-            data = self.get_led_data(index * 3)
+            data = self.get_led_data((index + 1) * 3)
 
             return [data[index * 3 + 1], data[index * 3], data[index * 3 + 2]]
 
@@ -468,7 +468,7 @@ class BlinkStick(object):
 
         report_id, max_leds = self._determine_report_id(count)
 
-        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, report_id, 0, max_leds * 3 + 1)
+        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, report_id, 0, max_leds * 3 + 2)
 
         return device_bytes[2: 2 + count * 3]
 
