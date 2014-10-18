@@ -2,6 +2,7 @@ from ._version import  __version__
 import time
 import sys
 import re
+import collections
 
 if sys.platform == "win32":
     import pywinusb.hid as hid
@@ -341,7 +342,7 @@ class BlinkStick(object):
         else:
             try:
                 self._usb_ctrl_transfer(0x20, 0x9, report_id, 0, control_string)
-            except Exception as e:
+            except Exception:
                 pass
 
     def _determine_rgb(self, red=0, green=0, blue=0, name=None, hex=None):
@@ -395,7 +396,7 @@ class BlinkStick(object):
             >>> b.set_color(red=255,green=0,blue=0)
             >>> (r,g,b) = b.get_color() # Get color as rbg tuple
             (255,0,0)
-            >>> hex = b.get_color(color_format='hex') # Get color as hex string 
+            >>> hex = b.get_color(color_format='hex') # Get color as hex string
             '#ff0000'
 
         @type  index: int
@@ -409,7 +410,7 @@ class BlinkStick(object):
 
         # Attempt to find a function to return the appropriate format
         get_color_func = getattr(self, "_get_color_%s" % color_format, self._get_color_rgb)
-        if callable(get_color_func):
+        if isinstance(get_color_func, collections.Callable):
             return get_color_func(index)
         else:
             # Should never get here, as we should always default to self._get_color_rgb
@@ -518,7 +519,7 @@ class BlinkStick(object):
         """
         Get the infoblock1 of the device.
 
-        This is a 32 byte array that can contain any data. It's supposed to 
+        This is a 32 byte array that can contain any data. It's supposed to
         hold the "Name" of the device making it easier to identify rather than
         a serial number.
 
@@ -1013,7 +1014,7 @@ class BlinkStickPro(object):
             self.bstick.set_led_data(channel, packet_data)
             time.sleep(self.data_transmission_delay)
         except Exception as e:
-            print "Exception: {0}".format(e)
+            print("Exception: {0}".format(e))
 
     def send_data_all(self):
         """
@@ -1044,7 +1045,7 @@ class BlinkStickProMatrix(BlinkStickPro):
     divides data into subsets and sends it to the matrices.
 
     For example, if you have 2 8x8 matrices connected to BlinkStickPro and you initialize
-    the class with 
+    the class with
 
         >>> matrix = BlinkStickProMatrix(r_columns=8, r_rows=8, g_columns=8, g_rows=8)
 
@@ -1504,7 +1505,7 @@ def find_by_serial(serial=None):
                     devices = [d]
                     break
             except Exception as e:
-                print "{0}".format(e)
+                print("{0}".format(e))
 
     if devices:
         return BlinkStick(device=devices[0])
