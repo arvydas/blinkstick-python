@@ -1459,7 +1459,7 @@ def _find_blicksticks(find_all=True):
         return usb.core.find(find_all=find_all, idVendor=VENDOR_ID, idProduct=PRODUCT_ID)
 
 
-def find_all():
+def find_all(blinkstick_cls=BlinkStick):
     """
     Find all attached BlinkStick devices.
 
@@ -1468,12 +1468,12 @@ def find_all():
     """
     result = []
     for d in _find_blicksticks():
-        result.extend([BlinkStick(device=d)])
+        result.extend([blinkstick_cls(device=d)])
 
     return result
 
 
-def find_first():
+def find_first(blinkstick_cls=BlinkStick):
     """
     Find first attached BlinkStick.
 
@@ -1483,7 +1483,7 @@ def find_first():
     d = _find_blicksticks(find_all=False)
 
     if d:
-        return BlinkStick(device=d)
+        return blinkstick_cls(device=d)
 
 
 def find_by_serial(serial=None):
