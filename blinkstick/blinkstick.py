@@ -680,11 +680,25 @@ class BlinkStick(object):
         @type  steps: int
         @param steps: Number of gradient steps (default 50)
         """
-
         r_end, g_end, b_end = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
-        r_start, g_start, b_start = _remap_rgb_value_reverse(self._get_color_rgb(index), self.max_rgb_value)
+        r_start, g_start, b_start = remap_rgb_value_reverse(self._get_color_rgb(index), self.max_rgb_value)
 
+        gradient = self._get_grandient_values(r_start, g_start, b_start, r_end, g_end, b_end, steps)
+
+        ms_delay = float(duration) / float(1000 * steps)
+
+        self.set_color(channel=channel, index=index, red=r_start, green=g_start, blue=b_start)
+
+        for grad in gradient:
+            grad_r, grad_g, grad_b = grad
+
+            self.set_color(channel=channel, index=index, red=grad_r, green=grad_g, blue=grad_b)
+            time.sleep(ms_delay)
+
+        self.set_color(channel=channel, index=index, red=r_end, green=g_end, blue=b_end)
+
+    def _get_grandient_values(self, r_start, g_start, b_start, r_end, g_end, b_end, steps):
         if r_start > 255 or g_start > 255 or b_start > 255:
             r_start = 0
             g_start = 0
@@ -701,17 +715,7 @@ class BlinkStick(object):
 
             gradient.append((r, g, b))
 
-        ms_delay = float(duration) / float(1000 * steps)
-
-        self.set_color(channel=channel, index=index, red=r_start, green=g_start, blue=b_start)
-
-        for grad in gradient:
-            grad_r, grad_g, grad_b = grad
-
-            self.set_color(channel=channel, index=index, red=grad_r, green=grad_g, blue=grad_b)
-            time.sleep(ms_delay)
-
-        self.set_color(channel=channel, index=index, red=r_end, green=g_end, blue=b_end)
+        return gradient
 
     def open_device(self, d):
         """Open device.
@@ -1533,7 +1537,7 @@ def _remap_rgb_value(rgb_val, max_value):
         _remap_color(rgb_val[1], max_value),
         _remap_color(rgb_val[2], max_value)]
 
-def _remap_rgb_value_reverse(rgb_val, max_value):
+def remap_rgb_value_reverse(rgb_val, max_value):
     return [_remap_color_reverse(rgb_val[0], max_value),
         _remap_color_reverse(rgb_val[1], max_value),
         _remap_color_reverse(rgb_val[2], max_value)]

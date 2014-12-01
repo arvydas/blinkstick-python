@@ -147,16 +147,6 @@ There is also another equivalent command that does exactly the same thing:
 Reboot computer after you have added the command and all users will have
 permissions to access the device without the need of root permissions.
 
-Asyncio
--------
-
-The AsyncioBlinkStick class is provided which overrides BlinkStick functions
-that invoke time.sleep with
-`asyncio coroutines <https://docs.python.org/3/library/asyncio-task.html>`__.
-These coroutines yield control to the event loop using
-`asyncio.sleep <https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep>`__
-instead of blocking on the sleep.
-
 Maintainers
 -----------
 
