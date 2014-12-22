@@ -1,6 +1,17 @@
 Changelog
 =========
 
+1.1.6 (2014-12-22)
+------------------
+
+* Always require PyUSB 1.0.0b1, because b2 is broken
+
+1.1.5 (2014-11-23)
+------------------
+
+* Python 3 compatibility
+* Minor bug fixes
+
 1.1.4 (2014-10-03)
 ------------------
 
