@@ -1190,7 +1190,7 @@ class BlinkStickProMatrix(BlinkStickPro):
         else:
             for y in range(0, self.rows):
                 col = temp[y]
-                self.set_color(self.cols - 1, y, col[0], col[1], col[2], False)
+                self.set_color(0, y, col[0], col[1], col[2], False)
 
     def shift_down(self, remove=False):
         """
@@ -1205,8 +1205,8 @@ class BlinkStickProMatrix(BlinkStickPro):
             for x in range(0, self.cols):
                 temp.append(self.get_color(x, self.rows - 1))
 
-        for x in range(0, self.cols):
-            for y in reversed(range(1, self.rows)):
+        for y in reversed(range(1, self.rows)):
+            for x in range(0, self.cols):
                 r, g, b = self.get_color(x, y - 1)
 
                 self.set_color(x, y, r, g, b, False)
@@ -1216,9 +1216,8 @@ class BlinkStickProMatrix(BlinkStickPro):
                 self.set_color(x, 0, 0, 0, 0, False)
         else:
             for x in range(0, self.cols):
-                col = temp[y]
+                col = temp[x]
                 self.set_color(x, 0, col[0], col[1], col[2], False)
-
 
     def shift_up(self, remove=False):
         """
@@ -1244,7 +1243,7 @@ class BlinkStickProMatrix(BlinkStickPro):
                 self.set_color(x, self.rows - 1, 0, 0, 0, False)
         else:
             for x in range(0, self.cols):
-                col = temp[y]
+                col = temp[x]
                 self.set_color(x, self.rows - 1, col[0], col[1], col[2], False)
 
     def number(self, x, y, n, r, g, b):
