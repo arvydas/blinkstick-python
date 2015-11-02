@@ -1,7 +1,15 @@
 Changelog
 =========
 
-1.1.6 (2015-02-26)
+1.1.8 (2015-11-02)
+------------------
+
+* API to get and set number of LEDs for BlinkStick Flex
+* Mode description update
+* Display LED count with --info parameter for command line tool
+* Option --set-led-count to change the number of LEDs controlled by BlinkStick Flex board
+
+1.1.7 (2015-02-26)
 ------------------
 
 * Use cross platform USB control transfer method for all functions
