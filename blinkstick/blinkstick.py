@@ -515,6 +515,33 @@ class BlinkStick(object):
         else:
             return -1
 
+    def set_led_count(self, count):
+        """
+        Set number of LEDs for supported devices
+
+        @type  count: int
+        @param count: number of LEDs to control
+        """
+        control_string = bytes(bytearray([0x81, count]))
+
+        self._usb_ctrl_transfer(0x20, 0x9, 0x81, 0, control_string)
+
+
+    def get_led_count(self):
+        """
+        Get number of LEDs for supported devices
+
+        @rtype: int
+        @return: Number of LEDs
+        """
+
+        device_bytes = self._usb_ctrl_transfer(0x80 | 0x20, 0x1, 0x81, 0, 2)
+
+        if len(device_bytes) >= 2:
+            return device_bytes[1]
+        else:
+            return -1
+
     def get_info_block1(self):
         """
         Get the infoblock1 of the device.
