@@ -138,6 +138,9 @@ def main():
                       action="store_true", dest="inverse",
                       help="Control BlinkSticks in inverse mode")
 
+    group.add_option("--set-led-count",
+                      dest="led_count",
+                      help="Set the number of LEDs to control for supported devices.")
 
     parser.add_option_group(group)
 
@@ -254,6 +257,15 @@ def main():
                 stick.set_mode(int(options.mode))
             else:
                 print("Error: Invalid mode parameter value")
+
+        elif options.led_count:
+            led_count = int(options.led_count)
+
+            if led_count > 0 and led_count <= 32:
+                stick.set_led_count(led_count)
+            else:
+                print("Error: Invalid led-count parameter value")
+
         elif options.info:
             print_info(stick)
         elif options.color or len(args) > 0:
