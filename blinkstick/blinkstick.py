@@ -350,7 +350,7 @@ class BlinkStick(object):
         try:
             if name:
                 # Special case for name="random"
-                if name is "random":
+                if name == "random":
                     red = randint(0, 255)
                     green = randint(0, 255)
                     blue = randint(0, 255)
