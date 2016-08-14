@@ -223,7 +223,10 @@ class BlinkStick(object):
     def _usb_ctrl_transfer(self, bmRequestType, bRequest, wValue, wIndex, data_or_wLength):
         if sys.platform == "win32":
             if bmRequestType == 0x20:
-                data = (c_ubyte * len(data_or_wLength))(*[c_ubyte(ord(c)) for c in data_or_wLength])
+                try:
+                    data = (c_ubyte * len(data_or_wLength))(*[c_ubyte(ord(c)) for c in data_or_wLength])
+                except TypeError:
+                    data = (c_ubyte * len(data_or_wLength))(*[c_ubyte(c) for c in data_or_wLength])
                 data[0] = wValue
                 if not self.device.send_feature_report(data):
                     if self._refresh_device():
@@ -322,7 +325,6 @@ class BlinkStick(object):
         """
 
         red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
-
         r = int(round(red, 3))
         g = int(round(green, 3))
         b = int(round(blue, 3))
