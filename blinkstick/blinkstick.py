@@ -208,15 +208,15 @@ class BlinkStick(object):
 
             self.bs_serial = self.get_serial()
 
-    def _usb_get_string(self, device, length, index):
+    def _usb_get_string(self, device, index):
         try:
-            return usb.util.get_string(device, length, index)
+            return usb.util.get_string(device, index)
         except usb.USBError:
             # Could not communicate with BlinkStick device
             # attempt to find it again based on serial
 
             if self._refresh_device():
-                return usb.util.get_string(self.device, length, index)
+                return usb.util.get_string(self.device, index)
             else:
                 raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
 
@@ -269,7 +269,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.serial_number
         else:
-            return self._usb_get_string(self.device, 256, 3)
+            return self._usb_get_string(self.device, 3)
 
     def get_manufacturer(self):
         """
@@ -281,7 +281,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.vendor_name
         else:
-            return self._usb_get_string(self.device, 256, 1)
+            return self._usb_get_string(self.device, 1)
 
 
     def get_description(self):
@@ -294,7 +294,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.product_name
         else:
-            return self._usb_get_string(self.device, 256, 2)
+            return self._usb_get_string(self.device, 2)
 
     def set_error_reporting(self, error_reporting):
         """
@@ -1527,7 +1527,7 @@ def find_by_serial(serial=None):
     else:
         for d in _find_blicksticks():
             try:
-                if usb.util.get_string(d, 256, 3) == serial:
+                if usb.util.get_string(d, 3) == serial:
                     devices = [d]
                     break
             except Exception as e:
