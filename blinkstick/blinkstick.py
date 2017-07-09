@@ -626,6 +626,15 @@ class BlinkStick(object):
         """
         self.set_color(name="random")
 
+    def get_random_color_hex(self):
+        """
+        Gets random color hex. 
+        """
+        red = randint(0, 255)
+        green = randint(0, 255)
+        blue = randint(0, 255)
+        return '#%02x%02x%02x' % (red, green, blue)
+
     def turn_off(self):
         """
         Turns off LED.
