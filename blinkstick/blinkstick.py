@@ -208,15 +208,15 @@ class BlinkStick(object):
 
             self.bs_serial = self.get_serial()
 
-    def _usb_get_string(self, device, index):
+    def _usb_get_string(self, device, length, index):
         try:
-            return usb.util.get_string(device, index)
+            return usb.util.get_string(device, length, index)
         except usb.USBError:
             # Could not communicate with BlinkStick device
             # attempt to find it again based on serial
 
             if self._refresh_device():
-                return usb.util.get_string(self.device, index)
+                return usb.util.get_string(self.device, length, index)
             else:
                 raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
 
@@ -269,7 +269,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.serial_number
         else:
-            return self._usb_get_string(self.device, 3)
+            return self._usb_get_string(self.device, 256, 3)
 
     def get_manufacturer(self):
         """
@@ -281,7 +281,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.vendor_name
         else:
-            return self._usb_get_string(self.device, 1)
+            return self._usb_get_string(self.device, 256, 1)
 
 
     def get_description(self):
@@ -294,7 +294,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.product_name
         else:
-            return self._usb_get_string(self.device, 2)
+            return self._usb_get_string(self.device, 256, 2)
 
     def set_error_reporting(self, error_reporting):
         """
@@ -350,7 +350,7 @@ class BlinkStick(object):
         try:
             if name:
                 # Special case for name="random"
-                if name == "random":
+                if name is "random":
                     red = randint(0, 255)
                     green = randint(0, 255)
                     blue = randint(0, 255)
@@ -417,8 +417,8 @@ class BlinkStick(object):
             raise BlinkStickException("Could not return current color in format %s" % color_format)
 
     def _determine_report_id(self, led_count):
-        report_id = 9
-        max_leds = 64
+        report_id = 10
+        max_leds = 128
 
         if led_count <= 8 * 3:
             max_leds = 8
@@ -432,6 +432,9 @@ class BlinkStick(object):
         elif led_count <= 64 * 3:
             max_leds = 64
             report_id = 9
+        elif led_count <= 128 * 3:
+            max_leds = 128
+            report_id = 10
 
         return report_id, max_leds
 
@@ -1527,7 +1530,7 @@ def find_by_serial(serial=None):
     else:
         for d in _find_blicksticks():
             try:
-                if usb.util.get_string(d, 3) == serial:
+                if usb.util.get_string(d, 256, 3) == serial:
                     devices = [d]
                     break
             except Exception as e:
