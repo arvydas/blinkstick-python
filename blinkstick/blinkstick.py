@@ -188,6 +188,7 @@ class BlinkStick(object):
     inverse = False
     error_reporting = True
     max_rgb_value = 255
+    mode = 0
 
     def __init__(self, device=None, error_reporting=True):
         """
@@ -207,6 +208,7 @@ class BlinkStick(object):
                 self.open_device(device)
 
             self.bs_serial = self.get_serial()
+            self.mode = self.get_mode()
 
     def _usb_get_string(self, device, length, index):
         try:
@@ -445,15 +447,23 @@ class BlinkStick(object):
         @param data: The LED data frame in GRB format
         """
 
-        report_id, max_leds = self._determine_report_id(len(data))
-
         report = [0, channel]
 
-        for i in range(0, max_leds * 3):
-            if len(data) > i:
-                report.append(data[i])
-            else:
-                report.append(0)
+        if self.mode == 3:
+            report_id, max_leds = self._determine_report_id(len(data)/2)
+            offset = max_leds * 3
+            for i in range(0, offset):
+                d = data[i]>>4
+                if len(data) > offset + i:
+                    d += data[offset+i]&240
+                report.append(d)
+        else:
+            report_id, max_leds = self._determine_report_id(len(data))
+            for i in range(0, max_leds * 3):
+                if len(data) > i:
+                    report.append(data[i])
+                else:
+                    report.append(0)
 
         self._usb_ctrl_transfer(0x20, 0x9, report_id, 0, bytes(bytearray(report)))
 
@@ -491,6 +501,7 @@ class BlinkStick(object):
         control_string = bytes(bytearray([4, mode]))
 
         self._usb_ctrl_transfer(0x20, 0x9, 0x0004, 0, control_string)
+        self.mode = mode
 
     def get_mode(self):
         """
