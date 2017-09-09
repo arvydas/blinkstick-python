@@ -188,6 +188,7 @@ class BlinkStick(object):
     inverse = False
     error_reporting = True
     max_rgb_value = 255
+    mode = 0
 
     def __init__(self, device=None, error_reporting=True):
         """
@@ -207,16 +208,17 @@ class BlinkStick(object):
                 self.open_device(device)
 
             self.bs_serial = self.get_serial()
+            self.mode = self.get_mode()
 
-    def _usb_get_string(self, device, index):
+    def _usb_get_string(self, device, length, index):
         try:
-            return usb.util.get_string(device, index)
+            return usb.util.get_string(device, length, index)
         except usb.USBError:
             # Could not communicate with BlinkStick device
             # attempt to find it again based on serial
 
             if self._refresh_device():
-                return usb.util.get_string(self.device, index)
+                return usb.util.get_string(self.device, length, index)
             else:
                 raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
 
@@ -269,7 +271,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.serial_number
         else:
-            return self._usb_get_string(self.device, 3)
+            return self._usb_get_string(self.device, 256, 3)
 
     def get_manufacturer(self):
         """
@@ -281,7 +283,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.vendor_name
         else:
-            return self._usb_get_string(self.device, 1)
+            return self._usb_get_string(self.device, 256, 1)
 
 
     def get_description(self):
@@ -294,7 +296,7 @@ class BlinkStick(object):
         if sys.platform == "win32":
             return self.device.product_name
         else:
-            return self._usb_get_string(self.device, 2)
+            return self._usb_get_string(self.device, 256, 2)
 
     def set_error_reporting(self, error_reporting):
         """
@@ -350,7 +352,7 @@ class BlinkStick(object):
         try:
             if name:
                 # Special case for name="random"
-                if name == "random":
+                if name is "random":
                     red = randint(0, 255)
                     green = randint(0, 255)
                     blue = randint(0, 255)
@@ -417,8 +419,8 @@ class BlinkStick(object):
             raise BlinkStickException("Could not return current color in format %s" % color_format)
 
     def _determine_report_id(self, led_count):
-        report_id = 9
-        max_leds = 64
+        report_id = 10
+        max_leds = 128
 
         if led_count <= 8 * 3:
             max_leds = 8
@@ -432,6 +434,9 @@ class BlinkStick(object):
         elif led_count <= 64 * 3:
             max_leds = 64
             report_id = 9
+        elif led_count <= 128 * 3:
+            max_leds = 128
+            report_id = 10
 
         return report_id, max_leds
 
@@ -445,15 +450,23 @@ class BlinkStick(object):
         @param data: The LED data frame in GRB format
         """
 
-        report_id, max_leds = self._determine_report_id(len(data))
-
         report = [0, channel]
 
-        for i in range(0, max_leds * 3):
-            if len(data) > i:
-                report.append(data[i])
-            else:
-                report.append(0)
+        if self.mode == 3:
+            report_id, max_leds = self._determine_report_id(len(data)/2)
+            offset = max_leds * 3
+            for i in range(0, offset):
+                d = data[i]>>4
+                if len(data) > offset + i:
+                    d += data[offset+i]&240
+                report.append(d)
+        else:
+            report_id, max_leds = self._determine_report_id(len(data))
+            for i in range(0, max_leds * 3):
+                if len(data) > i:
+                    report.append(data[i])
+                else:
+                    report.append(0)
 
         self._usb_ctrl_transfer(0x20, 0x9, report_id, 0, bytes(bytearray(report)))
 
@@ -473,6 +486,16 @@ class BlinkStick(object):
 
         return device_bytes[2: 2 + count * 3]
 
+    def set_repeat(self, repeat):
+        """
+        Set the number of repeats on the frame
+
+        @type  repeat: int
+        @param mode: number of times to repeat the frame
+        """
+        control_string = bytes(bytearray([20, repeat]))
+        self._usb_ctrl_transfer(0x20, 0x9, 0x14, 0, control_string)
+
     def set_mode(self, mode):
         """
         Set device mode for BlinkStick Pro. Device currently supports the following modes:
@@ -491,6 +514,7 @@ class BlinkStick(object):
         control_string = bytes(bytearray([4, mode]))
 
         self._usb_ctrl_transfer(0x20, 0x9, 0x0004, 0, control_string)
+        self.mode = mode
 
     def get_mode(self):
         """
@@ -1527,7 +1551,7 @@ def find_by_serial(serial=None):
     else:
         for d in _find_blicksticks():
             try:
-                if usb.util.get_string(d, 3) == serial:
+                if usb.util.get_string(d, 256, 3) == serial:
                     devices = [d]
                     break
             except Exception as e:
