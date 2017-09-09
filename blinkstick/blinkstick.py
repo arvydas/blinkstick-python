@@ -486,6 +486,16 @@ class BlinkStick(object):
 
         return device_bytes[2: 2 + count * 3]
 
+    def set_repeat(self, repeat):
+        """
+        Set the number of repeats on the frame
+
+        @type  repeat: int
+        @param mode: number of times to repeat the frame
+        """
+        control_string = bytes(bytearray([20, repeat]))
+        self._usb_ctrl_transfer(0x20, 0x9, 0x14, 0, control_string)
+
     def set_mode(self, mode):
         """
         Set device mode for BlinkStick Pro. Device currently supports the following modes:
