@@ -246,7 +246,7 @@ class BlinkStick(object):
                     raise BlinkStickException("Could not communicate with BlinkStick {0} - it may have been removed".format(self.bs_serial))
 
     def _refresh_device(self):
-        if not hasattr(self, serial):
+        if not hasattr(self, 'bs_serial'):
             return False
         d = find_by_serial(self.bs_serial)
         if d:
