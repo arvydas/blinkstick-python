@@ -634,7 +634,7 @@ class BlinkStick(object):
 
     def pulse(self, channel=0, index=0, red=0, green=0, blue=0, name=None, hex=None, repeats=1, duration=1000, steps=50):
         """
-        Morph to the specified color from black and back again.
+        Pulse the the specified color from black and back again.
 
         @type  red: int
         @param red: Red color intensity 0 is off, 255 is full red intensity
