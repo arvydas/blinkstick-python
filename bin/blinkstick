@@ -77,13 +77,19 @@ def print_info(stick):
     print("Found device:")
     print("    Manufacturer:  {0}".format(stick.get_manufacturer()))
     print("    Description:   {0}".format(stick.get_description()))
+    print("    Variant:       {0}".format(stick.get_variant_string()))
     print("    Serial:        {0}".format(stick.get_serial()))
     print("    Current Color: {0}".format(stick.get_color(color_format="hex")))
     print("    Mode:          {0}".format(stick.get_mode()))
-    count = stick.get_led_count()
-    if count == -1:
-        count = "unsupported"
-    print("    LEDs:          {0}".format(count))
+    if stick.get_variant() == blinkstick.BlinkStick.BLINKSTICK_FLEX:
+        try:
+            count = stick.get_led_count()
+        except:
+            count = -1
+
+        if count == -1:
+            count = "Error"
+        print("    LED conf:      {0}".format(count))
     print("    Info Block 1:  {0}".format(stick.get_info_block1()))
     print("    Info Block 2:  {0}".format(stick.get_info_block2()))
 

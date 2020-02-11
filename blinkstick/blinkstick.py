@@ -185,6 +185,14 @@ class BlinkStick(object):
 
     HEX_COLOR_RE = re.compile(r'^#([a-fA-F0-9]{3}|[a-fA-F0-9]{6})$')
 
+    UNKNOWN = 0
+    BLINKSTICK = 1
+    BLINKSTICK_PRO = 2
+    BLINKSTICK_STRIP = 3
+    BLINKSTICK_SQUARE = 4
+    BLINKSTICK_NANO = 5
+    BLINKSTICK_FLEX = 6
+
     inverse = False
     error_reporting = True
     max_rgb_value = 255
@@ -283,6 +291,64 @@ class BlinkStick(object):
         else:
             return self._usb_get_string(self.device, 1)
 
+    def get_variant(self):
+        """
+        Get the product variant of the device.
+
+        @rtype: int
+        @return: BlinkStick.UNKNOWN, BlinkStick.BLINKSTICK, BlinkStick.BLINKSTICK_PRO and etc
+        """
+
+        serial = self.get_serial()
+        major = serial[-3]
+        minor = serial[-1]
+
+        if sys.platform == "win32":
+            version_attribute = self.device.version_number
+        else:
+            version_attribute = self.device.bcdDevice
+
+        if major == "1":
+            return self.BLINKSTICK
+        elif major == "2":
+            return self.BLINKSTICK_PRO
+        elif major == "3":
+            if version_attribute == 0x200:
+                return self.BLINKSTICK_SQUARE
+            elif version_attribute == 0x201:
+                return self.BLINKSTICK_STRIP
+            elif version_attribute == 0x202:
+                return self.BLINKSTICK_NANO
+            elif version_attribute == 0x203:
+                return self.BLINKSTICK_FLEX
+            else:
+                return self.UNKNOWN
+        else:
+            return self.UNKNOWN
+
+    def get_variant_string(self):
+        """
+        Get the product variant of the device as string.
+
+        @rtype: string
+        @return: "BlinkStick", "BlinkStick Pro", etc
+        """
+        product = self.get_variant()
+
+        if product == self.BLINKSTICK:
+            return "BlinkStick"
+        elif product == self.BLINKSTICK_PRO:
+            return "BlinkStick Pro"
+        elif product == self.BLINKSTICK_SQUARE:
+            return "BlinkStick Square"
+        elif product == self.BLINKSTICK_STRIP:
+            return "BlinkStick Strip"
+        elif product == self.BLINKSTICK_NANO:
+            return "BlinkStick Nano"
+        elif product == self.BLINKSTICK_FLEX:
+            return "BlinkStick Flex"
+
+        return "Unknown"
 
     def get_description(self):
         """
