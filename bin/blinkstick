@@ -233,7 +233,7 @@ def main():
             file.write('SUBSYSTEM=="usb", ATTR{idVendor}=="20a0", ATTR{idProduct}=="41e5", MODE:="0666"')
             file.close()
 
-            print("Rule added to {0}").format(filename)
+            print("Rule added to {0}".format(filename))
         except IOError as e:
             print(str(e))
             print("Make sure you run this script as root: sudo blinkstick --add-udev-rule")
