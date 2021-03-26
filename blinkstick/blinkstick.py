@@ -722,11 +722,9 @@ class BlinkStick(object):
         @type  steps: int
         @param steps: Number of gradient steps
         """
-        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
-
         self.turn_off()
         for x in range(repeats):
-            self.morph(channel=channel, index=index, red=r, green=g, blue=b, duration=duration, steps=steps)
+            self.morph(channel=channel, index=index, red=red, green=green, blue=blue, name=name, hex=hex, duration=duration, steps=steps)
             self.morph(channel=channel, index=index, red=0, green=0, blue=0, duration=duration, steps=steps)
 
     def blink(self, channel=0, index=0, red=0, green=0, blue=0, name=None, hex=None, repeats=1, delay=500):
@@ -748,12 +746,11 @@ class BlinkStick(object):
         @type  delay: int
         @param delay: time in milliseconds to light LED for, and also between blinks
         """
-        r, g, b = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
         ms_delay = float(delay) / float(1000)
         for x in range(repeats):
             if x:
                 time.sleep(ms_delay)
-            self.set_color(channel=channel, index=index, red=r, green=g, blue=b)
+            self.set_color(channel=channel, index=index, red=red, green=green, blue=blue, name=name, hex=hex)
             time.sleep(ms_delay)
             self.set_color(channel=channel, index=index)
 
@@ -778,6 +775,8 @@ class BlinkStick(object):
         """
 
         r_end, g_end, b_end = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
+        # descale the above values
+        r_end, g_end, b_end = _remap_rgb_value_reverse([r_end, g_end, b_end], self.max_rgb_value)
 
         r_start, g_start, b_start = _remap_rgb_value_reverse(self._get_color_rgb(index), self.max_rgb_value)
 
