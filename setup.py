@@ -31,7 +31,7 @@ if sys.platform == "win32":
     ]
 else:
     os_requires = [
-        "pyusb==1.0.0"
+        "pyusb>=1.0.0"
     ]
 
 setup(
