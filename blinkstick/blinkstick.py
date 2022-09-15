@@ -2,7 +2,10 @@ from ._version import  __version__
 import time
 import sys
 import re
-import collections
+try:
+    from collections.abc import Callable
+except ImportError:
+    from collections import Callable
 
 if sys.platform == "win32":
     import pywinusb.hid as hid
@@ -479,7 +482,7 @@ class BlinkStick(object):
 
         # Attempt to find a function to return the appropriate format
         get_color_func = getattr(self, "_get_color_%s" % color_format, self._get_color_rgb)
-        if isinstance(get_color_func, collections.Callable):
+        if isinstance(get_color_func, Callable):
             return get_color_func(index)
         else:
             # Should never get here, as we should always default to self._get_color_rgb
