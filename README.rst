@@ -69,7 +69,7 @@ It can be mitigated with
 Microsoft Windows
 `````````````````
 
-* Download and install `Python 2.7.9 <http://www.python.org/download/releases/>`_ or any 2.x later version
+* Download and install `Python <https://www.python.org/downloads/>`_ 2.7.9 or any later version
 * During the installation, make sure you select "Add python.exe to Path" to install on local hard drive
 
 Python 2.7.9 and later already comes with pip making it very easy to install BlinkStick Python package on Windows. 
