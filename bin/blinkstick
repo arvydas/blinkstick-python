@@ -276,7 +276,7 @@ def main():
         try:
             filename = "/etc/udev/rules.d/85-blinkstick.rules"
             file = open(filename, 'w')
-            file.write('SUBSYSTEM=="usb", ATTR{idVendor}=="20a0", ATTR{idProduct}=="41e5", MODE:="0666"')
+            file.write('SUBSYSTEM=="usb", ATTR{idVendor}=="20a0", ATTR{idProduct}=="41e5", MODE:="0666"\n')
             file.close()
 
             print "Rule added to " + filename
