@@ -22,7 +22,7 @@ else:
     if mo:
         verstr = mo.group(1)
     else:
-        print("unable to find version in {0}").format(VERSIONFILE)
+        print("unable to find version in {0}".format(VERSIONFILE))
         raise RuntimeError("if {0}.py exists, it is required to be well-formed".format(VERSIONFILE))
 
 if sys.platform == "win32":
