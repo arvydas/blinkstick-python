@@ -397,12 +397,12 @@ class BlinkStick(object):
 
         red, green, blue = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
 
+        _set_rgb(self, channel=channel, index=index, red=red, green=green, blue=blue)
+
+    def _set_rgb(self, channel=0, index=0, red=0, green=0, blue=0):
         r = int(round(red, 3))
         g = int(round(green, 3))
         b = int(round(blue, 3))
-
-        if self.inverse:
-            r, g, b = 255 - r, 255 - g, 255 - b
 
         if index == 0 and channel == 0:
             control_string = bytes(bytearray([0, r, g, b]))
@@ -434,6 +434,9 @@ class BlinkStick(object):
                 red, green, blue = self._hex_to_rgb(hex)
         except ValueError:
             red = green = blue = 0
+
+        if self.inverse:
+            red, green, blue = 255 - red, 255 - green, 255 - blue
 
         red, green, blue = _remap_rgb_value([red, green, blue], self.max_rgb_value)
 
@@ -780,15 +783,8 @@ class BlinkStick(object):
         """
 
         r_end, g_end, b_end = self._determine_rgb(red=red, green=green, blue=blue, name=name, hex=hex)
-        # descale the above values
-        r_end, g_end, b_end = _remap_rgb_value_reverse([r_end, g_end, b_end], self.max_rgb_value)
 
-        r_start, g_start, b_start = _remap_rgb_value_reverse(self._get_color_rgb(index), self.max_rgb_value)
-
-        if r_start > 255 or g_start > 255 or b_start > 255:
-            r_start = 0
-            g_start = 0
-            b_start = 0
+        r_start, g_start, b_start = self._get_color_rgb(index)
 
         gradient = []
 
@@ -803,15 +799,12 @@ class BlinkStick(object):
 
         ms_delay = float(duration) / float(1000 * steps)
 
-        self.set_color(channel=channel, index=index, red=r_start, green=g_start, blue=b_start)
-
         for grad in gradient:
             grad_r, grad_g, grad_b = grad
-
-            self.set_color(channel=channel, index=index, red=grad_r, green=grad_g, blue=grad_b)
+            self._set_rgb(channel=channel, index=index, red=grad_r, green=grad_g, blue=grad_b)
             time.sleep(ms_delay)
 
-        self.set_color(channel=channel, index=index, red=r_end, green=g_end, blue=b_end)
+        self._set_rgb(channel=channel, index=index, red=r_end, green=g_end, blue=b_end)
 
     def open_device(self, d):
         """Open device.
@@ -1624,18 +1617,10 @@ def _remap(value, leftMin, leftMax, rightMin, rightMax):
 def _remap_color(value, max_value):
     return _remap(value, 0, 255, 0, max_value)
 
-def _remap_color_reverse(value, max_value):
-    return _remap(value, 0, max_value, 0, 255)
-
 def _remap_rgb_value(rgb_val, max_value):
     return [_remap_color(rgb_val[0], max_value),
         _remap_color(rgb_val[1], max_value),
         _remap_color(rgb_val[2], max_value)]
-
-def _remap_rgb_value_reverse(rgb_val, max_value):
-    return [_remap_color_reverse(rgb_val[0], max_value),
-        _remap_color_reverse(rgb_val[1], max_value),
-        _remap_color_reverse(rgb_val[2], max_value)]
 
 def get_blinkstick_package_version():
     return __version__
