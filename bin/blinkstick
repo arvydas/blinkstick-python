@@ -318,6 +318,8 @@ def main():
 
             func(**fargs)
 
+        elif options.infoblock1 or options.infoblock2:
+            pass
 
         else:
             parser.print_help()
