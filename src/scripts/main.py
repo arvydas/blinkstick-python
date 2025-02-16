@@ -11,6 +11,7 @@ from blinkstick import (
     get_blinkstick_package_version,
     BlinkStickVariant,
 )
+from blinkstick.exceptions import UnsupportedOperation
 
 logging.basicConfig()
 
@@ -87,14 +88,18 @@ class IndentedHelpFormatterWithNL(IndentedHelpFormatter):
 
 
 def print_info(stick):
+    variant = stick.get_variant()
     print("Found backend:")
     print("    Manufacturer:  {0}".format(stick.get_manufacturer()))
     print("    Description:   {0}".format(stick.get_description()))
     print("    Variant:       {0}".format(stick.get_variant_string()))
     print("    Serial:        {0}".format(stick.get_serial()))
     print("    Current Color: {0}".format(stick.get_color(color_format="hex")))
-    print("    Mode:          {0}".format(stick.get_mode()))
-    if stick.get_variant() == BlinkStickVariant.BLINKSTICK_FLEX:
+    try:
+        print("    Mode:          {0}".format(stick.get_mode()))
+    except UnsupportedOperation:
+        print("    Mode:          Not supported")
+    if variant == BlinkStickVariant.BLINKSTICK_FLEX:
         try:
             count = stick.get_led_count()
         except:
