@@ -13,27 +13,30 @@ from blinkstick.exceptions import NotConnected, UnsupportedOperation
 from tests.conftest import make_blinkstick
 
 
+def get_blinkstick_methods():
+    """Get all public methods from BlinkStick class."""
+    return [
+        method
+        for method in dir(BlinkStick)
+        if callable(getattr(BlinkStick, method)) and not method.startswith("__")
+    ]
+
+
 def test_instantiate():
     """Test that we can instantiate a BlinkStick object."""
     bs = BlinkStick()
     assert bs is not None
 
 
-def test_all_methods_require_backend():
+@pytest.mark.parametrize("method_name", get_blinkstick_methods())
+def test_all_methods_require_backend(method_name):
     """Test that all methods require a backend."""
     # Create an instance of BlinkStick. Note that we do not use the mock, or pass a device.
     # This is deliberate, as we want to test that all methods raise an exception when the backend is not set.
     bs = BlinkStick()
-
-    class_methods = (
-        method
-        for method in dir(BlinkStick)
-        if callable(getattr(bs, method)) and not method.startswith("__")
-    )
-    for method_name in class_methods:
-        method = getattr(bs, method_name)
-        with pytest.raises(NotConnected):
-            method()
+    method = getattr(bs, method_name)
+    with pytest.raises(NotConnected):
+        method()
 
 
 @pytest.mark.parametrize(
