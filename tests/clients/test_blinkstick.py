@@ -315,29 +315,6 @@ def test_inverse_does_not_affect_max_rgb_value(make_blinkstick):
 
 
 @pytest.mark.parametrize(
-    "mode, is_valid",
-    [
-        (1, True),
-        (2, True),
-        (3, True),
-        (4, False),
-        (-1, False),
-        (Mode.RGB, True),
-        (Mode.RGB_INVERSE, True),
-        (Mode.ADDRESSABLE, True),
-    ],
-)
-def test_set_mode_raises_on_invalid_mode(make_blinkstick, mode, is_valid):
-    """Test that set_mode raises an exception when an invalid mode is passed."""
-    bs = make_blinkstick()
-    if is_valid:
-        bs.set_mode(mode)
-    else:
-        with pytest.raises(ValueError):
-            bs.set_mode("invalid_mode")  # noqa
-
-
-@pytest.mark.parametrize(
     "variant, is_supported",
     [
         pytest.param(BlinkStickVariant.BLINKSTICK, False, id="BlinkStick"),
@@ -381,3 +358,28 @@ def test_get_mode_supported_variants(mocker, make_blinkstick, variant, is_suppor
             bs.get_mode()
     else:
         bs.get_mode()
+
+
+@pytest.mark.parametrize(
+    "mode, is_valid",
+    [
+        (1, True),
+        (2, True),
+        (3, True),
+        (4, False),
+        (-1, False),
+        (Mode.RGB, True),
+        (Mode.RGB_INVERSE, True),
+        (Mode.ADDRESSABLE, True),
+    ],
+)
+def test_set_mode_raises_on_invalid_mode(mocker, make_blinkstick, mode, is_valid):
+    """Test that set_mode raises an exception when an invalid mode is passed."""
+    bs = make_blinkstick()
+    # set_mode is only supported for BlinkStickPro
+    bs.get_variant = mocker.Mock(return_value=BlinkStickVariant.BLINKSTICK_PRO)
+    if is_valid:
+        bs.set_mode(mode)
+    else:
+        with pytest.raises(ValueError):
+            bs.set_mode("invalid_mode")  # noqa
