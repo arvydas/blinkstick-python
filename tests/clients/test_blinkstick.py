@@ -6,9 +6,6 @@ from pytest_mock import MockFixture
 from blinkstick.clients.blinkstick import BlinkStick
 from blinkstick.colors import ColorFormat
 from blinkstick.enums import BlinkStickVariant, Mode
-from blinkstick.clients.blinkstick import BlinkStick
-from pytest_mock import MockFixture
-
 from blinkstick.exceptions import NotConnected, UnsupportedOperation
 from tests.conftest import make_blinkstick
 
