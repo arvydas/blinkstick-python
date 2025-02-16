@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 import time
 import warnings
+from functools import cached_property
 from typing import Callable
 
 from blinkstick.colors import (
@@ -12,10 +13,11 @@ from blinkstick.colors import (
     remap_rgb_value_reverse,
     ColorFormat,
 )
-from blinkstick.decorators import no_backend_required
+from blinkstick.configs import _get_device_config
 from blinkstick.devices import BlinkStickDevice
 from blinkstick.enums import BlinkStickVariant, Mode
-from blinkstick.exceptions import NotConnected
+from blinkstick.exceptions import NotConnected, UnsupportedOperation
+from blinkstick.models import Configuration
 from blinkstick.utilities import string_to_info_block_data
 
 if sys.platform == "win32":
@@ -93,6 +95,15 @@ class BlinkStick:
         except NotConnected:
             return "Blinkstick - Not connected"
         return f"{variant} ({serial})"
+
+    @cached_property
+    def _config(self) -> Configuration:
+        """
+        Get the hardware configuration of the connected device, using the reported variant.
+
+        @rtype: Configuration
+        """
+        return _get_device_config(self.get_variant())
 
     def get_serial(self) -> str:
         """
@@ -388,6 +399,11 @@ class BlinkStick:
         @type  mode: int
         @param mode: Device mode to set
         """
+        if not self._config.mode_change_support:
+            raise UnsupportedOperation(
+                "This operation is only supported on BlinkStick Pro devices"
+            )
+
         # If mode is an enum, get the value
         # this will allow the user to pass in the enum directly, and also gate the value to the enum values
         if not isinstance(mode, int):
@@ -411,6 +427,10 @@ class BlinkStick:
         @rtype: int
         @return: Device mode
         """
+        if not self._config.mode_change_support:
+            raise UnsupportedOperation(
+                "This operation is only supported on BlinkStick Pro devices"
+            )
 
         device_bytes = self.backend.control_transfer(0x80 | 0x20, 0x1, 0x0004, 0, 2)
 
