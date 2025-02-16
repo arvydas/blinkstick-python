@@ -1,13 +1,15 @@
 from unittest.mock import MagicMock
 
 import pytest
+from pytest_mock import MockFixture
 
+from blinkstick.clients.blinkstick import BlinkStick
 from blinkstick.colors import ColorFormat
 from blinkstick.enums import BlinkStickVariant, Mode
 from blinkstick.clients.blinkstick import BlinkStick
 from pytest_mock import MockFixture
 
-from blinkstick.exceptions import NotConnected
+from blinkstick.exceptions import NotConnected, UnsupportedOperation
 from tests.conftest import make_blinkstick
 
 
@@ -333,3 +335,49 @@ def test_set_mode_raises_on_invalid_mode(make_blinkstick, mode, is_valid):
     else:
         with pytest.raises(ValueError):
             bs.set_mode("invalid_mode")  # noqa
+
+
+@pytest.mark.parametrize(
+    "variant, is_supported",
+    [
+        pytest.param(BlinkStickVariant.BLINKSTICK, False, id="BlinkStick"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_PRO, True, id="BlinkStickPro"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_STRIP, True, id="BlinkStickStrip"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_SQUARE, True, id="BlinkStickSquare"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_NANO, True, id="BlinkStickNano"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_FLEX, True, id="BlinkStickFlex"),
+        pytest.param(BlinkStickVariant.UNKNOWN, False, id="Unknown"),
+    ],
+)
+def test_set_mode_supported_variants(mocker, make_blinkstick, variant, is_supported):
+    """Test that set_mode is supported only for BlinkstickPro. Other variants should raise an exception."""
+    bs = make_blinkstick()
+    bs.get_variant = mocker.Mock(return_value=variant)
+    if not is_supported:
+        with pytest.raises(UnsupportedOperation):
+            bs.set_mode(2)
+    else:
+        bs.set_mode(2)
+
+
+@pytest.mark.parametrize(
+    "variant, is_supported",
+    [
+        pytest.param(BlinkStickVariant.BLINKSTICK, False, id="BlinkStick"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_PRO, True, id="BlinkStickPro"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_STRIP, True, id="BlinkStickStrip"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_SQUARE, True, id="BlinkStickSquare"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_NANO, True, id="BlinkStickNano"),
+        pytest.param(BlinkStickVariant.BLINKSTICK_FLEX, True, id="BlinkStickFlex"),
+        pytest.param(BlinkStickVariant.UNKNOWN, False, id="Unknown"),
+    ],
+)
+def test_get_mode_supported_variants(mocker, make_blinkstick, variant, is_supported):
+    """Test that get_mode is supported only for BlinkstickPro. Other variants should raise an exception."""
+    bs = make_blinkstick()
+    bs.get_variant = mocker.Mock(return_value=variant)
+    if not is_supported:
+        with pytest.raises(UnsupportedOperation):
+            bs.get_mode()
+    else:
+        bs.get_mode()
