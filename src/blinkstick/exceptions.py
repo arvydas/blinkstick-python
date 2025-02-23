@@ -11,3 +11,7 @@ class NotConnected(BlinkStickException):
 
 class USBBackendNotAvailable(BlinkStickException):
     pass
+
+
+class UnsupportedOperation(BlinkStickException):
+    pass

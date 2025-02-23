@@ -30,3 +30,21 @@ class SerialDetails:
         object.__setattr__(self, "sequence_number", int(match.group(1)))
         object.__setattr__(self, "major_version", int(match.group(2)))
         object.__setattr__(self, "minor_version", int(match.group(3)))
+
+
+@dataclass(frozen=True)
+class Configuration:
+    """
+    A BlinkStick configuration representation.
+
+    This is used to capture the configuration of a BlinkStick variant, and the capabilities of the device.
+
+    e.g.
+    * BlinkStickPro supports mode changes, while BlinkStick does not.
+    * BlinkStickSquare has a fixed number of LEDs and channels, while BlinkStickPro has a max of 64 LEDs and 3 channels.
+
+    Currently only mode_change_support is supported.
+
+    """
+
+    mode_change_support: bool
